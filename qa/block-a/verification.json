@@ -1,0 +1,234 @@
+{
+  "date": "2026-10-22",
+  "branch": "bloque-a",
+  "baseline_commit": "2abb25de89bc8c93819ac291e2ee4bb6abf48825",
+  "before_unit_counts": {
+    "tests": 14,
+    "pass": 3,
+    "fail": 11
+  },
+  "after_unit_counts": {
+    "tests": 73,
+    "pass": 73,
+    "fail": 0
+  },
+  "same_regression_sources_sha256": {
+    "tests/block-a.test.mjs": "eed624e605f91e9905f56c0833f09bfbc78dff6980891b229e9e5f917bb2a323",
+    "tools/check-block-a.cjs": "fd668898b000bf0dbcb827381e3e9b4a2212ca84b759b40c66507de63812218f",
+    "tests/fixtures/one-frame.mp4": "133b3ccc3377dfcb2f7d6b17bb3a7a4e3a3cb38e80aec6b094b2e1a734da04cc"
+  },
+  "commands": {
+    "baseline-unit": {
+      "command": [
+        "node",
+        "--test",
+        "tests/block-a.test.mjs"
+      ],
+      "started": "2026-10-22T19:56:43.095478+00:00",
+      "duration_seconds": 0.917,
+      "exit_code": 1,
+      "stdout": "✖ VGE-001: un render fallido conserva los bytes y el hash de la exportación previa (79.786033ms)\n✖ VGE-001: error de ejecutable conserva también la exportación anterior (4.766727ms)\n✖ VGE-001: abortar espera al cierre del proceso y conserva la salida anterior (155.791035ms)\n✖ VGE-001: rechaza un MP4 truncado sin reemplazar el video válido (66.853337ms)\n✔ VGE-001: acepta el contenedor de un MP4 real generado para la regresión (57.154256ms)\n✖ VGE-001: una salida no vacía pero inválida tampoco reemplaza la anterior (64.821769ms)\nnode:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: Expected \"actual\" to be strictly unequal to:\n\n'/tmp/vge-regression-a-Gi7ztm/figure.html'\n    at file:///tmp/vge-regression-a-Gi7ztm/writer.mjs:1:95\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async node:internal/modules/esm/loader:643:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: '/tmp/vge-regression-a-Gi7ztm/figure.html',\n  expected: '/tmp/vge-regression-a-Gi7ztm/figure.html',\n  operator: 'notStrictEqual',\n  diff: 'simple'\n}\n\nNode.js v24.19.0\n✖ VGE-001: un éxito se construye en temporal antes de sustituir la salida (67.8458ms)\n✖ VGE-002: rechaza escala efectiva LINEAR, base de paso 0.1 (11.897322ms)\n✖ VGE-002: rechaza escala efectiva LINEAR, base de paso 0.5 (1.213581ms)\n✖ VGE-002: rechaza escala efectiva SINE, base de paso 0.1 (2.766853ms)\n✔ VGE-002: la composición válida respeta pose, paso, parámetros y escala del fallo (10.256859ms)\n✖ VGE-003: seekCycle rechaza fases no finitas antes de modificar ningún vínculo (44.260048ms)\n✖ VGE-004: el plan admite la salida aunque relative use separadores Windows (3.478045ms)\n✔ VGE-004: rechaza salidas fuera de out, incluso con un prefijo parecido (0.866137ms)\nℹ tests 14\nℹ suites 0\nℹ pass 3\nℹ fail 11\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 850.319412\n\n✖ failing tests:\n\ntest at tests/block-a.test.mjs:28:1\n✖ VGE-001: un render fallido conserva los bytes y el hash de la exportación previa (79.786033ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n  + actual - expected\n  \n  + Buffer(10) [Uint8Array] [\n  +   105,\n  - Buffer(143) [Uint8Array] [\n  -   60,\n  -   33,\n  -   100,\n  -   111,\n  -   99,\n  -   116,\n  -   121,\n  -   112,\n  -   101,\n  -   32,\n  -   104,\n  -   116,\n  -   109,\n  -   108,\n  -   62,\n  -   60,\n  -   104,\n  -   116,\n  -   109,\n  -   108,\n  -   32,\n  -   108,\n  -   97,\n      110,\n  -   103,\n  -   61,\n  -   34,\n  -   101,\n  -   115,\n  -   34,\n  -   62,\n  -   60,\n  -   98,\n  -   111,\n  -   100,\n  -   121,\n  -   62,\n  -   60,\n  -   115,\n  -   118,\n  -   103,\n  -   32,\n  -   118,\n  -   105,\n  -   101,\n  -   119,\n  -   66,\n  -   111,\n  -   120,\n  -   61,\n  -   34,\n  -   48,\n  -   32,\n  -   48,\n  -   32,\n  -   49,\n  -   48,\n  -   32,\n  -   49,\n  -   48,\n  -   34,\n  -   62,\n  -   60,\n      99,\n  -   105,\n  -   114,\n  -   99,\n  -   108,\n  -   101,\n  -   32,\n  -   99,\n  -   120,\n  -   61,\n  -   34,\n  -   53,\n  -   34,\n  -   32,\n  -   99,\n  -   121,\n  -   61,\n  -   34,\n  -   53,\n  -   34,\n  -   32,\n  -   114,\n  -   61,\n  -   34,\n  -   52,\n  -   34,\n  -   47,\n  -   62,\n  -   60,\n  -   47,\n  -   115,\n  -   118,\n  -   103,\n  -   62,\n  -   60,\n  -   47,\n  -   98,\n      111,\n  -   100,\n  -   121,\n  -   62,\n  -   60,\n  -   47,\n  -   104,\n  -   116,\n      109,\n  +   112,\n      108,\n  -   62,\n  -   10,\n  -   60,\n  -   33,\n  -   45,\n  -   45,\n  -   32,\n      101,\n  -   120,\n  -   112,\n  -   111,\n  -   114,\n      116,\n  -   97,\n  -   99,\n  -   105,\n  -   195,\n  -   179,\n  -   110,\n  -   32,\n  -   97,\n  -   110,\n  -   116,\n  -   101,\n  -   114,\n  -   105,\n      111,\n  -   114,\n  -   32,\n  -   45,\n  -   45,\n  -   62,\n  -   10\n    ]\n  \n      at file:///workspace/scratch/c949886d48cd/vge-bloque-a-evidencia/base/tests/block-a.test.mjs:31:45\n      at async nativeCase (file:///workspace/scratch/c949886d48cd/vge-bloque-a-evidencia/base/tests/block-a.test.mjs:25:3)\n      at async Test.run (node:internal/test_runner/test:1389:7)\n      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: <Buffer 69 6e 63 6f 6d 70 6c 65 74 6f>,\n    expected: <Buffer 3c 21 64 6f 63 74 79 70 65 20 68 74 6d 6c 3e 3c 68 74 6d 6c 20 6c 61 6e 67 3d 22 65 73 22 3e 3c 62 6f 64 79 3e 3c 73 76 67 20 76 69 65 77 42 6f 78 3d ... 93 more bytes>,\n    operator: 'deepStrictEqual',\n    diff: 'simple'\n  }\n\ntest at tests/block-a.test.mjs:35:1\n✖ VGE-001: error de ejecutable conserva también la exportación anterior (4.766727ms)\n  Error: ENOENT: no such file or directory, open '/tmp/vge-regression-a-du8zQZ/figure.html'\n      at async open (node:internal/fs/promises:697:25)\n      at async readFile (node:internal/fs/promises:1348:14)\n      at async file:///workspace/scratch/c949886d48cd/vge-bloque-a-evidencia/base/tests/block-a.test.mjs:37:20\n      at async nativeCase (file:///workspace/scratch/c949886d48cd/vge-bloque-a-evidencia/base/tests/block-a.test.mjs:25:3)\n      at async Test.run (node:internal/test_runner/test:1389:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {\n    errno: -2,\n    code: 'ENOENT',\n    syscall: 'open',\n    path: '/tmp/vge-regression-a-du8zQZ/figure.html'\n  }\n\ntest at tests/block-a.test.mjs:39:1\n✖ VGE-001: abortar espera al cierre del proceso y conserva la salida anterior (155.791035ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  + actual - expected\n  \n  + '51a1d5da554bae2571c92eb7cc4f2e1c19ee825656a24609a8ad56fa2066dcda'\n  - '46401a6a86c1bf6e18dd7c4addca14cb40bdb30e3f86dc204294ebca2dfaec02'\n  \n      at file:///workspace/scratch/c949886d48cd/vge-bloque-a-evidencia/base/tests/block-a.test.mjs:43:9\n      at async nativeCase (file:///workspace/scratch/c949886d48cd/vge-bloque-a-evidencia/base/tests/block-a.test.mjs:25:3)\n      at async Test.run (node:internal/test_runner/test:1389:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: '51a1d5da554bae2571c92eb7cc4f2e1c19ee825656a24609a8ad56fa2066dcda',\n    expected: '46401a6a86c1bf6e18dd7c4addca14cb40bdb30e3f86dc204294ebca2dfaec02',\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n\ntest at tests/block-a.test.mjs:45:1\n✖ VGE-001: rechaza un MP4 truncado sin reemplazar el video válido (66.853337ms)\n  AssertionError [ERR_ASSERTION]: Missing expected rejection.\n      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n      at async file:///workspace/scratch/c949886d48cd/vge-bloque-a-evidencia/base/tests/block-a.test.mjs:47:2\n      at async nativeCase (file:///workspace/scratch/c949886d48cd/vge-bloque-a-evidencia/base/tests/block-a.test.mjs:25:3)\n      at async Test.run (node:internal/test_runner/test:1389:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {\n    generatedMessage: false,\n    code: 'ERR_ASSERTION',\n    actual: undefined,\n    expected: /VGE_INVALID_OUTPUT/,\n    operator: 'rejects',\n    diff: 'simple'\n  }\n\ntest at tests/block-a.test.mjs:54:1\n✖ VGE-001: una salida no vacía pero inválida tampoco reemplaza la anterior (64.821769ms)\n  AssertionError [ERR_ASSERTION]: Missing expected rejection.\n      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n      at async file:///workspace/scratch/c949886d48cd/vge-bloque-a-evidencia/base/tests/block-a.test.mjs:56:2\n      at async nativeCase (file:///workspace/scratch/c949886d48cd/vge-bloque-a-evidencia/base/tests/block-a.test.mjs:25:3)\n      at async Test.run (node:internal/test_runner/test:1389:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {\n    generatedMessage: false,\n    code: 'ERR_ASSERTION',\n    actual: undefined,\n    expected: /VGE_INVALID_OUTPUT/,\n    operator: 'rejects',\n    diff: 'simple'\n  }\n\ntest at tests/block-a.test.mjs:58:1\n✖ VGE-001: un éxito se construye en temporal antes de sustituir la salida (67.8458ms)\n  Error: VGE_EXECUTION_FAILED: test, código 1, señal ninguna\n      at ChildProcess.<anonymous> (file:///workspace/scratch/c949886d48cd/vge-bloque-a-evidencia/base/src/core/native-jobs.mjs:47:68)\n      at ChildProcess.emit (node:events:509:28)\n      at maybeClose (node:internal/child_process:1141:16)\n      at ChildProcess._handle.onexit (node:internal/child_process:306:5)\n\ntest at tests/block-a.test.mjs:73:2\n✖ VGE-002: rechaza escala efectiva LINEAR, base de paso 0.1 (11.897322ms)\n  AssertionError [ERR_ASSERTION]: Missing expected exception.\n      at TestContext.<anonymous> (file:///workspace/scratch/c949886d48cd/vge-bloque-a-evidencia/base/tests/block-a.test.mjs:74:10)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1382:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)\n      at Test.postRun (node:internal/test_runner/test:1522:19)\n      at Test.run (node:internal/test_runner/test:1447:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {\n    generatedMessage: false,\n    code: 'ERR_ASSERTION',\n    actual: undefined,\n    expected: /escala.*(?:positiva|finita)/i,\n    operator: 'throws',\n    diff: 'simple'\n  }\n\ntest at tests/block-a.test.mjs:73:2\n✖ VGE-002: rechaza escala efectiva LINEAR, base de paso 0.5 (1.213581ms)\n  AssertionError [ERR_ASSERTION]: Missing expected exception.\n      at TestContext.<anonymous> (file:///workspace/scratch/c949886d48cd/vge-bloque-a-evidencia/base/tests/block-a.test.mjs:74:10)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1382:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)\n      at Test.postRun (node:internal/test_runner/test:1522:19)\n      at Test.run (node:internal/test_runner/test:1447:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {\n    generatedMessage: false,\n    code: 'ERR_ASSERTION',\n    actual: undefined,\n    expected: /escala.*(?:positiva|finita)/i,\n    operator: 'throws',\n    diff: 'simple'\n  }\n\ntest at tests/block-a.test.mjs:73:2\n✖ VGE-002: rechaza escala efectiva SINE, base de paso 0.1 (2.766853ms)\n  AssertionError [ERR_ASSERTION]: Missing expected exception.\n      at TestContext.<anonymous> (file:///workspace/scratch/c949886d48cd/vge-bloque-a-evidencia/base/tests/block-a.test.mjs:74:10)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1382:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)\n      at Test.postRun (node:internal/test_runner/test:1522:19)\n      at Test.run (node:internal/test_runner/test:1447:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {\n    generatedMessage: false,\n    code: 'ERR_ASSERTION',\n    actual: undefined,\n    expected: /escala.*(?:positiva|finita)/i,\n    operator: 'throws',\n    diff: 'simple'\n  }\n\ntest at tests/block-a.test.mjs:82:1\n✖ VGE-003: seekCycle rechaza fases no finitas antes de modificar ningún vínculo (44.260048ms)\n  AssertionError [ERR_ASSERTION]: Missing expected exception.\n      at TestContext.<anonymous> (file:///workspace/scratch/c949886d48cd/vge-bloque-a-evidencia/base/tests/block-a.test.mjs:87:10)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1382:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)\n      at Test.postRun (node:internal/test_runner/test:1522:19)\n      at Test.run (node:internal/test_runner/test:1447:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {\n    generatedMessage: false,\n    code: 'ERR_ASSERTION',\n    actual: undefined,\n    expected: /finit|fase|interval/i,\n    operator: 'throws',\n    diff: 'simple'\n  }\n\ntest at tests/block-a.test.mjs:92:1\n✖ VGE-004: el plan admite la salida aunque relative use separadores Windows (3.478045ms)\n  Error: VGE_INVALID_PATH: las salidas deben estar en out/\n      at planNativeJob (file:///workspace/scratch/c949886d48cd/vge-bloque-a-evidencia/base/src/core/native-jobs.mjs:31:62)\n      at TestContext.<anonymous> (file:///workspace/scratch/c949886d48cd/vge-bloque-a-evidencia/base/tests/block-a.test.mjs:96:11)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1382:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)\n      at Test.postRun (node:internal/test_runner/test:1522:19)\n      at Test.run (node:internal/test_runner/test:1447:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)\n",
+      "stderr": ""
+    },
+    "baseline-browser": {
+      "command": [
+        "node",
+        "tools/check-block-a.cjs"
+      ],
+      "started": "2026-10-22T20:05:00.018666+00:00",
+      "duration_seconds": 7.113,
+      "exit_code": 1,
+      "stdout": "{\"passed\":0,\"failed\":3}\n",
+      "stderr": "FAIL VGE-007: Expected values to be strictly equal:\n\n'0' !== '100'\n\nFAIL VGE-008: The input did not match the regular expression /Cómo hace girar/. Input:\n\n'No se pudo abrir el visual'\n\nFAIL VGE-014: locator.innerText: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.material-note')\u001b[22m\n\n"
+    },
+    "final-ci": {
+      "command": [
+        "npm",
+        "ci"
+      ],
+      "started": "2026-10-22T20:04:58.768260+00:00",
+      "duration_seconds": 0.956,
+      "exit_code": 0,
+      "stdout": "\nadded 8 packages in 872ms\n",
+      "stderr": "npm warn Unknown env config \"http-proxy\". This will stop working in the next major version of npm.\n"
+    },
+    "final-test": {
+      "command": [
+        "npm",
+        "test"
+      ],
+      "started": "2026-10-22T20:04:59.751761+00:00",
+      "duration_seconds": 1.177,
+      "exit_code": 0,
+      "stdout": "\n> vge-v2-phase2@2.0.0-alpha.2.1 test\n> node --test tests/*.test.mjs\n\n✔ VGE-001: un render fallido conserva los bytes y el hash de la exportación previa (107.057004ms)\n✔ VGE-001: error de ejecutable conserva también la exportación anterior (7.822275ms)\n✔ VGE-001: abortar espera al cierre del proceso y conserva la salida anterior (164.001811ms)\n✔ VGE-001: rechaza un MP4 truncado sin reemplazar el video válido (93.128529ms)\n✔ VGE-001: acepta el contenedor de un MP4 real generado para la regresión (67.123479ms)\n✔ VGE-001: una salida no vacía pero inválida tampoco reemplaza la anterior (71.189389ms)\n✔ VGE-001: un éxito se construye en temporal antes de sustituir la salida (73.257772ms)\n✔ VGE-002: rechaza escala efectiva LINEAR, base de paso 0.1 (9.566352ms)\n✔ VGE-002: rechaza escala efectiva LINEAR, base de paso 0.5 (1.370077ms)\n✔ VGE-002: rechaza escala efectiva SINE, base de paso 0.1 (1.058958ms)\n✔ VGE-002: la composición válida respeta pose, paso, parámetros y escala del fallo (7.420048ms)\n✔ VGE-003: seekCycle rechaza fases no finitas antes de modificar ningún vínculo (43.523843ms)\n✔ VGE-004: el plan admite la salida aunque relative use separadores Windows (2.970372ms)\n✔ VGE-004: rechaza salidas fuera de out, incluso con un prefijo parecido (0.86158ms)\n✔ el manifiesto reúne fuentes nativas y las tres capas, con errores legibles (6.229161ms)\n✔ sin exportación Spline o URL CircuitJS no se habilita una integración ficticia (0.650231ms)\n✔ sesión abre el motor PSC real y propaga un parámetro con unidad y rango (172.165271ms)\n✔ ocultar pausa y volver respeta la pausa elegida; liberar quita el listener (0.76202ms)\n✔ CircuitJS: contrato de API, importación, medidas y pausa con doble; no simulación nativa (1.362617ms)\n✔ Spline: contrato con doble, limpieza en error; no carga nativa de una escena (0.693787ms)\n✔ tareas nativas conservan su ejecutable y rechazan salir del proyecto (1.201984ms)\n✔ un proceso exitoso sin artefacto no se declara render terminado (85.87745ms)\n✔ las tareas nativas reciben el mismo contrato de datos y rechazan valores fuera de rango (1.435877ms)\n✔ ambos dominios cumplen el mismo contrato (28.518489ms)\n✔ rechaza errores de estructura y versiones antes de construir (7.760172ms)\n✔ rechaza IDs repetidos, padres inexistentes y ciclos (7.984289ms)\n✔ valida parámetros de las fábricas, referencias y canales duplicados (23.295166ms)\n✔ no acepta funciones, NaN, claves peligrosas ni documentos circulares (4.241241ms)\n✔ construye la jerarquía aunque los padres aparezcan después (40.45411ms)\n✔ reutiliza recursos idénticos incluso con IDs distintos (16.242302ms)\n✔ ninguna geometría/material se recrea durante 1.000 actualizaciones (52.010751ms)\n✔ el despiece usa coordenadas locales absolutas y no acumula desplazamientos (15.961528ms)\n✔ seleccionar emite evento sin mutar materiales compartidos (15.146919ms)\n✔ cambiar velocidad conserva la fase y cambia su derivada (17.060917ms)\n✔ corrientes normalizadas comparten reloj y respetan el desfase indicado (9.683844ms)\n✔ parámetros inválidos no alteran el estado (22.024303ms)\n✔ fallos reversibles conservan solicitudes y no contaminan materiales de otras piezas (21.047424ms)\n✔ un fallo fuera del rango falla de forma atómica (16.392583ms)\n✔ visible incluye subárbol y ancestros, sin activar hermanos (10.377501ms)\n✔ los pasos restablecen transformaciones, datos, fase y visibilidad (8.573659ms)\n✔ el mismo núcleo reproduce el ordenamiento y permite retroceder (1.491231ms)\n✔ el resultado y el multiconjunto de la traza concuerdan con el orden ascendente (0.161784ms)\n✔ la reserva .glb valida, pero se rechaza construir sin implementar el cargador (0.956454ms)\n✔ pausado dibuja cambios una vez y queda sin RAF pendiente (8.303931ms)\n✔ advance manual solicita un dibujo y admite intervalos finitos grandes sin NaN (6.744619ms)\n✔ ocultar pestaña cancela RAF y reanuda sin salto temporal (9.645716ms)\n✔ fuera de pantalla no dibuja, incluso con cambios pendientes (9.261938ms)\n✔ una escena estática no mantiene RAF aunque se invoque play (0.800047ms)\n✔ dispose libera cada recurso una sola vez y respeta la propiedad del renderer (22.305907ms)\n✔ la resolución mobile tiene menos triángulos; datos y API se conservan (21.479616ms)\n✔ las cuatro condiciones del contrato están presentes y son ejecutables (87.4212ms)\n✔ el slider mueve un plano real en el espacio del ancla y nunca modifica vértices (27.123142ms)\n✔ el clipping clona materiales sin recortar otras piezas que compartían material (26.621986ms)\n✔ el contorno solo aparece en la entidad seleccionada y conserva la geometría (19.365945ms)\n✔ la selección de un grupo cubre únicamente su subárbol (29.026705ms)\n✔ respaldo emisivo aislado, reversible y compatible con fallos (17.66555ms)\n✔ auto usa emisivo por equipo limitado, coste de grupo o intervalos lentos (41.033455ms)\n✔ el campo es la suma de los datos de corrientes, sin oscilador independiente (33.61861ms)\n✔ con corrientes en cuadratura de igual amplitud el módulo es constante (9.599546ms)\n✔ con desfase 0 el campo pulsa sobre una línea y puede anularse (15.410457ms)\n✔ la amplitud auxiliar nula elimina su contribución al campo (7.525347ms)\n✔ 1.000 frames no reemplazan geometrías ni expanden cachés tras calentar estados (57.482169ms)\n✔ el adaptador libera sus recursos y nunca dispone la geometría prestada (10.121909ms)\n✔ referencias gráficas erróneas se rechazan con un mensaje identificable (0.503199ms)\n✔ el modelo por capas conserva el contrato y sus referencias gráficas (25.413362ms)\n✔ buscar un instante sincroniza las dos señales con el campo, sin reconstruir el modelo (52.488462ms)\n✔ el cursor rechaza valores inválidos sin modificar el instante (27.426591ms)\n✔ el brillo empieza en B y pasa a A con el mismo cursor, sin cambiar sus colores (21.266168ms)\n✔ B alcanza el máximo positivo antes que A con adelantos de 30, 60 y 90 grados (19.826396ms)\n✔ el campo gira en el sentido del giro ilustrativo y la estela usa muestras anteriores de esas señales (13.739405ms)\n✔ el verde queda reservado al campo, con metal gris y cajita neutra (0.313803ms)\n✔ 1.000 actualizaciones con brillo y estela conservan geometrías y cachés (99.583235ms)\n✔ el adaptador libera la estela y los materiales de brillo una sola vez (11.446083ms)\nℹ tests 73\nℹ suites 0\nℹ pass 73\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 991.842169\n",
+      "stderr": "npm warn Unknown env config \"http-proxy\". This will stop working in the next major version of npm.\n"
+    },
+    "final-validate": {
+      "command": [
+        "npm",
+        "run",
+        "validate"
+      ],
+      "started": "2026-10-22T20:05:00.966128+00:00",
+      "duration_seconds": 0.384,
+      "exit_code": 0,
+      "stdout": "\n> vge-v2-phase2@2.0.0-alpha.2.1 validate\n> node tools/validate-examples.mjs\n\npsc: válido · 75 entidades · 10 pasos\npsc.beginner: válido · 75 entidades · 10 pasos\nbubble-sort: válido · 4 entidades · 7 pasos\n",
+      "stderr": "npm warn Unknown env config \"http-proxy\". This will stop working in the next major version of npm.\n"
+    },
+    "final-build": {
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "started": "2026-10-22T20:05:01.380278+00:00",
+      "duration_seconds": 0.515,
+      "exit_code": 0,
+      "stdout": "\n> vge-v2-phase2@2.0.0-alpha.2.1 build\n> node tools/build.mjs\n\nDemo autónoma: 994793 bytes · Three.js y datos incluidos\n",
+      "stderr": "npm warn Unknown env config \"http-proxy\". This will stop working in the next major version of npm.\n"
+    },
+    "final-check390": {
+      "command": [
+        "npm",
+        "run",
+        "check:390"
+      ],
+      "started": "2026-10-22T20:05:01.931127+00:00",
+      "duration_seconds": 5.329,
+      "exit_code": 0,
+      "stdout": "\n> vge-v2-phase2@2.0.0-alpha.2.1 check:390\n> node tools/check-390.cjs\n\n✓ Inicio en capa 1, pregunta y analogía antes de crear WebGL\n✓ Cuatro pasos, máximo dos frases por paso y lenguaje común sin jerga visible\n✓ Nivel técnico conserva la explicación común y añade nombres, ondas y escala explicada\n✓ El mismo cursor actualiza ondas, texto, brillo de A/B y vector del campo en cuatro instantes conocidos\n✓ B alcanza su máximo antes que A a 30/60/90 grados; flecha, pieza central y aspas giran en el mismo sentido\n✓ Nivel avanzado añade fórmulas, convención de signos y límites, sin ocultar la capa común\n✓ Nivel controla la capa por defecto de cada escena y las capas se pueden abrir con un toque\n✓ Siete piezas tienen nombre común, función y conexión gráfica; dos etiquetas como máximo\n✓ Resaltado normal exclusivo y respaldo ligero sin aclarar otras piezas\n✓ Corte real y separación/rearmado sin perder piezas ni explicación\n✓ Los turnos juntos muestran un campo pulsante y detienen el giro ilustrativo\n✓ Glosario tocable con analogías y controles de al menos 44 px\n✓ Movimiento observado; pausa congela dibujo, campo y reloj sin seguir dibujando\n✓ Al ocultar la escena no se sigue dibujando\n✓ Comprobación adicional a 320 px sin desbordamiento ni objetivos táctiles pequeños\n✓ JSON inválido muestra un mensaje visible\n✓ Consola limpia y HTML sin peticiones externas\n",
+      "stderr": "npm warn Unknown env config \"http-proxy\". This will stop working in the next major version of npm.\n"
+    },
+    "final-browser": {
+      "command": [
+        "node",
+        "tools/check-block-a.cjs"
+      ],
+      "started": "2026-10-22T20:05:07.289504+00:00",
+      "duration_seconds": 3.279,
+      "exit_code": 0,
+      "stdout": "PASS VGE-007\nPASS VGE-008\nPASS VGE-014\n{\"passed\":3,\"failed\":0}\n",
+      "stderr": ""
+    }
+  },
+  "browser": {
+    "viewport": 390,
+    "renderer": "Chromium / WebGL por software",
+    "results": [
+      {
+        "id": "VGE-007",
+        "status": "PASS",
+        "pageErrors": [],
+        "consoleErrors": [],
+        "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "expectedWebGLFailure": false
+      },
+      {
+        "id": "VGE-008",
+        "status": "PASS",
+        "pageErrors": [],
+        "consoleErrors": [],
+        "gpu": null,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "expectedWebGLFailure": true
+      },
+      {
+        "id": "VGE-014",
+        "status": "PASS",
+        "pageErrors": [],
+        "consoleErrors": [],
+        "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "expectedWebGLFailure": false
+      }
+    ],
+    "mobileHardware": "NO VERIFICADO",
+    "userComprehension": "NO VERIFICADO"
+  },
+  "legacy_checker": {
+    "viewport": 390,
+    "secondaryWidth": 320,
+    "checks": [
+      "Inicio en capa 1, pregunta y analogía antes de crear WebGL",
+      "Cuatro pasos, máximo dos frases por paso y lenguaje común sin jerga visible",
+      "Nivel técnico conserva la explicación común y añade nombres, ondas y escala explicada",
+      "El mismo cursor actualiza ondas, texto, brillo de A/B y vector del campo en cuatro instantes conocidos",
+      "B alcanza su máximo antes que A a 30/60/90 grados; flecha, pieza central y aspas giran en el mismo sentido",
+      "Nivel avanzado añade fórmulas, convención de signos y límites, sin ocultar la capa común",
+      "Nivel controla la capa por defecto de cada escena y las capas se pueden abrir con un toque",
+      "Siete piezas tienen nombre común, función y conexión gráfica; dos etiquetas como máximo",
+      "Resaltado normal exclusivo y respaldo ligero sin aclarar otras piezas",
+      "Corte real y separación/rearmado sin perder piezas ni explicación",
+      "Los turnos juntos muestran un campo pulsante y detienen el giro ilustrativo",
+      "Glosario tocable con analogías y controles de al menos 44 px",
+      "Movimiento observado; pausa congela dibujo, campo y reloj sin seguir dibujando",
+      "Al ocultar la escena no se sigue dibujando",
+      "Comprobación adicional a 320 px sin desbordamiento ni objetivos táctiles pequeños",
+      "JSON inválido muestra un mensaje visible",
+      "Consola limpia y HTML sin peticiones externas"
+    ],
+    "direction": {
+      "lead": [
+        {
+          "delta": 30,
+          "bPeak": {
+            "a": 0.8660254037844389,
+            "b": 1
+          },
+          "aPeak": {
+            "a": 1,
+            "b": 0.8660254037844387
+          }
+        },
+        {
+          "delta": 60,
+          "bPeak": {
+            "a": 0.5000000000000002,
+            "b": 1
+          },
+          "aPeak": {
+            "a": 1,
+            "b": 0.5000000000000003
+          }
+        },
+        {
+          "delta": 90,
+          "bPeak": {
+            "a": 0,
+            "b": 1
+          },
+          "aPeak": {
+            "a": 1,
+            "b": 1.2246467991473532e-16
+          }
+        }
+      ],
+      "fieldTurn": 0.037699111843077726,
+      "rotorTurn": 0.02932153143350469,
+      "bladesTurn": 0.02932153143350469
+    },
+    "consoleErrors": [],
+    "externalRequests": [],
+    "renderer": "Chromium con WebGL por software",
+    "scope": "Comprobación puntual de la corrección de Fase 2, no matriz formal de Fase 5."
+  },
+  "limits": {
+    "mobile_hardware": "NO VERIFICADO",
+    "user_comprehension": "NO VERIFICADO",
+    "native_windows": "NO VERIFICADO",
+    "native_manim_remotion_integration_this_block": "NO VERIFICADO",
+    "all_video_frames_decodable": "NO VERIFICADO",
+    "legacy_sentence_count": "NO VERIFICADO: el checker existente no lo cuenta explícitamente; reservado al Bloque B",
+    "browser_dependencies": "Playwright 1.62.1 externo y Chromium 157.0.8080.0 preparado mediante Remotion; VGE-009 sigue reservado al Bloque B"
+  }
+}
