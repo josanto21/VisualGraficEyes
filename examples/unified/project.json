@@ -1,0 +1,133 @@
+{
+  "contractVersion": "1.0.0",
+  "id": "vge-native-core",
+  "title": "VGE · herramientas unificadas",
+  "defaultLayer": 1,
+  "layers": {
+    "common": "Mirar, experimentar, seguir pasos y compartir una idea.",
+    "technical": "Un contrato conserva cada motor y sus fuentes nativas.",
+    "advanced": "Cada motor mantiene su reloj y su modelo. No hay conversión automática."
+  },
+  "parameters": [
+    {
+      "id": "adelanto",
+      "label": "Adelanto de B",
+      "unit": "deg",
+      "min": 0,
+      "max": 180,
+      "value": 60
+    }
+  ],
+  "stages": [
+    {
+      "id": "maquina",
+      "title": "Maquina",
+      "engine": "anatomy",
+      "source": {
+        "entry": "integrations/anatomy/build.mjs",
+        "output": "out/anatomy.html"
+      },
+      "enabled": true,
+      "layers": {
+        "common": "La rueda y su eje transmiten el giro, como una perilla y su varilla.",
+        "technical": "Prueba con el kit Anatomy: SVG isométrico.",
+        "advanced": "Figura de integración; no es un modelo de par ni un audit geométrico completo."
+      },
+      "bindings": [],
+      "label": "ILUSTRACIÓN"
+    },
+    {
+      "id": "abanico",
+      "title": "Abanico",
+      "engine": "threejs",
+      "source": {
+        "document": "examples/psc.beginner.json"
+      },
+      "enabled": true,
+      "layers": {
+        "common": "B empuja primero y A después; la cajita adelanta a B.",
+        "technical": "La corriente auxiliar adelanta a la principal en este modelo.",
+        "advanced": "Ilustra el principio; no calcula fuerza ni velocidad real."
+      },
+      "bindings": [
+        {
+          "parameter": "adelanto",
+          "target": "phaseDeg"
+        }
+      ],
+      "label": "ILUSTRACIÓN"
+    },
+    {
+      "id": "circuito",
+      "title": "Circuito",
+      "engine": "circuitjs",
+      "source": {
+        "circuit": "examples/unified/resistor.txt",
+        "simulatorUrl": null
+      },
+      "enabled": false,
+      "layers": {
+        "common": "Una pila impulsa corriente por una pieza que dificulta su paso.",
+        "technical": "Fuente ideal 5 V; resistencia 1000 ohmios.",
+        "advanced": "Circuito ideal de corriente continua; contraste esperado 0.005 A. No modela un motor."
+      },
+      "bindings": [],
+      "label": "SIMULACIÓN",
+      "reason": "Falta CircuitJS servido en el mismo origen del host."
+    },
+    {
+      "id": "pasos",
+      "title": "Pasos",
+      "engine": "manim",
+      "source": {
+        "entry": "integrations/manim/scene.py",
+        "scene": "VGERows",
+        "output": "out/manim.mp4"
+      },
+      "enabled": true,
+      "layers": {
+        "common": "Tres filas de dos fichas forman seis fichas.",
+        "technical": "3 × 2 = 6.",
+        "advanced": "Animación aritmética finita, sin modelo físico."
+      },
+      "bindings": [],
+      "label": "ILUSTRACIÓN"
+    },
+    {
+      "id": "video",
+      "title": "Video",
+      "engine": "remotion",
+      "source": {
+        "cwd": "integrations/remotion",
+        "entry": "integrations/remotion/index.jsx",
+        "composition": "VGEConnection",
+        "output": "out/remotion.mp4"
+      },
+      "enabled": true,
+      "layers": {
+        "common": "La rueda y su eje transmiten el giro, como una perilla y su varilla.",
+        "technical": "Composición calculada por fotograma.",
+        "advanced": "Prueba de cinco segundos sin audio; no es un video educativo terminado."
+      },
+      "bindings": [],
+      "label": "ILUSTRACIÓN"
+    },
+    {
+      "id": "espacio",
+      "title": "Espacio",
+      "engine": "spline",
+      "source": {
+        "sceneUrl": null
+      },
+      "enabled": false,
+      "layers": {
+        "common": "Una escena real que podrás girar y explorar.",
+        "technical": "El runtime carga una exportación .splinecode.",
+        "advanced": "No crea un proyecto editable ni convierte el JSON Three.js."
+      },
+      "bindings": [],
+      "label": "ILUSTRACIÓN",
+      "reason": "Falta una exportación .splinecode propia."
+    }
+  ]
+}

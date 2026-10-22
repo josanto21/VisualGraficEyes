@@ -1,0 +1,13 @@
+import { readFile } from 'node:fs/promises';
+import { VGEEngine } from '../src/VGEEngine.mjs';
+import { pscFactories } from './psc-factories.mjs';
+const document = JSON.parse(await readFile(new URL('./psc.json', import.meta.url), 'utf8'));
+const engine = new VGEEngine(document, { geometryFactories: pscFactories });
+console.log('Recursos:', engine.stats);
+engine.select('rotor').explode(0.5).setParam('visualSpeedRpm', 24).advance(0.25);
+console.log('Estado:', engine.state);
+engine.injectFault('rotor_blocked');
+console.log('Con bloqueo:', engine.state.parameters);
+engine.injectFault(null).setStep(0);
+engine.dispose();
+console.log('Liberado:', engine.state.disposed);

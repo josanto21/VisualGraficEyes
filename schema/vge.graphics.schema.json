@@ -1,0 +1,240 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:vge:graphics:2.0.0",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": "2.0.0"
+    },
+    "selection": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "enum": [
+            "auto",
+            "outline",
+            "emissive"
+          ]
+        },
+        "color": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "width": {
+          "type": "number",
+          "minimum": 0.5,
+          "maximum": 6
+        },
+        "maxOutlineMeshes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 128
+        },
+        "initialEntity": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$"
+        }
+      },
+      "required": [
+        "mode",
+        "color",
+        "width",
+        "maxOutlineMeshes"
+      ],
+      "additionalProperties": false
+    },
+    "clipping": {
+      "type": "object",
+      "properties": {
+        "anchor": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$"
+        },
+        "entities": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "normal": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "range": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "amount": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "label": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "anchor",
+        "entities",
+        "normal",
+        "range",
+        "amount",
+        "label",
+        "description"
+      ],
+      "additionalProperties": false
+    },
+    "field": {
+      "type": "object",
+      "properties": {
+        "anchor": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$"
+        },
+        "origin": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "sources": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 4,
+          "items": {
+            "type": "object",
+            "properties": {
+              "entity": {
+                "type": "string",
+                "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$"
+              },
+              "channel": {
+                "type": "string",
+                "pattern": "^data\\.[A-Za-z][A-Za-z0-9_]*$"
+              },
+              "axis": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                },
+                "minItems": 3,
+                "maxItems": 3
+              },
+              "coefficient": {
+                "type": "number"
+              },
+              "color": {
+                "type": "string",
+                "pattern": "^#[0-9a-fA-F]{6}$"
+              },
+              "label": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "entity",
+              "channel",
+              "axis",
+              "coefficient",
+              "color",
+              "label"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "resultantColor": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "scale": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "referenceRadius": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "maxLength": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "visible": {
+          "type": "boolean"
+        },
+        "showSources": {
+          "type": "boolean"
+        },
+        "emphasis": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "trail": {
+          "type": "object",
+          "properties": {
+            "samples": {
+              "type": "integer",
+              "minimum": 4,
+              "maximum": 64
+            },
+            "arc": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 3.14
+            },
+            "opacity": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          },
+          "required": [
+            "samples",
+            "arc",
+            "opacity"
+          ],
+          "additionalProperties": false
+        },
+        "label": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "anchor",
+        "origin",
+        "sources",
+        "resultantColor",
+        "scale",
+        "referenceRadius",
+        "maxLength",
+        "visible",
+        "label",
+        "description"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "selection"
+  ],
+  "additionalProperties": false
+}

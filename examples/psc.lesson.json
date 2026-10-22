@@ -1,0 +1,182 @@
+{
+  "title": "¿Cómo hace girar un motor eléctrico las aspas?",
+  "scope": "Dibujo para entender la idea; no mide fuerza ni velocidad real",
+  "story": [
+    {
+      "title": "Dos personas, una rueda",
+      "text": "Las bobinas son rollos de alambre: imagina dos personas que empujan una rueda, una después de la otra. En este relevo B empuja primero y A después.",
+      "focus": "b",
+      "next": "Ver el relevo",
+      "technical": "Los rollos de alambre son Bobina A (devanado principal) y Bobina B (devanado auxiliar). No son dos impulsos separados: sus acciones se superponen.",
+      "advanced": "La analogía de las personas explica la cooperación; las bobinas no empujan con manos ni se encienden por turnos exclusivos. Su acción magnética varía continuamente y puede coincidir."
+    },
+    {
+      "title": "La cajita adelanta a B",
+      "text": "La cajita de arranque es la que adelanta a B, como quien avisa a una persona para que empuje primero. A empuja después y la cajita sigue ayudando mientras el motor gira.",
+      "focus": "capacitor",
+      "next": "Ver qué crean juntas",
+      "technical": "La cajita de arranque es el arranque eléctrico (capacitor permanente). Adelanta la electricidad que circula por B (corriente auxiliar) respecto de A (corriente principal); sigue conectada durante la marcha en este motor PSC.",
+      "advanced": "La corriente de la rama auxiliar B adelanta a la de la principal A: i_B = a·sin(θ + δ) frente a i_A = sin(θ), con δ > 0. Elegimos el eje positivo de B en −Z, de modo que B* = (0, i_A, −i_B) gira hacia +X como la pieza central. El capacitor no es un temporizador: no se calcula δ a partir de la capacitancia ni se resuelve la impedancia de la rama."
+    },
+    {
+      "title": "Un imán invisible que gira",
+      "text": "Ese relevo crea un imán invisible que da vueltas. Es una forma de imaginar un empuje sin tocar: no hay un imán sólido girando dentro.",
+      "focus": "field",
+      "next": "Verlo dentro del motor",
+      "technical": "El imán invisible es el campo magnético giratorio. Se forma al combinar dos acciones en direcciones distintas y en momentos distintos.",
+      "advanced": "El imán invisible (campo magnético) se aproxima con dos acciones en direcciones perpendiculares, con la misma conversión de electricidad a campo (ganancia). Con amplitudes iguales y separación de 90°, la flecha mantiene su longitud; fuera de ese caso suele dibujar una elipse. No se calculan la intensidad en teslas ni el campo en cada lugar del interior."
+    },
+    {
+      "title": "Ahora míralo dentro",
+      "text": "Como dos personas empujando una rueda, B empuja primero y A después gracias a la cajita que adelanta a B. Juntas crean un imán invisible que gira, arrastra la pieza central y mueve las aspas por la barra.",
+      "focus": "rotor_core",
+      "next": "Explorar las piezas",
+      "technical": "La parte fija con bobinas (estator) rodea la pieza que gira (rotor). La barra central (eje) lleva su giro a las aspas.",
+      "advanced": "El campo variable crea electricidad dentro de la pieza de metal que gira (corrientes inducidas en el rotor); al interactuar con el campo produce el efecto de giro (par). Esta ilustración no resuelve esas corrientes, la aceleración ni la diferencia de velocidad entre el campo y la pieza (deslizamiento). El giro se dibuja en el mismo sentido y más lento que la flecha, sin calcular una velocidad física."
+    }
+  ],
+  "parts": [
+    {
+      "id": "main_winding",
+      "name": "Bobina A",
+      "function": "Empuja después de B.",
+      "term": "bobina",
+      "anchor": [
+        0,
+        0.61,
+        0
+      ],
+      "technical": "Bobina A (principal)"
+    },
+    {
+      "id": "aux_winding",
+      "name": "Bobina B",
+      "function": "Empuja primero.",
+      "term": "bobina",
+      "anchor": [
+        0,
+        0.61,
+        0
+      ],
+      "technical": "Bobina B (auxiliar)"
+    },
+    {
+      "id": "capacitor",
+      "name": "Arranque eléctrico",
+      "function": "La que adelanta a B.",
+      "term": "capacitor",
+      "anchor": [
+        0,
+        0.1,
+        0
+      ],
+      "technical": "Arranque eléctrico (capacitor)"
+    },
+    {
+      "id": "rotor_core",
+      "name": "Pieza que gira",
+      "function": "Sigue al imán invisible.",
+      "term": "giro",
+      "anchor": [
+        0.25,
+        0,
+        0
+      ],
+      "technical": "Pieza que gira (rotor)"
+    },
+    {
+      "id": "blades",
+      "name": "Aspas",
+      "function": "Empujan el aire.",
+      "term": "aspas",
+      "anchor": [
+        0,
+        0.7,
+        0
+      ],
+      "technical": "Aspas (hélice)"
+    },
+    {
+      "id": "stator",
+      "name": "Parte fija con bobinas",
+      "function": "Sostiene los rollos de alambre.",
+      "term": "bobina",
+      "anchor": [
+        0,
+        0,
+        -0.7
+      ],
+      "technical": "Parte fija con bobinas (estator)"
+    },
+    {
+      "id": "shaft_part",
+      "name": "Barra central",
+      "function": "Lleva el giro a las aspas.",
+      "term": "barra",
+      "anchor": [
+        0.4,
+        0,
+        0
+      ],
+      "technical": "Barra central (eje)"
+    }
+  ],
+  "signals": [
+    {
+      "binding": "mainCurrent",
+      "entity": "main_winding",
+      "color": "#76BFFF",
+      "name": "Bobina A"
+    },
+    {
+      "binding": "auxCurrent",
+      "entity": "aux_winding",
+      "color": "#FFA052",
+      "name": "Bobina B"
+    }
+  ],
+  "glossary": [
+    {
+      "id": "bobina",
+      "name": "Bobina",
+      "meaning": "Es alambre enrollado, como un hilo en un carrete. Al pasar electricidad hace de imán sin tocar la pieza central; A y B son los dos rollos del dibujo.",
+      "technical": "Rollo de alambre (bobina)"
+    },
+    {
+      "id": "capacitor",
+      "name": "Arranque eléctrico",
+      "meaning": "Es la cajita que adelanta a B, como quien avisa a una persona para empujar antes que la otra. Sigue conectada mientras el motor gira.",
+      "technical": "Arranque eléctrico (capacitor permanente)"
+    },
+    {
+      "id": "field",
+      "name": "Imán invisible",
+      "meaning": "Imagina un empuje que da vueltas sin tocar nada. No es un imán sólido girando: la flecha verde solo permite verlo en el dibujo.",
+      "technical": "Imán invisible (campo magnético giratorio)"
+    },
+    {
+      "id": "giro",
+      "name": "Pieza que gira",
+      "meaning": "Es la parte central de metal que sigue el empuje del imán invisible, como una rueda que empieza a seguir las manos que la empujan.",
+      "technical": "Pieza que gira (rotor)"
+    },
+    {
+      "id": "barra",
+      "name": "Barra central",
+      "meaning": "Como el mango de una manivela, lleva el movimiento de una pieza a otra. Une la parte que gira con las aspas.",
+      "technical": "Barra central (eje)"
+    },
+    {
+      "id": "aspas",
+      "name": "Aspas",
+      "meaning": "Son las palas del ventilador. Al girar empujan aire, como una mano que abanica.",
+      "technical": "Aspas (hélice)"
+    },
+    {
+      "id": "waves",
+      "name": "Curvas de A y B",
+      "meaning": "Cada curva muestra cómo cambia la electricidad en un rollo. Por arriba del centro va en un sentido y por abajo vuelve al contrario; más lejos del centro significa más brillo en ese rollo, no más luz o calor reales.",
+      "technical": "Curvas de electricidad (corrientes alternas)"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+interface:
+  display_name: VisualGraficEyes (VGE)
+  short_description: Explica cualquier tema con visuales e interacción
+  default_prompt: Usa $visualgrafic-eyes para convertir este tema en una explicación
+    visual clara, exacta e interactiva cuando ayude.
+  icon_small: assets/icon.svg
+  icon_large: assets/icon.svg
+policy:
+  products:
+  - chatgpt
+  - codex
+  - api
+  - atlas
+  allow_implicit_invocation: true

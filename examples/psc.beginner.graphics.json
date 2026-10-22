@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "2.0.0",
+  "selection": {
+    "mode": "auto",
+    "color": "#F2F6FF",
+    "width": 2.5,
+    "maxOutlineMeshes": 12,
+    "initialEntity": "rotor_core"
+  },
+  "clipping": {
+    "anchor": "motor",
+    "entities": [
+      "stator",
+      "rear",
+      "front"
+    ],
+    "normal": [
+      0,
+      -1,
+      0
+    ],
+    "range": [
+      -0.78,
+      0.78
+    ],
+    "amount": 0.62,
+    "label": "Mirar dentro",
+    "description": "Desliza para retirar parte de la cubierta; las piezas de dentro siguen en su lugar."
+  },
+  "field": {
+    "anchor": "motor",
+    "origin": [
+      0.85,
+      0,
+      0
+    ],
+    "sources": [
+      {
+        "entity": "main_winding",
+        "channel": "data.iNorm",
+        "axis": [
+          0,
+          1,
+          0
+        ],
+        "coefficient": 1,
+        "color": "#76BFFF",
+        "label": "Bobina A"
+      },
+      {
+        "entity": "aux_winding",
+        "channel": "data.iNorm",
+        "axis": [
+          0,
+          0,
+          -1
+        ],
+        "coefficient": 1,
+        "color": "#FFA052",
+        "label": "Bobina B"
+      }
+    ],
+    "resultantColor": "#77D78F",
+    "scale": 1.08,
+    "referenceRadius": 1.08,
+    "maxLength": 1.4,
+    "visible": true,
+    "label": "El imán invisible",
+    "description": "La flecha verde representa un empuje que cambia de dirección; no es una pieza real.",
+    "showSources": false,
+    "emphasis": 3.1,
+    "trail": {
+      "samples": 28,
+      "arc": 0.85,
+      "opacity": 0.8
+    }
+  }
+}

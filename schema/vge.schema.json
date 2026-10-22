@@ -1,0 +1,997 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:vge:schema:2.0.0",
+  "title": "VGE 2.0 · contrato agnóstico del dominio",
+  "$comment": "El validador semántico comprueba IDs, jerarquía, referencias, rangos y canales; las fábricas validan sus parámetros.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schemaVersion": {
+      "const": "2.0.0"
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z][A-Za-z0-9_.-]*$",
+          "maxLength": 100
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "language": {
+          "type": "string",
+          "pattern": "^[a-z]{2}(?:-[A-Z]{2})?$"
+        },
+        "authors": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "description",
+        "language"
+      ]
+    },
+    "mode": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "primary": {
+          "enum": [
+            "ANATOMÍA",
+            "LABORATORIO",
+            "ANIMADO-PASOS",
+            "VIDEO-ESCENAS",
+            "ESCENA 3D",
+            "MAPA",
+            "DATOS"
+          ]
+        },
+        "secondary": {
+          "enum": [
+            "ANATOMÍA",
+            "LABORATORIO",
+            "ANIMADO-PASOS",
+            "VIDEO-ESCENAS",
+            "ESCENA 3D",
+            "MAPA",
+            "DATOS"
+          ]
+        }
+      },
+      "required": [
+        "primary"
+      ]
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "ILUSTRACIÓN",
+            "SIMULACIÓN"
+          ]
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "coordinates": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "up": {
+              "const": "Y"
+            },
+            "angles": {
+              "const": "rad"
+            },
+            "handedness": {
+              "const": "right"
+            },
+            "linearUnit": {
+              "enum": [
+                "m",
+                "scene-unit"
+              ]
+            }
+          },
+          "required": [
+            "up",
+            "angles",
+            "handedness",
+            "linearUnit"
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "scope",
+        "assumptions",
+        "coordinates"
+      ]
+    },
+    "resources": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "geometries": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z][A-Za-z0-9_.-]*$",
+            "maxLength": 100
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/geometry"
+          }
+        },
+        "materials": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z][A-Za-z0-9_.-]*$",
+            "maxLength": 100
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/material"
+          }
+        }
+      },
+      "required": [
+        "geometries",
+        "materials"
+      ]
+    },
+    "entities": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/entity"
+      },
+      "minItems": 1,
+      "maxItems": 2000
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/step"
+      },
+      "minItems": 1,
+      "maxItems": 500
+    },
+    "parameters": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/parameter"
+      },
+      "maxItems": 100
+    },
+    "faults": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/fault"
+      },
+      "maxItems": 100
+    },
+    "takeaway": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "metadata",
+    "mode",
+    "model",
+    "resources",
+    "entities",
+    "steps",
+    "parameters",
+    "faults",
+    "takeaway"
+  ],
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z][A-Za-z0-9_.-]*$",
+      "maxLength": 100
+    },
+    "json": {
+      "anyOf": [
+        {
+          "type": [
+            "string",
+            "number",
+            "boolean",
+            "null"
+          ]
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/json"
+          }
+        },
+        {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z][A-Za-z0-9_.-]*$",
+            "maxLength": 100
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/json"
+          }
+        }
+      ]
+    },
+    "vec3": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "transform": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "position": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "rotation": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "scale": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "minItems": 3,
+          "maxItems": 3
+        }
+      },
+      "required": [
+        "position"
+      ]
+    },
+    "camera": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "position": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "target": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "fov": {
+          "type": "number",
+          "minimum": 10,
+          "maximum": 100
+        },
+        "near": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "far": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      },
+      "required": [
+        "position",
+        "target"
+      ]
+    },
+    "geometry": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "parametric"
+            },
+            "factory": {
+              "type": "string",
+              "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z][A-Za-z0-9_.-]*$",
+              "maxLength": 100
+            },
+            "params": {
+              "type": "object",
+              "propertyNames": {
+                "type": "string",
+                "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z][A-Za-z0-9_.-]*$",
+                "maxLength": 100
+              },
+              "additionalProperties": {
+                "$ref": "#/$defs/json"
+              }
+            }
+          },
+          "required": [
+            "kind",
+            "factory",
+            "params"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "asset"
+            },
+            "uri": {
+              "type": "string",
+              "pattern": "\\.glb(?:[?#].*)?$"
+            },
+            "format": {
+              "const": "glb"
+            },
+            "node": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "kind",
+            "uri",
+            "format"
+          ]
+        }
+      ]
+    },
+    "material": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "standard",
+            "basic"
+          ]
+        },
+        "color": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "metalness": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "roughness": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "opacity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "transparent": {
+          "type": "boolean"
+        },
+        "side": {
+          "enum": [
+            "front",
+            "double"
+          ]
+        },
+        "depthWrite": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "type",
+        "color"
+      ]
+    },
+    "entity": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z][A-Za-z0-9_.-]*$",
+          "maxLength": 100
+        },
+        "parent": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z][A-Za-z0-9_.-]*$",
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "geometry": {
+          "type": "string",
+          "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z][A-Za-z0-9_.-]*$",
+          "maxLength": 100
+        },
+        "material": {
+          "type": "string",
+          "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z][A-Za-z0-9_.-]*$",
+          "maxLength": 100
+        },
+        "transform": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "assembled": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "position": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "rotation": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "scale": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                }
+              },
+              "required": [
+                "position"
+              ]
+            },
+            "exploded": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "position": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "rotation": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                },
+                "scale": {
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "minItems": 3,
+                  "maxItems": 3
+                }
+              },
+              "required": [
+                "position"
+              ]
+            }
+          },
+          "required": [
+            "assembled",
+            "exploded"
+          ]
+        },
+        "selectable": {
+          "type": "boolean"
+        },
+        "data": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z][A-Za-z0-9_.-]*$",
+            "maxLength": 100
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/json"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "parent",
+        "label",
+        "description",
+        "transform"
+      ]
+    },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z][A-Za-z0-9_.-]*$",
+          "maxLength": 100
+        },
+        "entity": {
+          "type": "string",
+          "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z][A-Za-z0-9_.-]*$",
+          "maxLength": 100
+        },
+        "channel": {
+          "type": "string",
+          "pattern": "^(?:(?:position|rotation|scale)\\.[xyz]|data\\.[A-Za-z][A-Za-z0-9_]*$)$"
+        },
+        "kind": {
+          "enum": [
+            "LINEAR",
+            "PHASE",
+            "SINE"
+          ]
+        },
+        "combine": {
+          "enum": [
+            "replace",
+            "add"
+          ]
+        },
+        "scale": {
+          "type": "number"
+        },
+        "offset": {
+          "type": "number"
+        },
+        "gains": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z][A-Za-z0-9_.-]*$",
+            "maxLength": 100
+          },
+          "uniqueItems": true
+        },
+        "phaseParameter": {
+          "type": "string",
+          "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z][A-Za-z0-9_.-]*$",
+          "maxLength": 100
+        },
+        "phaseScale": {
+          "type": "number"
+        },
+        "amplitude": {
+          "type": "number"
+        },
+        "amplitudeParameter": {
+          "type": "string",
+          "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z][A-Za-z0-9_.-]*$",
+          "maxLength": 100
+        },
+        "bias": {
+          "type": "number"
+        },
+        "explanation": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "entity",
+        "channel",
+        "kind",
+        "scale",
+        "explanation"
+      ]
+    },
+    "parameter": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z][A-Za-z0-9_.-]*$",
+          "maxLength": 100
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unit": {
+          "type": "string"
+        },
+        "range": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "value": {
+          "type": "number"
+        },
+        "step": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "bindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/binding"
+          }
+        }
+      },
+      "required": [
+        "name",
+        "label",
+        "unit",
+        "range",
+        "value",
+        "bindings"
+      ]
+    },
+    "entityState": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z][A-Za-z0-9_.-]*$",
+          "maxLength": 100
+        },
+        "position": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "rotation": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "scale": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "material": {
+          "type": "string",
+          "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z][A-Za-z0-9_.-]*$",
+          "maxLength": 100
+        },
+        "data": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z][A-Za-z0-9_.-]*$",
+            "maxLength": 100
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/json"
+          }
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "prediction": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "question": {
+          "type": "string",
+          "minLength": 1
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z][A-Za-z0-9_.-]*$",
+                "maxLength": 100
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "id",
+              "text"
+            ]
+          },
+          "minItems": 2
+        },
+        "answer": {
+          "type": "string",
+          "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z][A-Za-z0-9_.-]*$",
+          "maxLength": 100
+        },
+        "explanation": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "question",
+        "options",
+        "answer",
+        "explanation"
+      ]
+    },
+    "step": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z][A-Za-z0-9_.-]*$",
+          "maxLength": 100
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "duration": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "camera": {
+          "$ref": "#/$defs/camera"
+        },
+        "visible": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z][A-Za-z0-9_.-]*$",
+            "maxLength": 100
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "selection": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z][A-Za-z0-9_.-]*$",
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "explode": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "state": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "parameters": {
+              "type": "object",
+              "propertyNames": {
+                "type": "string",
+                "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z][A-Za-z0-9_.-]*$",
+                "maxLength": 100
+              },
+              "additionalProperties": {
+                "type": "number"
+              }
+            },
+            "entities": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/entityState"
+              }
+            }
+          },
+          "required": []
+        },
+        "prediction": {
+          "$ref": "#/$defs/prediction"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "text",
+        "duration",
+        "camera",
+        "visible"
+      ]
+    },
+    "visualEffect": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "entity": {
+          "type": "string",
+          "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z][A-Za-z0-9_.-]*$",
+          "maxLength": 100
+        },
+        "visible": {
+          "type": "boolean"
+        },
+        "material": {
+          "type": "string",
+          "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z][A-Za-z0-9_.-]*$",
+          "maxLength": 100
+        },
+        "scale": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "minItems": 3,
+          "maxItems": 3
+        }
+      },
+      "required": [
+        "entity"
+      ]
+    },
+    "parameterEffect": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z][A-Za-z0-9_.-]*$",
+          "maxLength": 100
+        },
+        "operation": {
+          "enum": [
+            "set",
+            "multiply",
+            "add"
+          ]
+        },
+        "value": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "name",
+        "operation",
+        "value"
+      ]
+    },
+    "fault": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^(?!__proto__$|constructor$|prototype$)[A-Za-z][A-Za-z0-9_.-]*$",
+          "maxLength": 100
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scenario": {
+          "type": "string",
+          "minLength": 1
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "visualEffects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/visualEffect"
+          }
+        },
+        "parameterEffects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/parameterEffect"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "scenario",
+        "text",
+        "visualEffects",
+        "parameterEffects"
+      ]
+    }
+  }
+}

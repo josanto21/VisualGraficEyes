@@ -1,0 +1,25 @@
+{
+  "overflow": false,
+  "controls": [
+    {
+      "name": "Reproducir",
+      "height": 44
+    },
+    {
+      "name": "angle",
+      "height": 44
+    },
+    {
+      "name": "Ver el nombre técnico",
+      "height": 44
+    },
+    {
+      "name": "Saber más",
+      "height": 44
+    }
+  ],
+  "figure": true,
+  "label": true,
+  "rotated": "rotate(120)",
+  "pageErrors": []
+}

@@ -1,0 +1,417 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:vge:project:1.0.0",
+  "title": "VGE: orquestación nativa",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "contractVersion": {
+      "const": "1.0.0"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "defaultLayer": {
+      "const": 1
+    },
+    "layers": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "common": {
+          "type": "string",
+          "minLength": 1
+        },
+        "technical": {
+          "type": "string",
+          "minLength": 1
+        },
+        "advanced": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "common",
+        "technical",
+        "advanced"
+      ]
+    },
+    "parameters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "unit": {
+            "type": "string",
+            "minLength": 1
+          },
+          "min": {
+            "type": "number"
+          },
+          "max": {
+            "type": "number"
+          },
+          "value": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "unit",
+          "min",
+          "max",
+          "value"
+        ]
+      }
+    },
+    "stages": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "engine": {
+            "enum": [
+              "anatomy",
+              "threejs",
+              "circuitjs",
+              "manim",
+              "remotion",
+              "spline"
+            ]
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          },
+          "label": {
+            "enum": [
+              "ILUSTRACIÓN",
+              "SIMULACIÓN"
+            ]
+          },
+          "layers": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "common": {
+                "type": "string",
+                "minLength": 1
+              },
+              "technical": {
+                "type": "string",
+                "minLength": 1
+              },
+              "advanced": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "common",
+              "technical",
+              "advanced"
+            ]
+          },
+          "bindings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "parameter": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "target": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "parameter",
+                "target"
+              ]
+            }
+          },
+          "source": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "engine",
+          "enabled",
+          "label",
+          "layers",
+          "bindings",
+          "source"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "engine": {
+                  "const": "anatomy"
+                }
+              },
+              "required": [
+                "engine"
+              ]
+            },
+            "then": {
+              "properties": {
+                "source": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "entry": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$"
+                    },
+                    "output": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$"
+                    }
+                  },
+                  "required": [
+                    "entry",
+                    "output"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "engine": {
+                  "const": "threejs"
+                }
+              },
+              "required": [
+                "engine"
+              ]
+            },
+            "then": {
+              "properties": {
+                "source": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "document": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$"
+                    }
+                  },
+                  "required": [
+                    "document"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "engine": {
+                  "const": "circuitjs"
+                }
+              },
+              "required": [
+                "engine"
+              ]
+            },
+            "then": {
+              "properties": {
+                "source": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "circuit": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$"
+                    },
+                    "simulatorUrl": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "circuit",
+                    "simulatorUrl"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "engine": {
+                  "const": "manim"
+                }
+              },
+              "required": [
+                "engine"
+              ]
+            },
+            "then": {
+              "properties": {
+                "source": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "entry": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$"
+                    },
+                    "scene": {
+                      "type": "string",
+                      "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+                    },
+                    "output": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$"
+                    }
+                  },
+                  "required": [
+                    "entry",
+                    "scene",
+                    "output"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "engine": {
+                  "const": "remotion"
+                }
+              },
+              "required": [
+                "engine"
+              ]
+            },
+            "then": {
+              "properties": {
+                "source": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "cwd": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$"
+                    },
+                    "entry": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$"
+                    },
+                    "composition": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "output": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$"
+                    }
+                  },
+                  "required": [
+                    "cwd",
+                    "entry",
+                    "composition",
+                    "output"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "engine": {
+                  "const": "spline"
+                }
+              },
+              "required": [
+                "engine"
+              ]
+            },
+            "then": {
+              "properties": {
+                "source": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "sceneUrl": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "sceneUrl"
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "contractVersion",
+    "id",
+    "title",
+    "defaultLayer",
+    "layers",
+    "parameters",
+    "stages"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "vge-spline-integration",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@splinetool/runtime": "2.0.105"
+  },
+  "scripts": {}
+}

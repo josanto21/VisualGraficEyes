@@ -1,0 +1,34 @@
+{
+  "name": "vge-v2-phase2",
+  "version": "2.0.0-alpha.2.1",
+  "private": true,
+  "type": "module",
+  "description": "VGE v2 · motor PSC y orquestación de motores nativos",
+  "engines": {
+    "node": ">=22"
+  },
+  "exports": {
+    ".": "./src/VGEEngine.mjs",
+    "./core": "./src/core/index.mjs",
+    "./native-jobs": "./src/core/native-jobs.mjs"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "validate": "node tools/validate-examples.mjs",
+    "example": "node examples/headless.mjs",
+    "build": "node tools/build.mjs",
+    "dev": "node tools/serve.mjs",
+    "check:390": "node tools/check-390.cjs",
+    "core:validate": "node tools/vge.mjs validate",
+    "core:doctor": "node tools/vge.mjs doctor",
+    "core:plan": "node tools/vge.mjs plan",
+    "core:run": "node tools/vge.mjs run"
+  },
+  "dependencies": {
+    "ajv": "8.17.1",
+    "three": "0.180.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.12"
+  }
+}

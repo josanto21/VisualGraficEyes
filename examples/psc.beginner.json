@@ -1,0 +1,3236 @@
+{
+  "$schema": "../schema/vge.schema.json",
+  "schemaVersion": "2.0.0",
+  "metadata": {
+    "id": "fan-psc",
+    "title": "Dentro de un ventilador",
+    "description": "Cómo dos bobinas ayudan a mover las aspas, explicado desde cero.",
+    "language": "es",
+    "authors": [
+      "Proyecto VGE"
+    ]
+  },
+  "mode": {
+    "primary": "ANATOMÍA",
+    "secondary": "ESCENA 3D"
+  },
+  "model": {
+    "kind": "ILUSTRACIÓN",
+    "scope": "Dibujo para entender la idea; no mide fuerza ni velocidad real",
+    "assumptions": [
+      "Coordenadas relativas al padre; Y arriba y X como eje del motor. Las dimensiones son unidades de escena, no un plano de fabricación.",
+      "Dos ejes de devanado esquemáticos; cuatro paquetes dibujados no definen el número nominal de polos ni un bobinado de fabricación.",
+      "El capacitor está permanentemente en serie con el auxiliar; el circuito no incluye interruptor centrífugo.",
+      "El desfase por defecto de 60° y la amplitud de 0.8 son supuestos ilustrativos, no valores medidos ni calculados desde la capacitancia.",
+      "La velocidad del rotor es una guía visual independiente de la frecuencia. El laboratorio físico de Hz requerirá un modelo adicional.",
+      "La separación de piezas es un despiece didáctico y las señales siguen representando relaciones conceptuales.",
+      "En la presentación inicial se eligen amplitudes iguales y separación de un cuarto de ciclo para ver con claridad un campo circular. No son mediciones de este motor.",
+      "B se dibuja después de A y se orienta su eje en +Z. Es una convención de signos y una analogía del relevo, no una afirmación de que todo capacitor retrase la corriente.",
+      "El brillo representa el valor absoluto de cada señal; no es luminosidad ni calor real. El giro de las piezas es ilustrativo."
+    ],
+    "coordinates": {
+      "up": "Y",
+      "angles": "rad",
+      "handedness": "right",
+      "linearUnit": "scene-unit"
+    }
+  },
+  "resources": {
+    "geometries": {
+      "baseBox": {
+        "kind": "parametric",
+        "factory": "box",
+        "params": {
+          "size": [
+            3.05,
+            0.14,
+            2.2
+          ]
+        }
+      },
+      "pedestalBox": {
+        "kind": "parametric",
+        "factory": "box",
+        "params": {
+          "size": [
+            0.65,
+            0.55,
+            0.7
+          ]
+        }
+      },
+      "footBox": {
+        "kind": "parametric",
+        "factory": "box",
+        "params": {
+          "size": [
+            0.2,
+            0.08,
+            0.2
+          ]
+        }
+      },
+      "shellRing": {
+        "kind": "parametric",
+        "factory": "ringX",
+        "params": {
+          "innerRadius": 0.665,
+          "outerRadius": 0.735,
+          "length": 1.05
+        }
+      },
+      "poleSector": {
+        "kind": "parametric",
+        "factory": "annularSectorX",
+        "params": {
+          "innerRadius": 0.49,
+          "outerRadius": 0.64,
+          "length": 0.96,
+          "angle": 0.98
+        }
+      },
+      "rotorCore": {
+        "kind": "parametric",
+        "factory": "cylinderX",
+        "params": {
+          "radius": 0.385,
+          "length": 0.94
+        }
+      },
+      "cageBar": {
+        "kind": "parametric",
+        "factory": "cylinderX",
+        "params": {
+          "radius": 0.023,
+          "length": 0.96
+        }
+      },
+      "endRing": {
+        "kind": "parametric",
+        "factory": "ringX",
+        "params": {
+          "innerRadius": 0.083,
+          "outerRadius": 0.425,
+          "length": 0.05
+        }
+      },
+      "shaft": {
+        "kind": "parametric",
+        "factory": "cylinderX",
+        "params": {
+          "radius": 0.082,
+          "length": 2.2
+        }
+      },
+      "cover": {
+        "kind": "parametric",
+        "factory": "ringX",
+        "params": {
+          "innerRadius": 0.175,
+          "outerRadius": 0.72,
+          "length": 0.105
+        }
+      },
+      "bearing": {
+        "kind": "parametric",
+        "factory": "ringX",
+        "params": {
+          "innerRadius": 0.084,
+          "outerRadius": 0.175,
+          "length": 0.13
+        }
+      },
+      "hub": {
+        "kind": "parametric",
+        "factory": "cylinderX",
+        "params": {
+          "radius": 0.21,
+          "length": 0.22
+        }
+      },
+      "nut": {
+        "kind": "parametric",
+        "factory": "cylinderX",
+        "params": {
+          "radius": 0.09,
+          "length": 0.08,
+          "segments": 8
+        }
+      },
+      "capacitorCase": {
+        "kind": "parametric",
+        "factory": "box",
+        "params": {
+          "size": [
+            0.66,
+            0.4,
+            0.46
+          ]
+        }
+      },
+      "capacitorLid": {
+        "kind": "parametric",
+        "factory": "box",
+        "params": {
+          "size": [
+            0.69,
+            0.04,
+            0.49
+          ]
+        }
+      },
+      "terminal": {
+        "kind": "parametric",
+        "factory": "cylinderX",
+        "params": {
+          "radius": 0.025,
+          "length": 0.09
+        }
+      },
+      "switchCase": {
+        "kind": "parametric",
+        "factory": "box",
+        "params": {
+          "size": [
+            0.43,
+            0.21,
+            0.38
+          ]
+        }
+      },
+      "rocker": {
+        "kind": "parametric",
+        "factory": "box",
+        "params": {
+          "size": [
+            0.26,
+            0.05,
+            0.23
+          ]
+        }
+      },
+      "bladeShape": {
+        "kind": "parametric",
+        "factory": "psc.blade",
+        "params": {
+          "rootRadius": 0.19,
+          "radius": 1.34,
+          "chord": 0.43,
+          "thickness": 0.028,
+          "pitchRoot": 0.48,
+          "pitchTip": 0.19,
+          "sweep": 0.55
+        }
+      },
+      "coil0": {
+        "kind": "parametric",
+        "factory": "tube",
+        "params": {
+          "points": [
+            [
+              0.535,
+              0.5042029433927145,
+              -0.288687360087211
+            ],
+            [
+              0.535,
+              0.5373721637770988,
+              -0.22088946918655677
+            ],
+            [
+              0.535,
+              0.5614725772961522,
+              -0.14936380064934213
+            ],
+            [
+              0.535,
+              0.5760974602482919,
+              -0.0753174368620427
+            ],
+            [
+              0.535,
+              0.581,
+              0.0
+            ],
+            [
+              0.535,
+              0.5760974602482919,
+              0.0753174368620427
+            ],
+            [
+              0.535,
+              0.5614725772961522,
+              0.14936380064934213
+            ],
+            [
+              0.535,
+              0.5373721637770988,
+              0.22088946918655677
+            ],
+            [
+              0.535,
+              0.5042029433927145,
+              0.288687360087211
+            ],
+            [
+              -0.535,
+              0.5042029433927145,
+              0.288687360087211
+            ],
+            [
+              -0.535,
+              0.5373721637770988,
+              0.22088946918655677
+            ],
+            [
+              -0.535,
+              0.5614725772961522,
+              0.14936380064934213
+            ],
+            [
+              -0.535,
+              0.5760974602482919,
+              0.0753174368620427
+            ],
+            [
+              -0.535,
+              0.581,
+              0.0
+            ],
+            [
+              -0.535,
+              0.5760974602482919,
+              -0.0753174368620427
+            ],
+            [
+              -0.535,
+              0.5614725772961522,
+              -0.14936380064934213
+            ],
+            [
+              -0.535,
+              0.5373721637770988,
+              -0.22088946918655677
+            ],
+            [
+              -0.535,
+              0.5042029433927145,
+              -0.288687360087211
+            ]
+          ],
+          "radius": 0.0165,
+          "closed": true
+        }
+      },
+      "coil1": {
+        "kind": "parametric",
+        "factory": "tube",
+        "params": {
+          "points": [
+            [
+              0.55,
+              0.5215593269862676,
+              -0.2986249628440858
+            ],
+            [
+              0.55,
+              0.5558703449742451,
+              -0.22849323748902
+            ],
+            [
+              0.55,
+              0.5808003768588424,
+              -0.1545054116871852
+            ],
+            [
+              0.55,
+              0.5959286981225876,
+              -0.07791011971443661
+            ],
+            [
+              0.55,
+              0.601,
+              0.0
+            ],
+            [
+              0.55,
+              0.5959286981225876,
+              0.07791011971443661
+            ],
+            [
+              0.55,
+              0.5808003768588424,
+              0.1545054116871852
+            ],
+            [
+              0.55,
+              0.5558703449742451,
+              0.22849323748902
+            ],
+            [
+              0.55,
+              0.5215593269862676,
+              0.2986249628440858
+            ],
+            [
+              -0.55,
+              0.5215593269862676,
+              0.2986249628440858
+            ],
+            [
+              -0.55,
+              0.5558703449742451,
+              0.22849323748902
+            ],
+            [
+              -0.55,
+              0.5808003768588424,
+              0.1545054116871852
+            ],
+            [
+              -0.55,
+              0.5959286981225876,
+              0.07791011971443661
+            ],
+            [
+              -0.55,
+              0.601,
+              0.0
+            ],
+            [
+              -0.55,
+              0.5959286981225876,
+              -0.07791011971443661
+            ],
+            [
+              -0.55,
+              0.5808003768588424,
+              -0.1545054116871852
+            ],
+            [
+              -0.55,
+              0.5558703449742451,
+              -0.22849323748902
+            ],
+            [
+              -0.55,
+              0.5215593269862676,
+              -0.2986249628440858
+            ]
+          ],
+          "radius": 0.0165,
+          "closed": true
+        }
+      },
+      "coil2": {
+        "kind": "parametric",
+        "factory": "tube",
+        "params": {
+          "points": [
+            [
+              0.5650000000000001,
+              0.5389157105798206,
+              -0.3085625656009605
+            ],
+            [
+              0.5650000000000001,
+              0.5743685261713914,
+              -0.23609700579148324
+            ],
+            [
+              0.5650000000000001,
+              0.6001281764215327,
+              -0.15964702272502831
+            ],
+            [
+              0.5650000000000001,
+              0.6157599359968834,
+              -0.08050280256683051
+            ],
+            [
+              0.5650000000000001,
+              0.621,
+              0.0
+            ],
+            [
+              0.5650000000000001,
+              0.6157599359968834,
+              0.08050280256683051
+            ],
+            [
+              0.5650000000000001,
+              0.6001281764215327,
+              0.15964702272502831
+            ],
+            [
+              0.5650000000000001,
+              0.5743685261713914,
+              0.23609700579148324
+            ],
+            [
+              0.5650000000000001,
+              0.5389157105798206,
+              0.3085625656009605
+            ],
+            [
+              -0.5650000000000001,
+              0.5389157105798206,
+              0.3085625656009605
+            ],
+            [
+              -0.5650000000000001,
+              0.5743685261713914,
+              0.23609700579148324
+            ],
+            [
+              -0.5650000000000001,
+              0.6001281764215327,
+              0.15964702272502831
+            ],
+            [
+              -0.5650000000000001,
+              0.6157599359968834,
+              0.08050280256683051
+            ],
+            [
+              -0.5650000000000001,
+              0.621,
+              0.0
+            ],
+            [
+              -0.5650000000000001,
+              0.6157599359968834,
+              -0.08050280256683051
+            ],
+            [
+              -0.5650000000000001,
+              0.6001281764215327,
+              -0.15964702272502831
+            ],
+            [
+              -0.5650000000000001,
+              0.5743685261713914,
+              -0.23609700579148324
+            ],
+            [
+              -0.5650000000000001,
+              0.5389157105798206,
+              -0.3085625656009605
+            ]
+          ],
+          "radius": 0.0165,
+          "closed": true
+        }
+      },
+      "coil3": {
+        "kind": "parametric",
+        "factory": "tube",
+        "params": {
+          "points": [
+            [
+              0.5800000000000001,
+              0.5562720941733735,
+              -0.3185001683578353
+            ],
+            [
+              0.5800000000000001,
+              0.5928667073685377,
+              -0.24370077409394647
+            ],
+            [
+              0.5800000000000001,
+              0.619455975984223,
+              -0.16478863376287142
+            ],
+            [
+              0.5800000000000001,
+              0.6355911738711791,
+              -0.0830954854192244
+            ],
+            [
+              0.5800000000000001,
+              0.641,
+              0.0
+            ],
+            [
+              0.5800000000000001,
+              0.6355911738711791,
+              0.0830954854192244
+            ],
+            [
+              0.5800000000000001,
+              0.619455975984223,
+              0.16478863376287142
+            ],
+            [
+              0.5800000000000001,
+              0.5928667073685377,
+              0.24370077409394647
+            ],
+            [
+              0.5800000000000001,
+              0.5562720941733735,
+              0.3185001683578353
+            ],
+            [
+              -0.5800000000000001,
+              0.5562720941733735,
+              0.3185001683578353
+            ],
+            [
+              -0.5800000000000001,
+              0.5928667073685377,
+              0.24370077409394647
+            ],
+            [
+              -0.5800000000000001,
+              0.619455975984223,
+              0.16478863376287142
+            ],
+            [
+              -0.5800000000000001,
+              0.6355911738711791,
+              0.0830954854192244
+            ],
+            [
+              -0.5800000000000001,
+              0.641,
+              0.0
+            ],
+            [
+              -0.5800000000000001,
+              0.6355911738711791,
+              -0.0830954854192244
+            ],
+            [
+              -0.5800000000000001,
+              0.619455975984223,
+              -0.16478863376287142
+            ],
+            [
+              -0.5800000000000001,
+              0.5928667073685377,
+              -0.24370077409394647
+            ],
+            [
+              -0.5800000000000001,
+              0.5562720941733735,
+              -0.3185001683578353
+            ]
+          ],
+          "radius": 0.0165,
+          "closed": true
+        }
+      },
+      "main_linePath": {
+        "kind": "parametric",
+        "factory": "tube",
+        "params": {
+          "points": [
+            [
+              -1.03,
+              0.48,
+              -0.76
+            ],
+            [
+              -0.75,
+              0.55,
+              -0.76
+            ],
+            [
+              -0.55,
+              1.43,
+              -0.58
+            ],
+            [
+              0,
+              1.43,
+              -0.58
+            ]
+          ],
+          "radius": 0.012,
+          "closed": false
+        }
+      },
+      "aux_to_capPath": {
+        "kind": "parametric",
+        "factory": "tube",
+        "params": {
+          "points": [
+            [
+              -1.03,
+              0.48,
+              -0.76
+            ],
+            [
+              -1.22,
+              0.58,
+              -0.3
+            ],
+            [
+              -1.22,
+              0.71,
+              0.69
+            ]
+          ],
+          "radius": 0.012,
+          "closed": false
+        }
+      },
+      "cap_to_auxPath": {
+        "kind": "parametric",
+        "factory": "tube",
+        "params": {
+          "points": [
+            [
+              -0.86,
+              0.71,
+              0.69
+            ],
+            [
+              -0.7,
+              0.8,
+              0.69
+            ],
+            [
+              -0.55,
+              1.43,
+              0.58
+            ],
+            [
+              0,
+              1.43,
+              0.58
+            ]
+          ],
+          "radius": 0.012,
+          "closed": false
+        }
+      }
+    },
+    "materials": {
+      "iron": {
+        "type": "standard",
+        "color": "#777777",
+        "metalness": 0.65,
+        "roughness": 0.48
+      },
+      "steel": {
+        "type": "standard",
+        "color": "#CCCCCC",
+        "metalness": 0.8,
+        "roughness": 0.32
+      },
+      "main": {
+        "type": "standard",
+        "color": "#76BFFF",
+        "metalness": 0.25,
+        "roughness": 0.4
+      },
+      "aux": {
+        "type": "standard",
+        "color": "#FFA052",
+        "metalness": 0.25,
+        "roughness": 0.4
+      },
+      "rotor": {
+        "type": "standard",
+        "color": "#A5A5A5",
+        "metalness": 0.55,
+        "roughness": 0.38
+      },
+      "plastic": {
+        "type": "standard",
+        "color": "#666666",
+        "roughness": 0.64
+      },
+      "rubber": {
+        "type": "standard",
+        "color": "#333333",
+        "roughness": 0.94
+      },
+      "fault": {
+        "type": "standard",
+        "color": "#FF746A",
+        "roughness": 0.6
+      }
+    }
+  },
+  "entities": [
+    {
+      "id": "fan",
+      "parent": null,
+      "label": "Ventilador",
+      "description": "Convierte electricidad en movimiento de aire.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": true,
+      "data": {
+        "topology": {
+          "line": "L",
+          "neutral": "N",
+          "branches": [
+            {
+              "id": "mainBranch",
+              "path": [
+                "L",
+                "switch",
+                "Lsw",
+                "main_winding",
+                "N"
+              ]
+            },
+            {
+              "id": "auxBranch",
+              "path": [
+                "Lsw",
+                "capacitor",
+                "Cout",
+                "aux_winding",
+                "N"
+              ]
+            }
+          ],
+          "capacitorConnection": "En serie con auxiliar; permanece conectado durante la marcha"
+        },
+        "legend": [
+          {
+            "material": "main",
+            "label": "Devanado principal"
+          },
+          {
+            "material": "aux",
+            "label": "Auxiliar y capacitor"
+          },
+          {
+            "material": "rotor",
+            "label": "Rotor y eje"
+          },
+          {
+            "material": "fault",
+            "label": "Fallo seleccionado"
+          }
+        ]
+      }
+    },
+    {
+      "id": "stand",
+      "parent": "fan",
+      "label": "Soporte",
+      "description": "Mantiene todo en su lugar.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": true
+    },
+    {
+      "id": "base",
+      "parent": "stand",
+      "label": "Base",
+      "description": "Sostiene el ventilador.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0.13,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0.13,
+            0
+          ]
+        }
+      },
+      "selectable": true,
+      "geometry": "baseBox",
+      "material": "plastic"
+    },
+    {
+      "id": "pedestal",
+      "parent": "stand",
+      "label": "Soporte central",
+      "description": "Sostiene el motor.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0.41,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0.41,
+            0
+          ]
+        }
+      },
+      "selectable": true,
+      "geometry": "pedestalBox",
+      "material": "iron"
+    },
+    {
+      "id": "foot0",
+      "parent": "stand",
+      "label": "Pieza de apoyo",
+      "description": "Forma parte del conjunto.",
+      "transform": {
+        "assembled": {
+          "position": [
+            -1.3,
+            0.02,
+            -0.9
+          ]
+        },
+        "exploded": {
+          "position": [
+            -1.3,
+            0.02,
+            -0.9
+          ]
+        }
+      },
+      "selectable": true,
+      "geometry": "footBox",
+      "material": "rubber"
+    },
+    {
+      "id": "foot1",
+      "parent": "stand",
+      "label": "Pieza de apoyo",
+      "description": "Forma parte del conjunto.",
+      "transform": {
+        "assembled": {
+          "position": [
+            -1.3,
+            0.02,
+            0.9
+          ]
+        },
+        "exploded": {
+          "position": [
+            -1.3,
+            0.02,
+            0.9
+          ]
+        }
+      },
+      "selectable": true,
+      "geometry": "footBox",
+      "material": "rubber"
+    },
+    {
+      "id": "foot2",
+      "parent": "stand",
+      "label": "Pieza de apoyo",
+      "description": "Forma parte del conjunto.",
+      "transform": {
+        "assembled": {
+          "position": [
+            1.3,
+            0.02,
+            -0.9
+          ]
+        },
+        "exploded": {
+          "position": [
+            1.3,
+            0.02,
+            -0.9
+          ]
+        }
+      },
+      "selectable": true,
+      "geometry": "footBox",
+      "material": "rubber"
+    },
+    {
+      "id": "foot3",
+      "parent": "stand",
+      "label": "Pieza de apoyo",
+      "description": "Forma parte del conjunto.",
+      "transform": {
+        "assembled": {
+          "position": [
+            1.3,
+            0.02,
+            0.9
+          ]
+        },
+        "exploded": {
+          "position": [
+            1.3,
+            0.02,
+            0.9
+          ]
+        }
+      },
+      "selectable": true,
+      "geometry": "footBox",
+      "material": "rubber"
+    },
+    {
+      "id": "motor",
+      "parent": "fan",
+      "label": "Motor",
+      "description": "Hace girar las aspas con electricidad.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            1.43,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            1.43,
+            0
+          ]
+        }
+      },
+      "selectable": true
+    },
+    {
+      "id": "stator",
+      "parent": "motor",
+      "label": "Parte fija con bobinas",
+      "description": "Sostiene los rollos de alambre.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": true
+    },
+    {
+      "id": "shell",
+      "parent": "stator",
+      "label": "Cubierta fija",
+      "description": "Rodea y protege las piezas de dentro.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": true,
+      "geometry": "shellRing",
+      "material": "iron"
+    },
+    {
+      "id": "pole0",
+      "parent": "stator",
+      "label": "Apoyo del rollo",
+      "description": "Ayuda a dirigir el imán invisible.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            0.0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": true,
+      "geometry": "poleSector",
+      "material": "iron"
+    },
+    {
+      "id": "pole1",
+      "parent": "stator",
+      "label": "Apoyo del rollo",
+      "description": "Ayuda a dirigir el imán invisible.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            1.5707963267948966,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": true,
+      "geometry": "poleSector",
+      "material": "iron"
+    },
+    {
+      "id": "pole2",
+      "parent": "stator",
+      "label": "Apoyo del rollo",
+      "description": "Ayuda a dirigir el imán invisible.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            3.141592653589793,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": true,
+      "geometry": "poleSector",
+      "material": "iron"
+    },
+    {
+      "id": "pole3",
+      "parent": "stator",
+      "label": "Apoyo del rollo",
+      "description": "Ayuda a dirigir el imán invisible.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            4.71238898038469,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": true,
+      "geometry": "poleSector",
+      "material": "iron"
+    },
+    {
+      "id": "main_winding",
+      "parent": "motor",
+      "label": "Bobina A",
+      "description": "Empuja primero.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": true,
+      "data": {
+        "iNorm": 0,
+        "phaseRole": "main"
+      }
+    },
+    {
+      "id": "main_winding_pack0",
+      "parent": "main_winding",
+      "label": "Pieza de apoyo",
+      "description": "Forma parte del conjunto.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            0.0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": false
+    },
+    {
+      "id": "main_winding_pack0_turn0",
+      "parent": "main_winding_pack0",
+      "label": "Pieza de apoyo",
+      "description": "Forma parte del conjunto.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "coil0",
+      "material": "main"
+    },
+    {
+      "id": "main_winding_pack0_turn1",
+      "parent": "main_winding_pack0",
+      "label": "Pieza de apoyo",
+      "description": "Forma parte del conjunto.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "coil1",
+      "material": "main"
+    },
+    {
+      "id": "main_winding_pack0_turn2",
+      "parent": "main_winding_pack0",
+      "label": "Pieza de apoyo",
+      "description": "Forma parte del conjunto.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "coil2",
+      "material": "main"
+    },
+    {
+      "id": "main_winding_pack0_turn3",
+      "parent": "main_winding_pack0",
+      "label": "Pieza de apoyo",
+      "description": "Forma parte del conjunto.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "coil3",
+      "material": "main"
+    },
+    {
+      "id": "main_winding_pack1",
+      "parent": "main_winding",
+      "label": "Pieza de apoyo",
+      "description": "Forma parte del conjunto.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            3.141592653589793,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": false
+    },
+    {
+      "id": "main_winding_pack1_turn0",
+      "parent": "main_winding_pack1",
+      "label": "Pieza de apoyo",
+      "description": "Forma parte del conjunto.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "coil0",
+      "material": "main"
+    },
+    {
+      "id": "main_winding_pack1_turn1",
+      "parent": "main_winding_pack1",
+      "label": "Pieza de apoyo",
+      "description": "Forma parte del conjunto.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "coil1",
+      "material": "main"
+    },
+    {
+      "id": "main_winding_pack1_turn2",
+      "parent": "main_winding_pack1",
+      "label": "Pieza de apoyo",
+      "description": "Forma parte del conjunto.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "coil2",
+      "material": "main"
+    },
+    {
+      "id": "main_winding_pack1_turn3",
+      "parent": "main_winding_pack1",
+      "label": "Pieza de apoyo",
+      "description": "Forma parte del conjunto.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "coil3",
+      "material": "main"
+    },
+    {
+      "id": "aux_winding",
+      "parent": "motor",
+      "label": "Bobina B",
+      "description": "Empuja después.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            1.5707963267948966,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": true,
+      "data": {
+        "iNorm": 0,
+        "phaseRole": "aux"
+      }
+    },
+    {
+      "id": "aux_winding_pack0",
+      "parent": "aux_winding",
+      "label": "Pieza de apoyo",
+      "description": "Forma parte del conjunto.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            0.0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": false
+    },
+    {
+      "id": "aux_winding_pack0_turn0",
+      "parent": "aux_winding_pack0",
+      "label": "Pieza de apoyo",
+      "description": "Forma parte del conjunto.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "coil0",
+      "material": "aux"
+    },
+    {
+      "id": "aux_winding_pack0_turn1",
+      "parent": "aux_winding_pack0",
+      "label": "Pieza de apoyo",
+      "description": "Forma parte del conjunto.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "coil1",
+      "material": "aux"
+    },
+    {
+      "id": "aux_winding_pack0_turn2",
+      "parent": "aux_winding_pack0",
+      "label": "Pieza de apoyo",
+      "description": "Forma parte del conjunto.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "coil2",
+      "material": "aux"
+    },
+    {
+      "id": "aux_winding_pack0_turn3",
+      "parent": "aux_winding_pack0",
+      "label": "Pieza de apoyo",
+      "description": "Forma parte del conjunto.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "coil3",
+      "material": "aux"
+    },
+    {
+      "id": "aux_winding_pack1",
+      "parent": "aux_winding",
+      "label": "Pieza de apoyo",
+      "description": "Forma parte del conjunto.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            3.141592653589793,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": false
+    },
+    {
+      "id": "aux_winding_pack1_turn0",
+      "parent": "aux_winding_pack1",
+      "label": "Pieza de apoyo",
+      "description": "Forma parte del conjunto.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "coil0",
+      "material": "aux"
+    },
+    {
+      "id": "aux_winding_pack1_turn1",
+      "parent": "aux_winding_pack1",
+      "label": "Pieza de apoyo",
+      "description": "Forma parte del conjunto.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "coil1",
+      "material": "aux"
+    },
+    {
+      "id": "aux_winding_pack1_turn2",
+      "parent": "aux_winding_pack1",
+      "label": "Pieza de apoyo",
+      "description": "Forma parte del conjunto.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "coil2",
+      "material": "aux"
+    },
+    {
+      "id": "aux_winding_pack1_turn3",
+      "parent": "aux_winding_pack1",
+      "label": "Pieza de apoyo",
+      "description": "Forma parte del conjunto.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "coil3",
+      "material": "aux"
+    },
+    {
+      "id": "rotor",
+      "parent": "motor",
+      "label": "Parte que gira",
+      "description": "Sigue al imán invisible.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            1.55,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": true,
+      "data": {
+        "motion": "Giro ilustrativo, sin resolver par ni deslizamiento"
+      }
+    },
+    {
+      "id": "rotor_core",
+      "parent": "rotor",
+      "label": "Pieza que gira",
+      "description": "Sigue al imán invisible.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": true,
+      "geometry": "rotorCore",
+      "material": "rotor"
+    },
+    {
+      "id": "shaft_part",
+      "parent": "rotor",
+      "label": "Barra central",
+      "description": "Lleva el giro hasta las aspas.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0.18,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0.18,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": true,
+      "geometry": "shaft",
+      "material": "steel"
+    },
+    {
+      "id": "cage_bar0",
+      "parent": "rotor",
+      "label": "Barra de metal",
+      "description": "Ayuda a que la pieza central responda al imán invisible.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0.39,
+            0.0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0.39,
+            0.0
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "cageBar",
+      "material": "steel"
+    },
+    {
+      "id": "cage_bar1",
+      "parent": "rotor",
+      "label": "Barra de metal",
+      "description": "Ayuda a que la pieza central responda al imán invisible.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0.3377499074759311,
+            0.19499999999999998
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0.3377499074759311,
+            0.19499999999999998
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "cageBar",
+      "material": "steel"
+    },
+    {
+      "id": "cage_bar2",
+      "parent": "rotor",
+      "label": "Barra de metal",
+      "description": "Ayuda a que la pieza central responda al imán invisible.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0.19500000000000006,
+            0.3377499074759311
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0.19500000000000006,
+            0.3377499074759311
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "cageBar",
+      "material": "steel"
+    },
+    {
+      "id": "cage_bar3",
+      "parent": "rotor",
+      "label": "Barra de metal",
+      "description": "Ayuda a que la pieza central responda al imán invisible.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            2.3880612583373387e-17,
+            0.39
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            2.3880612583373387e-17,
+            0.39
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "cageBar",
+      "material": "steel"
+    },
+    {
+      "id": "cage_bar4",
+      "parent": "rotor",
+      "label": "Barra de metal",
+      "description": "Ayuda a que la pieza central responda al imán invisible.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            -0.19499999999999992,
+            0.3377499074759311
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            -0.19499999999999992,
+            0.3377499074759311
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "cageBar",
+      "material": "steel"
+    },
+    {
+      "id": "cage_bar5",
+      "parent": "rotor",
+      "label": "Barra de metal",
+      "description": "Ayuda a que la pieza central responda al imán invisible.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            -0.3377499074759311,
+            0.19499999999999998
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            -0.3377499074759311,
+            0.19499999999999998
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "cageBar",
+      "material": "steel"
+    },
+    {
+      "id": "cage_bar6",
+      "parent": "rotor",
+      "label": "Barra de metal",
+      "description": "Ayuda a que la pieza central responda al imán invisible.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            -0.39,
+            4.7761225166746774e-17
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            -0.39,
+            4.7761225166746774e-17
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "cageBar",
+      "material": "steel"
+    },
+    {
+      "id": "cage_bar7",
+      "parent": "rotor",
+      "label": "Barra de metal",
+      "description": "Ayuda a que la pieza central responda al imán invisible.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            -0.33774990747593114,
+            -0.1949999999999999
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            -0.33774990747593114,
+            -0.1949999999999999
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "cageBar",
+      "material": "steel"
+    },
+    {
+      "id": "cage_bar8",
+      "parent": "rotor",
+      "label": "Barra de metal",
+      "description": "Ayuda a que la pieza central responda al imán invisible.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            -0.19500000000000017,
+            -0.337749907475931
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            -0.19500000000000017,
+            -0.337749907475931
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "cageBar",
+      "material": "steel"
+    },
+    {
+      "id": "cage_bar9",
+      "parent": "rotor",
+      "label": "Barra de metal",
+      "description": "Ayuda a que la pieza central responda al imán invisible.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            -7.164183775012016e-17,
+            -0.39
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            -7.164183775012016e-17,
+            -0.39
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "cageBar",
+      "material": "steel"
+    },
+    {
+      "id": "cage_bar10",
+      "parent": "rotor",
+      "label": "Barra de metal",
+      "description": "Ayuda a que la pieza central responda al imán invisible.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0.19500000000000006,
+            -0.3377499074759311
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0.19500000000000006,
+            -0.3377499074759311
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "cageBar",
+      "material": "steel"
+    },
+    {
+      "id": "cage_bar11",
+      "parent": "rotor",
+      "label": "Barra de metal",
+      "description": "Ayuda a que la pieza central responda al imán invisible.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0.337749907475931,
+            -0.19500000000000017
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0.337749907475931,
+            -0.19500000000000017
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "cageBar",
+      "material": "steel"
+    },
+    {
+      "id": "cage_ring0",
+      "parent": "rotor",
+      "label": "Aro de metal",
+      "description": "Une las barras de la pieza que gira.",
+      "transform": {
+        "assembled": {
+          "position": [
+            -0.49,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            -0.49,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": true,
+      "geometry": "endRing",
+      "material": "steel"
+    },
+    {
+      "id": "cage_ring1",
+      "parent": "rotor",
+      "label": "Aro de metal",
+      "description": "Une las barras de la pieza que gira.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0.49,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0.49,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": true,
+      "geometry": "endRing",
+      "material": "steel"
+    },
+    {
+      "id": "rear",
+      "parent": "motor",
+      "label": "Tapa de atrás",
+      "description": "Mantiene las piezas en su lugar.",
+      "transform": {
+        "assembled": {
+          "position": [
+            -0.66,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            -1.6099999999999999,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": true
+    },
+    {
+      "id": "rear_cover",
+      "parent": "rear",
+      "label": "Tapa de atrás",
+      "description": "Protege el interior.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": true,
+      "geometry": "cover",
+      "material": "iron"
+    },
+    {
+      "id": "rear_bearing",
+      "parent": "rear",
+      "label": "Apoyo de la barra",
+      "description": "Deja que la barra gire suavemente.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": true,
+      "geometry": "bearing",
+      "material": "steel"
+    },
+    {
+      "id": "front",
+      "parent": "motor",
+      "label": "Tapa de adelante",
+      "description": "Mantiene las piezas en su lugar.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0.66,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            3.2600000000000002,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": true
+    },
+    {
+      "id": "front_cover",
+      "parent": "front",
+      "label": "Tapa de adelante",
+      "description": "Protege el interior.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": true,
+      "geometry": "cover",
+      "material": "iron"
+    },
+    {
+      "id": "front_bearing",
+      "parent": "front",
+      "label": "Apoyo de la barra",
+      "description": "Deja que la barra gire suavemente.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": true,
+      "geometry": "bearing",
+      "material": "steel"
+    },
+    {
+      "id": "blades",
+      "parent": "motor",
+      "label": "Aspas",
+      "description": "Empujan el aire al girar.",
+      "transform": {
+        "assembled": {
+          "position": [
+            1.29,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            5.19,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": true
+    },
+    {
+      "id": "hub_part",
+      "parent": "blades",
+      "label": "Unión de las aspas",
+      "description": "Une las aspas a la barra.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": true,
+      "geometry": "hub",
+      "material": "plastic"
+    },
+    {
+      "id": "hub_nut",
+      "parent": "blades",
+      "label": "Tuerca de sujeción",
+      "description": "Mantiene las aspas sujetas.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0.17,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0.17,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": true,
+      "geometry": "nut",
+      "material": "steel"
+    },
+    {
+      "id": "blade0",
+      "parent": "blades",
+      "label": "Aspa",
+      "description": "Empuja el aire al girar.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            0.0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": true,
+      "geometry": "bladeShape",
+      "material": "plastic"
+    },
+    {
+      "id": "blade1",
+      "parent": "blades",
+      "label": "Aspa",
+      "description": "Empuja el aire al girar.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            2.0943951023931953,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": true,
+      "geometry": "bladeShape",
+      "material": "plastic"
+    },
+    {
+      "id": "blade2",
+      "parent": "blades",
+      "label": "Aspa",
+      "description": "Empuja el aire al girar.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "rotation": [
+            4.1887902047863905,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": true,
+      "geometry": "bladeShape",
+      "material": "plastic"
+    },
+    {
+      "id": "capacitor",
+      "parent": "fan",
+      "label": "Arranque eléctrico (capacitor)",
+      "description": "En el dibujo, retrasa el turno de B.",
+      "transform": {
+        "assembled": {
+          "position": [
+            -1.04,
+            0.43,
+            0.69
+          ]
+        },
+        "exploded": {
+          "position": [
+            -1.04,
+            0.43,
+            0.69
+          ]
+        }
+      },
+      "selectable": true,
+      "geometry": "capacitorCase",
+      "material": "plastic",
+      "data": {
+        "referenceCapacitanceUF": 2,
+        "terminalA": "Lsw",
+        "terminalB": "Cout"
+      }
+    },
+    {
+      "id": "cap_lid",
+      "parent": "capacitor",
+      "label": "Tapa de la cajita",
+      "description": "Cierra el arranque eléctrico.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0.22,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0.22,
+            0
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "capacitorLid",
+      "material": "plastic"
+    },
+    {
+      "id": "cap_terminal0",
+      "parent": "capacitor",
+      "label": "Pieza de apoyo",
+      "description": "Forma parte del conjunto.",
+      "transform": {
+        "assembled": {
+          "position": [
+            -0.18,
+            0.28,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            1.5707963267948966
+          ]
+        },
+        "exploded": {
+          "position": [
+            -0.18,
+            0.28,
+            0
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "terminal",
+      "material": "steel"
+    },
+    {
+      "id": "cap_terminal1",
+      "parent": "capacitor",
+      "label": "Pieza de apoyo",
+      "description": "Forma parte del conjunto.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0.18,
+            0.28,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            1.5707963267948966
+          ]
+        },
+        "exploded": {
+          "position": [
+            0.18,
+            0.28,
+            0
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "terminal",
+      "material": "steel"
+    },
+    {
+      "id": "switch",
+      "parent": "fan",
+      "label": "Botón de encendido",
+      "description": "Deja pasar electricidad al motor.",
+      "transform": {
+        "assembled": {
+          "position": [
+            -1.03,
+            0.34,
+            -0.76
+          ]
+        },
+        "exploded": {
+          "position": [
+            -1.03,
+            0.34,
+            -0.76
+          ]
+        }
+      },
+      "selectable": true,
+      "geometry": "switchCase",
+      "material": "plastic"
+    },
+    {
+      "id": "switch_rocker",
+      "parent": "switch",
+      "label": "Pieza de apoyo",
+      "description": "Forma parte del conjunto.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0.13,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0.13,
+            0
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "rocker",
+      "material": "steel"
+    },
+    {
+      "id": "main_line",
+      "parent": "fan",
+      "label": "Pieza de apoyo",
+      "description": "Forma parte del conjunto.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "main_linePath",
+      "material": "plastic"
+    },
+    {
+      "id": "aux_to_cap",
+      "parent": "fan",
+      "label": "Pieza de apoyo",
+      "description": "Forma parte del conjunto.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "aux_to_capPath",
+      "material": "plastic"
+    },
+    {
+      "id": "cap_to_aux",
+      "parent": "fan",
+      "label": "Pieza de apoyo",
+      "description": "Forma parte del conjunto.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "selectable": false,
+      "geometry": "cap_to_auxPath",
+      "material": "plastic"
+    }
+  ],
+  "steps": [
+    {
+      "id": "working",
+      "title": "El motor mueve las aspas",
+      "text": "El imán invisible arrastra la parte que gira; la barra central mueve las aspas.",
+      "duration": 6,
+      "camera": {
+        "position": [
+          5,
+          4,
+          6
+        ],
+        "target": [
+          0,
+          1.2,
+          0
+        ],
+        "fov": 40,
+        "near": 0.05,
+        "far": 100
+      },
+      "visible": [
+        "fan"
+      ],
+      "selection": "rotor_core",
+      "explode": 0
+    },
+    {
+      "id": "inside",
+      "title": "Mirar dentro",
+      "text": "Retiramos parte de la cubierta para ver los dos rollos de alambre.",
+      "duration": 6,
+      "camera": {
+        "position": [
+          5,
+          4,
+          6
+        ],
+        "target": [
+          0,
+          1.2,
+          0
+        ],
+        "fov": 40,
+        "near": 0.05,
+        "far": 100
+      },
+      "visible": [
+        "stand",
+        "main_winding",
+        "aux_winding",
+        "rotor",
+        "rear",
+        "front",
+        "blades",
+        "capacitor",
+        "switch"
+      ],
+      "selection": "main_winding",
+      "explode": 0
+    },
+    {
+      "id": "main",
+      "title": "Bobina A",
+      "text": "El rollo A hace de imán y alcanza su turno después de B.",
+      "duration": 6,
+      "camera": {
+        "position": [
+          3.5,
+          3,
+          4
+        ],
+        "target": [
+          0,
+          1.2,
+          0
+        ],
+        "fov": 40,
+        "near": 0.05,
+        "far": 100
+      },
+      "visible": [
+        "main_winding",
+        "rotor"
+      ],
+      "selection": "main_winding",
+      "explode": 0
+    },
+    {
+      "id": "aux",
+      "title": "Bobina B",
+      "text": "El rollo B empuja primero y ayuda a que el imán invisible dé vueltas.",
+      "duration": 6,
+      "camera": {
+        "position": [
+          5,
+          4,
+          6
+        ],
+        "target": [
+          0,
+          1.2,
+          0
+        ],
+        "fov": 40,
+        "near": 0.05,
+        "far": 100
+      },
+      "visible": [
+        "main_winding",
+        "aux_winding",
+        "rotor",
+        "capacitor"
+      ],
+      "selection": "aux_winding",
+      "explode": 0,
+      "prediction": {
+        "question": "¿Qué cambia si se abre la rama del capacitor al intentar arrancar desde reposo?",
+        "options": [
+          {
+            "id": "loss",
+            "text": "Se pierde la contribución del auxiliar al par de arranque."
+          },
+          {
+            "id": "more",
+            "text": "La contribución del auxiliar aumenta."
+          }
+        ],
+        "answer": "loss",
+        "explanation": "La rama abierta no conduce. La respuesta dinámica completa no se resuelve en esta ilustración."
+      }
+    },
+    {
+      "id": "capacitor_step",
+      "title": "Arranque eléctrico (capacitor)",
+      "text": "La cajita de arranque es la que adelanta a B y sigue ayudando durante el giro.",
+      "duration": 6,
+      "camera": {
+        "position": [
+          2,
+          2,
+          3.6
+        ],
+        "target": [
+          0,
+          1.2,
+          0
+        ],
+        "fov": 40,
+        "near": 0.05,
+        "far": 100
+      },
+      "visible": [
+        "capacitor",
+        "aux_winding",
+        "switch"
+      ],
+      "selection": "capacitor",
+      "explode": 0
+    },
+    {
+      "id": "rotor_step",
+      "title": "Parte que gira",
+      "text": "El imán invisible la arrastra; la barra central lleva ese giro a las aspas.",
+      "duration": 6,
+      "camera": {
+        "position": [
+          5,
+          3.5,
+          5
+        ],
+        "target": [
+          0,
+          1.2,
+          0
+        ],
+        "fov": 40,
+        "near": 0.05,
+        "far": 100
+      },
+      "visible": [
+        "rotor",
+        "main_winding",
+        "aux_winding",
+        "blades"
+      ],
+      "selection": "rotor",
+      "explode": 0.4
+    },
+    {
+      "id": "exploded",
+      "title": "Separar para mirar",
+      "text": "Las piezas se apartan solo para estudiarlas; un motor real funciona con sus piezas juntas.",
+      "duration": 6,
+      "camera": {
+        "position": [
+          9.7,
+          6,
+          10
+        ],
+        "target": [
+          1.7,
+          1.2,
+          0
+        ],
+        "fov": 40,
+        "near": 0.05,
+        "far": 100
+      },
+      "visible": [
+        "fan"
+      ],
+      "selection": "rotor",
+      "explode": 1,
+      "state": {
+        "parameters": {
+          "visualSpeedRpm": 0
+        }
+      }
+    },
+    {
+      "id": "blades_step",
+      "title": "Las aspas mueven aire",
+      "text": "La barra central hace girar las aspas; su forma empuja el aire.",
+      "duration": 6,
+      "camera": {
+        "position": [
+          5.5,
+          4,
+          6
+        ],
+        "target": [
+          0,
+          1.2,
+          0
+        ],
+        "fov": 40,
+        "near": 0.05,
+        "far": 100
+      },
+      "visible": [
+        "blades",
+        "rotor"
+      ],
+      "selection": "blades",
+      "explode": 0
+    },
+    {
+      "id": "rebuild",
+      "title": "Volver a juntar",
+      "text": "Cada pieza vuelve a su lugar.",
+      "duration": 6,
+      "camera": {
+        "position": [
+          6,
+          4,
+          7
+        ],
+        "target": [
+          0,
+          1.2,
+          0
+        ],
+        "fov": 40,
+        "near": 0.05,
+        "far": 100
+      },
+      "visible": [
+        "fan"
+      ],
+      "selection": null,
+      "explode": 0
+    },
+    {
+      "id": "whole",
+      "title": "El conjunto funciona",
+      "text": "Los dos rollos cooperan y las aspas giran.",
+      "duration": 6,
+      "camera": {
+        "position": [
+          5,
+          4,
+          6
+        ],
+        "target": [
+          0,
+          1.2,
+          0
+        ],
+        "fov": 40,
+        "near": 0.05,
+        "far": 100
+      },
+      "visible": [
+        "fan"
+      ],
+      "selection": null,
+      "explode": 0
+    }
+  ],
+  "parameters": [
+    {
+      "name": "frequencyHz",
+      "label": "Frecuencia eléctrica",
+      "unit": "Hz",
+      "range": [
+        45,
+        65
+      ],
+      "value": 60,
+      "bindings": [
+        {
+          "id": "mainCurrent",
+          "entity": "main_winding",
+          "channel": "data.iNorm",
+          "kind": "SINE",
+          "scale": 6.283185307179586,
+          "explanation": "i_A = sin(theta); A llega a su máximo después de B. La curva y la luz leen este mismo estado.",
+          "gains": [
+            "slowMotion"
+          ],
+          "offset": 0
+        },
+        {
+          "id": "auxCurrent",
+          "entity": "aux_winding",
+          "channel": "data.iNorm",
+          "kind": "SINE",
+          "scale": 6.283185307179586,
+          "explanation": "i_B = a sin(theta + delta): B adelanta a A. Su eje positivo se elige en −Z para conservar el giro ilustrativo hacia +X.",
+          "gains": [
+            "slowMotion"
+          ],
+          "phaseParameter": "phaseDeg",
+          "phaseScale": 0.017453292519943295,
+          "amplitudeParameter": "auxAmplitude",
+          "offset": 0
+        }
+      ],
+      "step": 1
+    },
+    {
+      "name": "slowMotion",
+      "label": "Escala temporal de señales",
+      "unit": "1",
+      "range": [
+        0.005,
+        0.1
+      ],
+      "value": 0.005,
+      "bindings": []
+    },
+    {
+      "name": "phaseDeg",
+      "label": "Desfase ilustrativo de corrientes",
+      "unit": "°",
+      "range": [
+        0,
+        180
+      ],
+      "value": 90,
+      "bindings": [],
+      "step": 1
+    },
+    {
+      "name": "auxAmplitude",
+      "label": "Amplitud auxiliar normalizada",
+      "unit": "1",
+      "range": [
+        0,
+        1.5
+      ],
+      "value": 1,
+      "bindings": []
+    },
+    {
+      "name": "visualSpeedRpm",
+      "label": "Velocidad de giro ilustrativa",
+      "unit": "rpm",
+      "range": [
+        0,
+        60
+      ],
+      "value": 14,
+      "bindings": [
+        {
+          "id": "rotorSpin",
+          "entity": "rotor",
+          "channel": "rotation.x",
+          "kind": "PHASE",
+          "scale": 0.10471975511965977,
+          "explanation": "dθ/dt = 2π · visualSpeedRpm/60 · rotorFreedom; giro visual independiente de f.",
+          "gains": [
+            "rotorFreedom"
+          ],
+          "combine": "add"
+        },
+        {
+          "id": "bladeSpin",
+          "entity": "blades",
+          "channel": "rotation.x",
+          "kind": "PHASE",
+          "scale": 0.10471975511965977,
+          "explanation": "Las aspas comparten el giro ilustrativo del rotor.",
+          "gains": [
+            "rotorFreedom"
+          ],
+          "combine": "add"
+        }
+      ]
+    },
+    {
+      "name": "rotorFreedom",
+      "label": "Factor de libertad del giro visual",
+      "unit": "1",
+      "range": [
+        0,
+        1
+      ],
+      "value": 1,
+      "bindings": []
+    },
+    {
+      "name": "capacitanceUF",
+      "label": "Capacitancia de referencia",
+      "unit": "μF",
+      "range": [
+        1,
+        4
+      ],
+      "value": 2,
+      "bindings": [
+        {
+          "id": "capValue",
+          "entity": "capacitor",
+          "channel": "data.referenceCapacitanceUF",
+          "kind": "LINEAR",
+          "scale": 1,
+          "explanation": "Actualiza la ficha de referencia; no recalcula el desfase sin un modelo de impedancias."
+        }
+      ],
+      "step": 0.1
+    }
+  ],
+  "faults": [
+    {
+      "id": "capacitor_open",
+      "title": "Rama del capacitor abierta",
+      "scenario": "Intento de arranque desde reposo, sin impulso externo y sin otras asimetrías.",
+      "text": "Se anula la contribución del auxiliar y se representa ausencia de arranque. No predice qué sucede al abrir la rama durante la marcha.",
+      "visualEffects": [
+        {
+          "entity": "capacitor",
+          "material": "fault"
+        }
+      ],
+      "parameterEffects": [
+        {
+          "name": "auxAmplitude",
+          "operation": "set",
+          "value": 0
+        },
+        {
+          "name": "visualSpeedRpm",
+          "operation": "set",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "rotor_blocked",
+      "title": "Rotor inmovilizado",
+      "scenario": "Restricción mecánica impuesta; el circuito puede seguir energizado.",
+      "text": "Se detiene el giro representado; la corriente de bloqueo y el calentamiento no se calculan.",
+      "visualEffects": [
+        {
+          "entity": "rotor_core",
+          "material": "fault"
+        }
+      ],
+      "parameterEffects": [
+        {
+          "name": "rotorFreedom",
+          "operation": "set",
+          "value": 0
+        }
+      ]
+    }
+  ],
+  "takeaway": "Dos bobinas actúan en momentos distintos. Su imán invisible hace girar la pieza central y las aspas."
+}

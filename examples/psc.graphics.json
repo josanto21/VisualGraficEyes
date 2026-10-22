@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "2.0.0",
+  "selection": { "mode": "auto", "color": "#F2F6FF", "width": 2.3, "maxOutlineMeshes": 12, "initialEntity": "rotor_core" },
+  "clipping": {
+    "anchor": "motor", "entities": ["stator", "rear", "front"],
+    "normal": [0, -1, 0], "range": [-0.78, 0.78], "amount": 0.5,
+    "label": "Corte del exterior", "description": "El plano retira estator y tapas; deja visibles rotor y devanados."
+  },
+  "field": {
+    "anchor": "motor", "origin": [0.88, 0, 0],
+    "sources": [
+      { "entity": "main_winding", "channel": "data.iNorm", "axis": [0, 1, 0], "coefficient": 1, "color": "#76BFFF", "label": "Principal" },
+      { "entity": "aux_winding", "channel": "data.iNorm", "axis": [0, 0, -1], "coefficient": 1, "color": "#FFA052", "label": "Auxiliar" }
+    ],
+    "resultantColor": "#77D78F", "scale": 0.42, "referenceRadius": 0.63, "maxLength": 0.84, "visible": true,
+    "label": "Campo resultante", "description": "Suma de dos componentes normalizadas. La polaridad del eje auxiliar fija el sentido +X."
+  }
+}

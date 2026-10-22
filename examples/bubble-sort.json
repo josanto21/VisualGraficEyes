@@ -1,0 +1,664 @@
+{
+  "$schema": "../schema/vge.schema.json",
+  "schemaVersion": "2.0.0",
+  "metadata": {
+    "id": "bubble-312",
+    "title": "Burbuja: [3, 1, 2]",
+    "description": "Traza completa de comparaciones e intercambios para esta entrada.",
+    "language": "es"
+  },
+  "mode": {
+    "primary": "ANIMADO-PASOS"
+  },
+  "model": {
+    "kind": "SIMULACIÓN",
+    "scope": "Reproducción exacta de una traza discreta predefinida; no ejecuta código de ordenamiento ni admite entradas arbitrarias.",
+    "assumptions": [
+      "Orden ascendente y comparación estricta >; no se intercambian valores iguales.",
+      "La altura representa el valor; la identidad del elemento se conserva al cambiar de posición."
+    ],
+    "coordinates": {
+      "up": "Y",
+      "angles": "rad",
+      "handedness": "right",
+      "linearUnit": "scene-unit"
+    }
+  },
+  "resources": {
+    "geometries": {
+      "bar": {
+        "kind": "parametric",
+        "factory": "box",
+        "params": {
+          "size": [
+            0.6,
+            1,
+            0.35
+          ]
+        }
+      }
+    },
+    "materials": {
+      "idle": {
+        "type": "basic",
+        "color": "#76BFFF"
+      },
+      "compare": {
+        "type": "basic",
+        "color": "#FFA052"
+      },
+      "done": {
+        "type": "basic",
+        "color": "#77D78F"
+      }
+    }
+  },
+  "entities": [
+    {
+      "id": "array",
+      "parent": null,
+      "label": "Arreglo",
+      "description": "Contenedor lógico de los elementos.",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "data": {
+        "input": [
+          3,
+          1,
+          2
+        ],
+        "algorithm": "bubble-sort",
+        "comparison": ">",
+        "expected": [
+          1,
+          2,
+          3
+        ]
+      }
+    },
+    {
+      "id": "e3",
+      "parent": "array",
+      "label": "3",
+      "description": "Elemento de valor 3; conserva su identidad.",
+      "geometry": "bar",
+      "material": "idle",
+      "transform": {
+        "assembled": {
+          "position": [
+            0,
+            1.5,
+            0
+          ],
+          "scale": [
+            1,
+            3,
+            1
+          ]
+        },
+        "exploded": {
+          "position": [
+            0,
+            1.5,
+            0
+          ]
+        }
+      },
+      "data": {
+        "value": 3
+      }
+    },
+    {
+      "id": "e1",
+      "parent": "array",
+      "label": "1",
+      "description": "Elemento de valor 1; conserva su identidad.",
+      "geometry": "bar",
+      "material": "idle",
+      "transform": {
+        "assembled": {
+          "position": [
+            1,
+            0.5,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ]
+        },
+        "exploded": {
+          "position": [
+            1,
+            0.5,
+            0
+          ]
+        }
+      },
+      "data": {
+        "value": 1
+      }
+    },
+    {
+      "id": "e2",
+      "parent": "array",
+      "label": "2",
+      "description": "Elemento de valor 2; conserva su identidad.",
+      "geometry": "bar",
+      "material": "idle",
+      "transform": {
+        "assembled": {
+          "position": [
+            2,
+            1.0,
+            0
+          ],
+          "scale": [
+            1,
+            2,
+            1
+          ]
+        },
+        "exploded": {
+          "position": [
+            2,
+            1.0,
+            0
+          ]
+        }
+      },
+      "data": {
+        "value": 2
+      }
+    }
+  ],
+  "steps": [
+    {
+      "id": "input",
+      "title": "Entrada",
+      "text": "Partimos de [3, 1, 2].",
+      "duration": 2,
+      "camera": {
+        "position": [
+          1,
+          2,
+          8
+        ],
+        "target": [
+          1,
+          1.5,
+          0
+        ],
+        "fov": 40
+      },
+      "visible": [
+        "array"
+      ],
+      "state": {
+        "entities": [
+          {
+            "id": "e3",
+            "position": [
+              0,
+              1.5,
+              0
+            ],
+            "material": "idle"
+          },
+          {
+            "id": "e1",
+            "position": [
+              1,
+              0.5,
+              0
+            ],
+            "material": "idle"
+          },
+          {
+            "id": "e2",
+            "position": [
+              2,
+              1.0,
+              0
+            ],
+            "material": "idle"
+          },
+          {
+            "id": "array",
+            "data": {
+              "values": [
+                3,
+                1,
+                2
+              ],
+              "compared": [],
+              "sorted": false
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "compare31",
+      "title": "Comparar 3 y 1",
+      "text": "3 > 1: corresponde intercambiar estos vecinos.",
+      "duration": 2,
+      "camera": {
+        "position": [
+          1,
+          2,
+          8
+        ],
+        "target": [
+          1,
+          1.5,
+          0
+        ],
+        "fov": 40
+      },
+      "visible": [
+        "array"
+      ],
+      "state": {
+        "entities": [
+          {
+            "id": "e3",
+            "position": [
+              0,
+              1.5,
+              0
+            ],
+            "material": "compare"
+          },
+          {
+            "id": "e1",
+            "position": [
+              1,
+              0.5,
+              0
+            ],
+            "material": "compare"
+          },
+          {
+            "id": "e2",
+            "position": [
+              2,
+              1.0,
+              0
+            ],
+            "material": "idle"
+          },
+          {
+            "id": "array",
+            "data": {
+              "values": [
+                3,
+                1,
+                2
+              ],
+              "compared": [
+                3,
+                1
+              ],
+              "sorted": false
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "swap31",
+      "title": "Intercambiar",
+      "text": "Ahora el orden es [1, 3, 2].",
+      "duration": 2,
+      "camera": {
+        "position": [
+          1,
+          2,
+          8
+        ],
+        "target": [
+          1,
+          1.5,
+          0
+        ],
+        "fov": 40
+      },
+      "visible": [
+        "array"
+      ],
+      "state": {
+        "entities": [
+          {
+            "id": "e1",
+            "position": [
+              0,
+              0.5,
+              0
+            ],
+            "material": "compare"
+          },
+          {
+            "id": "e3",
+            "position": [
+              1,
+              1.5,
+              0
+            ],
+            "material": "compare"
+          },
+          {
+            "id": "e2",
+            "position": [
+              2,
+              1.0,
+              0
+            ],
+            "material": "idle"
+          },
+          {
+            "id": "array",
+            "data": {
+              "values": [
+                1,
+                3,
+                2
+              ],
+              "compared": [
+                3,
+                1
+              ],
+              "sorted": false
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "compare32",
+      "title": "Comparar 3 y 2",
+      "text": "3 > 2: corresponde intercambiar estos vecinos.",
+      "duration": 2,
+      "camera": {
+        "position": [
+          1,
+          2,
+          8
+        ],
+        "target": [
+          1,
+          1.5,
+          0
+        ],
+        "fov": 40
+      },
+      "visible": [
+        "array"
+      ],
+      "state": {
+        "entities": [
+          {
+            "id": "e1",
+            "position": [
+              0,
+              0.5,
+              0
+            ],
+            "material": "idle"
+          },
+          {
+            "id": "e3",
+            "position": [
+              1,
+              1.5,
+              0
+            ],
+            "material": "compare"
+          },
+          {
+            "id": "e2",
+            "position": [
+              2,
+              1.0,
+              0
+            ],
+            "material": "compare"
+          },
+          {
+            "id": "array",
+            "data": {
+              "values": [
+                1,
+                3,
+                2
+              ],
+              "compared": [
+                3,
+                2
+              ],
+              "sorted": false
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "swap32",
+      "title": "Intercambiar",
+      "text": "Ahora el orden es [1, 2, 3]; el máximo queda al final.",
+      "duration": 2,
+      "camera": {
+        "position": [
+          1,
+          2,
+          8
+        ],
+        "target": [
+          1,
+          1.5,
+          0
+        ],
+        "fov": 40
+      },
+      "visible": [
+        "array"
+      ],
+      "state": {
+        "entities": [
+          {
+            "id": "e1",
+            "position": [
+              0,
+              0.5,
+              0
+            ],
+            "material": "idle"
+          },
+          {
+            "id": "e2",
+            "position": [
+              1,
+              1.0,
+              0
+            ],
+            "material": "idle"
+          },
+          {
+            "id": "e3",
+            "position": [
+              2,
+              1.5,
+              0
+            ],
+            "material": "done"
+          },
+          {
+            "id": "array",
+            "data": {
+              "values": [
+                1,
+                2,
+                3
+              ],
+              "compared": [
+                3
+              ],
+              "sorted": false
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "compare12",
+      "title": "Segunda pasada",
+      "text": "1 > 2 es falso: no hay intercambio.",
+      "duration": 2,
+      "camera": {
+        "position": [
+          1,
+          2,
+          8
+        ],
+        "target": [
+          1,
+          1.5,
+          0
+        ],
+        "fov": 40
+      },
+      "visible": [
+        "array"
+      ],
+      "state": {
+        "entities": [
+          {
+            "id": "e1",
+            "position": [
+              0,
+              0.5,
+              0
+            ],
+            "material": "compare"
+          },
+          {
+            "id": "e2",
+            "position": [
+              1,
+              1.0,
+              0
+            ],
+            "material": "compare"
+          },
+          {
+            "id": "e3",
+            "position": [
+              2,
+              1.5,
+              0
+            ],
+            "material": "done"
+          },
+          {
+            "id": "array",
+            "data": {
+              "values": [
+                1,
+                2,
+                3
+              ],
+              "compared": [
+                1,
+                2
+              ],
+              "sorted": false
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "done",
+      "title": "Terminar",
+      "text": "La pasada no produjo intercambios: el arreglo está ordenado.",
+      "duration": 2,
+      "camera": {
+        "position": [
+          1,
+          2,
+          8
+        ],
+        "target": [
+          1,
+          1.5,
+          0
+        ],
+        "fov": 40
+      },
+      "visible": [
+        "array"
+      ],
+      "state": {
+        "entities": [
+          {
+            "id": "e1",
+            "position": [
+              0,
+              0.5,
+              0
+            ],
+            "material": "done"
+          },
+          {
+            "id": "e2",
+            "position": [
+              1,
+              1.0,
+              0
+            ],
+            "material": "done"
+          },
+          {
+            "id": "e3",
+            "position": [
+              2,
+              1.5,
+              0
+            ],
+            "material": "done"
+          },
+          {
+            "id": "array",
+            "data": {
+              "values": [
+                1,
+                2,
+                3
+              ],
+              "compared": [],
+              "sorted": true
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "parameters": [],
+  "faults": [],
+  "takeaway": "Comparar vecinos y permutar los que están fuera de orden mueve los mayores hacia el final."
+}

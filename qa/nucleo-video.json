@@ -1,0 +1,13 @@
+{
+  "engine": "remotion",
+  "nativeRender": true,
+  "codec": "h264",
+  "width": 720,
+  "height": 960,
+  "fps": 24,
+  "frames": 120,
+  "durationSeconds": 5,
+  "sizeBytes": 155657,
+  "frameInspected": 48,
+  "physicalPhoneMeasured": false
+}
