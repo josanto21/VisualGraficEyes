@@ -54,7 +54,7 @@ test('tareas nativas conservan su ejecutable y rechazan salir del proyecto',()=>
 });
 test('un proceso exitoso sin artefacto no se declara render terminado',async()=>{
  const dir=await mkdtemp(join(tmpdir(),'vge-native-'));
- try{const entry=join(dir,'empty.mjs');await writeFile(entry,'');await assert.rejects(runNativeJob({engine:'test',command:process.execPath,args:[entry],cwd:dir,output:join(dir,'missing.mp4')}),/MISSING_OUTPUT/);}finally{await rm(dir,{recursive:true,force:true});}
+ try{const entry=join(dir,'empty.mjs');await writeFile(entry,'');await assert.rejects(runNativeJob({engine:'test',command:process.execPath,args:[entry,join(dir,'missing.mp4')],cwd:dir,output:join(dir,'missing.mp4')}),/MISSING_OUTPUT/);}finally{await rm(dir,{recursive:true,force:true});}
 });
 test('las tareas nativas reciben el mismo contrato de datos y rechazan valores fuera de rango',()=>{
  const path=new URL('../',import.meta.url).pathname;

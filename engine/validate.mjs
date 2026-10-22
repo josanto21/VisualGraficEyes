@@ -101,15 +101,30 @@ export function validateDocument(document, { factories = defaultFactories } = {}
       if (b.channel.startsWith('scale.')) {
         const axis = 'xyz'.indexOf(b.channel.at(-1));
         const e = entities.get(b.entity);
-        const baseMin = e ? Math.min(e.transform.assembled.scale?.[axis] ?? 1, e.transform.exploded.scale?.[axis] ?? e.transform.assembled.scale?.[axis] ?? 1) : 0;
-        let minimum;
-        if (b.kind === 'LINEAR') minimum = Math.min(...p.range.map(v => v * b.scale + (b.offset ?? 0)));
+        const assembled = e?.transform.assembled.scale?.[axis] ?? 1;
+        const exploded = e?.transform.exploded.scale?.[axis] ?? assembled;
+        let minimum, maximum;
+        if (b.kind === 'LINEAR') {
+          const ends=p.range.map(v => v * b.scale + (b.offset ?? 0));
+          minimum=Math.min(...ends);maximum=Math.max(...ends);
+        }
         if (b.kind === 'SINE') {
           const a = b.amplitudeParameter ? parameters.get(b.amplitudeParameter) : null;
           const amplitude = Math.abs(b.amplitude ?? 1) * (a ? Math.max(...a.range.map(Math.abs)) : 1);
           minimum = (b.bias ?? 0) - amplitude;
+          maximum = (b.bias ?? 0) + amplitude;
         }
-        if (minimum !== undefined && minimum + (b.combine === 'add' ? baseMin : 0) <= 0) errors.push(`bindings.${b.id}: podría producir escala no positiva`);
+        // El paso sustituye la pose antes del binding; el fallo visual se aplica al final.
+        // El rango del parámetro cubre también sus efectos de fallo válidos.
+        const contexts=[null,...document.steps];
+        for(const step of contexts){
+          const override=step?.state?.entities?.find(state=>state.id===b.entity)?.scale?.[axis];
+          const low=override??Math.min(assembled,exploded),high=override??Math.max(assembled,exploded);
+          const effectiveMin=minimum+(b.combine==='add'?low:0),effectiveMax=maximum+(b.combine==='add'?high:0);
+          if(minimum!==undefined&&(!Number.isFinite(effectiveMin)||!Number.isFinite(effectiveMax)||effectiveMin<=0)){
+            errors.push(`bindings.${b.id}${step?` / steps.${step.id}`:''}: podría producir escala no positiva o no finita`);break;
+          }
+        }
       }
     }
   }

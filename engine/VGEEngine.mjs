@@ -163,7 +163,8 @@ export class VGEEngine extends THREE.EventDispatcher {
   explode(t) {
     this.#assertAlive(); finite(t, 'explode');
     if (t < 0 || t > 1) throw new RangeError('explode(t) requiere 0 ≤ t ≤ 1');
-    this.#explode = t; this.#commit(); return this;
+    this.#explode = t; this.#commit();
+    this.dispatchEvent({ type: 'explodechange', value: t }); return this;
   }
 
   setStep(n) {
@@ -255,11 +256,17 @@ export class VGEEngine extends THREE.EventDispatcher {
     if (fraction < 0 || fraction > 1) throw new RangeError('fraction debe estar entre 0 y 1');
     const reference = this.getBindingState(id);
     if (reference.rate === 0) throw new RangeError('El reloj elegido está detenido');
+    const phases=[];
     for (const binding of this.#bindings) {
       if (binding.definition.kind === 'LINEAR') continue;
       const rate = this.getBindingState(binding.definition.id).rate;
-      binding.phase = ((TAU * fraction * rate / reference.rate) % TAU + TAU) % TAU;
+      const cycles=fraction===0?0:fraction*(rate/reference.rate);
+      finite(cycles, `fase ${binding.definition.id}`);
+      const phase=((TAU*(cycles%1))%TAU+TAU)%TAU;
+      finite(phase, `fase ${binding.definition.id}`);phases.push([binding,phase]);
     }
+    // Ninguna fase, transformación o efecto cambia si falla el cálculo de otro vínculo.
+    for(const[binding,phase]of phases)binding.phase=phase;
     this.#lastFrame = null; this.#commit(); return this;
   }
   #apply() {
