@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:vge:lesson:2.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "layout", "title", "scope", "story", "parts", "signals", "glossary"],
+  "properties": {
+    "$schema": {"type": "string"},
+    "schemaVersion": {"const": "2.0.0"},
+    "layout": {"enum": ["story", "steps"]},
+    "title": {"$ref": "#/$defs/text"},
+    "scope": {"$ref": "#/$defs/text"},
+    "intro": {"$ref": "#/$defs/text"},
+    "stageNote": {"$ref": "#/$defs/text"},
+    "takeaway": {"$ref": "#/$defs/text"},
+    "readout": {
+      "type": "object", "additionalProperties": false,
+      "required": ["entity", "dataKey", "label"],
+      "properties": {"entity": {"$ref": "#/$defs/id"}, "dataKey": {"$ref": "#/$defs/id"}, "label": {"$ref": "#/$defs/text"}}
+    },
+    "legend": {
+      "type": "array", "maxItems": 4,
+      "items": {"type": "object", "additionalProperties": false, "required": ["color", "text"], "properties": {"color": {"$ref": "#/$defs/color"}, "text": {"$ref": "#/$defs/text"}}}
+    },
+    "story": {
+      "type": "array", "minItems": 1, "maxItems": 512,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["title", "text", "technical", "advanced", "focus", "next"],
+        "properties": {
+          "title": {"$ref": "#/$defs/text"}, "text": {"$ref": "#/$defs/text"},
+          "technical": {"$ref": "#/$defs/text"}, "advanced": {"$ref": "#/$defs/text"},
+          "focus": {"$ref": "#/$defs/id"}, "next": {"$ref": "#/$defs/text"}
+        }
+      }
+    },
+    "parts": {
+      "type": "array", "maxItems": 512,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["id", "name", "function", "technical"],
+        "properties": {
+          "id": {"$ref": "#/$defs/id"}, "name": {"$ref": "#/$defs/text"},
+          "function": {"$ref": "#/$defs/text"}, "technical": {"$ref": "#/$defs/text"},
+          "term": {"$ref": "#/$defs/id"}, "anchor": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number"}}
+        }
+      }
+    },
+    "signals": {
+      "type": "array", "maxItems": 8,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["binding", "entity", "color", "name"],
+        "properties": {"binding": {"$ref": "#/$defs/id"}, "entity": {"$ref": "#/$defs/id"}, "color": {"$ref": "#/$defs/color"}, "name": {"$ref": "#/$defs/text"}}
+      }
+    },
+    "glossary": {
+      "type": "array", "maxItems": 256,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["id", "name", "meaning", "technical"],
+        "properties": {"id": {"$ref": "#/$defs/id"}, "name": {"$ref": "#/$defs/text"}, "meaning": {"$ref": "#/$defs/text"}, "technical": {"$ref": "#/$defs/text"}}
+      }
+    }
+  },
+  "$defs": {
+    "text": {"type": "string", "minLength": 1, "maxLength": 12000, "pattern": "\\S"},
+    "id": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$"},
+    "color": {"type": "string", "pattern": "^#[0-9a-fA-F]{6}$"}
+  }
+}

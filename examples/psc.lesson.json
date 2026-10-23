@@ -1,4 +1,7 @@
 {
+  "$schema": "../schema/vge.lesson.schema.json",
+  "schemaVersion": "2.0.0",
+  "layout": "story",
   "title": "¿Cómo hace girar un motor eléctrico las aspas?",
   "scope": "Dibujo para entender la idea; no mide fuerza ni velocidad real",
   "story": [

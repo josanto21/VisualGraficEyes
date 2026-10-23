@@ -1,0 +1,38 @@
+{
+  "$schema": "../schema/vge.lesson.schema.json",
+  "schemaVersion": "2.0.0",
+  "layout": "steps",
+  "title": "¿Cómo ordenamos estos números?",
+  "intro": "Como al ordenar tarjetas sobre una mesa, miramos dos vecinas y dejamos la mayor a la derecha.",
+  "scope": "Repetimos unos pasos preparados para estos tres números.",
+  "stageNote": "La altura representa el número; toca una barra para reconocer su tarjeta.",
+  "takeaway": "Mirar vecinos y cambiar los que están al revés lleva los números mayores hacia la derecha.",
+  "readout": {"entity": "array", "dataKey": "values", "label": "Orden actual"},
+  "legend": [
+    {"color": "#76BFFF", "text": "Azul: queda por revisar."},
+    {"color": "#FFA052", "text": "Naranja: miramos o cambiamos estas tarjetas."},
+    {"color": "#77D78F", "text": "Verde: ya comprobamos su lugar final."}
+  ],
+  "story": [
+    {"title": "Las tarjetas al empezar", "text": "Empezamos con las tarjetas 3, 1 y 2, de izquierda a derecha.", "focus": "array", "next": "Mirar dos vecinas", "technical": "Fila de tarjetas (arreglo) inicial: [3, 1, 2]; cada barra representa un elemento.", "advanced": "Es una traza preparada de ordenamiento por burbuja: no se ejecuta un algoritmo sobre entradas nuevas; los siete estados están declarados en el JSON."},
+    {"title": "Miramos 3 y 1", "text": "El 3 es mayor que el 1: estas dos tarjetas deben cambiar de lugar.", "focus": "e3", "next": "Cambiar las tarjetas", "technical": "Mirar dos vecinos (comparación adyacente): 3 > 1 es verdadero; aún no se ha aplicado el intercambio.", "advanced": "La comparación estricta > conserva el orden relativo de valores iguales en el algoritmo habitual; este ejemplo no incluye empates ni los demuestra."},
+    {"title": "El 3 avanza a la derecha", "text": "Cambiamos 3 y 1 y queda la fila 1, 3, 2.", "focus": "e3", "next": "Mirar las siguientes", "technical": "Cambiar vecinos (intercambio adyacente) conserva los valores y la identidad de cada elemento: [1, 3, 2].", "advanced": "Los estados cambian posiciones y materiales; no se sustituyen las entidades e1, e2 y e3 ni se ejecuta código de ordenamiento."},
+    {"title": "Miramos 3 y 2", "text": "El 3 es mayor que el 2: también debe pasar a su derecha.", "focus": "e3", "next": "Mover el mayor", "technical": "Segunda comparación de la primera vuelta (pasada): 3 > 2 es verdadero, con estado todavía [1, 3, 2].", "advanced": "Cada comparación correcta acerca el máximo del tramo revisado a su extremo derecho; la posición de la barra representa su lugar y la altura, su valor."},
+    {"title": "El 3 llegó al final", "text": "Queda la fila 1, 2, 3 y marcamos el 3 porque ya está en su lugar final.", "focus": "e3", "next": "Comprobar lo que falta", "technical": "Al acabar la primera vuelta (pasada), el máximo 3 forma el final ya fijado (sufijo ordenado).", "advanced": "Una fila que ya se ve ordenada no es aún el criterio de terminación de esta traza: falta la pasada sin intercambios."},
+    {"title": "Miramos 1 y 2", "text": "El 1 ya está a la izquierda del 2 y los dejamos como están.", "focus": "e1", "next": "Terminar la revisión", "technical": "Segunda vuelta (pasada): 1 > 2 es falso; se omite el intercambio y se conserva [1, 2, 3].", "advanced": "En una implementación con parada temprana, una pasada completa sin intercambios permite terminar; esta traza solo necesita revisar el tramo pendiente [1, 2]."},
+    {"title": "Todas quedaron en orden", "text": "Revisamos sin cambiar ninguna tarjeta: la fila quedó de menor a mayor.", "focus": "array", "next": "Volver al inicio", "technical": "Fila de tarjetas (arreglo) ordenada: [1, 2, 3]; una vuelta (pasada) sin intercambios confirma el final.", "advanced": "Estos estados son una traza predefinida, no un ejecutor general. El algoritmo de burbuja habitual requiere O(n²) comparaciones en el peor caso y puede ser O(n) en el mejor con parada temprana; este ejemplo de tres valores no mide esa complejidad."}
+  ],
+  "parts": [
+    {"id": "array", "name": "Fila de tarjetas", "function": "Reúne los números en el orden actual.", "technical": "Fila de tarjetas (arreglo)", "term": "fila"},
+    {"id": "e3", "name": "Tarjeta 3", "function": "Conserva el 3 aunque cambie de lugar.", "technical": "Tarjeta 3 (elemento de valor 3)", "term": "elemento"},
+    {"id": "e1", "name": "Tarjeta 1", "function": "Conserva el 1 aunque cambie de lugar.", "technical": "Tarjeta 1 (elemento de valor 1)", "term": "elemento"},
+    {"id": "e2", "name": "Tarjeta 2", "function": "Conserva el 2 aunque cambie de lugar.", "technical": "Tarjeta 2 (elemento de valor 2)", "term": "elemento"}
+  ],
+  "signals": [],
+  "glossary": [
+    {"id": "fila", "name": "Fila de tarjetas", "meaning": "Es una lista con un lugar para cada tarjeta, como una fila sobre una mesa.", "technical": "Fila de tarjetas (arreglo)"},
+    {"id": "elemento", "name": "Una tarjeta", "meaning": "Cada tarjeta guarda su número aunque la movamos a otro lugar.", "technical": "Una tarjeta (elemento)"},
+    {"id": "comparacion", "name": "Mirar dos vecinas", "meaning": "Revisamos cuál número es mayor para decidir si las dos tarjetas deben cambiar de lugar.", "technical": "Mirar vecinos (comparación adyacente)"},
+    {"id": "pasada", "name": "Una vuelta de revisión", "meaning": "Recorremos las parejas que faltan, como mirar una fila de izquierda a derecha.", "technical": "Una vuelta de revisión (pasada)"}
+  ]
+}

@@ -8,6 +8,7 @@ import {defaultFactories} from '../factories.mjs';
 import {validateGraphics} from '../graphics/validateGraphics.mjs';
 import {createModelBadge,showError} from './status.mjs';
 import {SignalDiagram} from './SignalDiagram.mjs';
+import {validateLesson} from './validateLesson.mjs';
 
 const analogySVG=`<svg class="analogy" viewBox="0 0 360 214" role="img" aria-label="Dos personas representan los dos rollos: B empuja primero y A toma el siguiente turno">
  <defs><marker id="turn-arrow" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0 0 L6 3.5 L0 7" fill="#77d78f"/></marker></defs>
@@ -47,6 +48,7 @@ export function mountBeginnerVGE(host,data,{graphics,lesson,geometryFactories={}
  const dispose=()=>{abort.abort();releaseScene();};
  try{
   validateDocument(data,{factories:{...defaultFactories,...geometryFactories}});validateGraphics(graphics,data);
+  validateLesson(lesson,data);
   const bindings=data.parameters.flatMap(p=>p.bindings);
   for(const part of lesson.parts)if(!definitions.has(part.id))throw new Error(`La explicación menciona una pieza que falta: ${part.id}`);
   for(const signal of lesson.signals)if(!bindings.some(b=>b.id===signal.binding&&b.kind==='SINE'&&b.entity===signal.entity&&b.channel==='data.iNorm'))throw new Error(`Falta el movimiento compartido de ${signal.name}`);
