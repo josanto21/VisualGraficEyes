@@ -15,6 +15,8 @@ export async function buildDemo() {
   const html = template.replace('/*VGE_BUNDLE*/', () => script) + '\n<!-- Licencias de dependencias incluidas:\n' + licenses.replaceAll('--','—') + '\n-->\n';
   await mkdir(new URL('../dist/', import.meta.url),{recursive:true});
   await writeFile(new URL('../dist/index.html', import.meta.url),html);
+  await mkdir(new URL('../docs/', import.meta.url),{recursive:true});
+  await writeFile(new URL('../docs/index.html', import.meta.url),html);
   await writeFile(new URL('../dist/THIRD-PARTY-LICENSES.txt', import.meta.url),licenses);
   await writeFile(new URL('../schema/vge.graphics.schema.json', import.meta.url),JSON.stringify(graphicsSchema,null,2)+'\n');
   console.log(`Demo autónoma: ${Buffer.byteLength(html)} bytes · Three.js y datos incluidos`);

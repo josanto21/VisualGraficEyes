@@ -1,10 +1,11 @@
 /* Regresiones del Bloque A. Un viewport de 390 px no es un teléfono físico. */
-const {chromium}=require(process.env.VGE_PLAYWRIGHT_MODULE||'playwright');
+const {launchBrowser}=require('./browser.cjs');
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
+const {pathToFileURL}=require('node:url');
 const root=path.resolve(__dirname,'..'),out=path.resolve(process.env.VGE_QA_DIR||path.join(root,'out/qa-block-a'));
 (async()=>{
  fs.mkdirSync(out,{recursive:true});
- const browser=await chromium.launch({...(process.env.VGE_CHROME_PATH?{executablePath:process.env.VGE_CHROME_PATH}:{}),args:['--no-sandbox','--disable-dev-shm-usage','--use-angle=swiftshader','--enable-webgl','--ignore-gpu-blocklist','--enable-unsafe-swiftshader']});
+ const browser=await launchBrowser();
  const results=[];
  const run=async(id,fn,{noWebGL=false}={})=>{
   const page=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1,reducedMotion:'reduce'}),errors=[],consoleErrors=[];
@@ -12,7 +13,7 @@ const root=path.resolve(__dirname,'..'),out=path.resolve(process.env.VGE_QA_DIR|
   page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')consoleErrors.push(m.text());});
   try{
    if(noWebGL)await page.addInitScript(()=>{const get=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(type,...args){return /webgl/i.test(type)?null:get.call(this,type,...args);};});
-   await page.goto('file://'+path.join(root,'dist/index.html'));await page.waitForFunction(()=>window.VGEDemo?.current);
+   await page.goto(pathToFileURL(path.join(root,'dist/index.html')).href);await page.waitForFunction(()=>window.VGEDemo?.current);
    await fn(page);assert.deepEqual(errors,[]);
    assert.deepEqual(consoleErrors,[]);
    await page.screenshot({path:path.join(out,id+'-390.png'),fullPage:true});
