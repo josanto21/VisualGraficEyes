@@ -1,6 +1,6 @@
 {
   "name": "vge-v2-phase2",
-  "version": "2.0.0-alpha.2.1",
+  "version": "2.0.0-alpha.2.2",
   "private": true,
   "type": "module",
   "description": "VGE v2 · motor PSC y orquestación de motores nativos",
@@ -19,7 +19,8 @@
     "build": "node tools/build.mjs",
     "dev": "node tools/serve.mjs",
     "browser:install": "node tools/install-browser.cjs",
-    "check:390": "node tools/check-390.cjs",
+    "check:390": "node tools/check-390.cjs && node tools/check-block-c.cjs",
+    "check:block-c": "node tools/check-block-c.cjs",
     "check:block-a": "node tools/check-block-a.cjs",
     "core:validate": "node tools/vge.mjs validate",
     "core:doctor": "node tools/vge.mjs doctor",

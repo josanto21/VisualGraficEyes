@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "2.0.0",
+  "layout": "story",
+  "title": "¿Cómo ordenamos las tarjetas [4, 2, 3] de menor a mayor?",
+  "scope": "ILUSTRACIÓN: ejemplo fijo de tres tarjetas con estados preparados.",
+  "intro": "Como al acomodar tarjetas sobre una mesa, conservamos sus números y cambiamos únicamente sus lugares.",
+  "stageNote": "Lee la fila de izquierda a derecha.",
+  "takeaway": "Qué debes llevarte: cambia de sitio una pareja que esté al revés y comprueba toda la fila antes de terminar.",
+  "story": [
+    {"title": "1. Mira la fila inicial", "text": "La fila empieza en [4, 2, 3]; cada tarjeta muestra el número que debemos ordenar. Queremos que los números nunca disminuyan al avanzar hacia la derecha.", "technical": "Fila de tarjetas (arreglo): [4, 2, 3]. De menor a mayor (orden ascendente) significa que cada valor es menor o igual que el siguiente.", "advanced": "Se usan tres enteros distintos y se conservan todos sus valores: solo cambia su posición. Son estados preparados, no una ejecución del algoritmo.", "focus": "fila", "next": "Compara las dos primeras tarjetas."},
+    {"title": "2. Coloca el 2 antes del 4", "text": "En [4, 2, 3], el 4 está antes del 2 y es mayor. Cambia esas dos tarjetas de sitio: queda [2, 4, 3].", "technical": "Cambio de sitio entre vecinas (intercambio adyacente): como 4 > 2, se intercambian las posiciones primera y segunda.", "advanced": "Transición: [4, 2, 3] → [2, 4, 3]. La tercera tarjeta conserva su posición y cada valor sigue presente una sola vez.", "focus": "fila", "next": "Compara las dos últimas tarjetas."},
+    {"title": "3. Coloca el 3 antes del 4", "text": "En [2, 4, 3], el 4 está antes del 3 y es mayor. Cambia esas dos tarjetas de sitio: queda [2, 3, 4].", "technical": "Cambio de sitio entre vecinas (intercambio adyacente): como 4 > 3, se intercambian las posiciones segunda y tercera.", "advanced": "Transición: [2, 4, 3] → [2, 3, 4]. El 2 conserva su posición y cada valor sigue presente una sola vez.", "focus": "fila", "next": "Revisa toda la fila."},
+    {"title": "4. Comprueba el resultado", "text": "En [2, 3, 4], el 2 va antes del 3 y el 3 antes del 4. La fila está ordenada de menor a mayor y contiene las mismas tres tarjetas.", "technical": "Comprobación del orden ascendente: 2 ≤ 3 y 3 ≤ 4. Resultado: [2, 3, 4].", "advanced": "Se verifican las dos parejas vecinas y se conserva la entrada como permutación. Este ejemplo requiere dos intercambios; una sola pasada no garantiza ordenar cualquier otra entrada.", "focus": "fila", "next": "Recuerda: revisar el orden y conservar todas las tarjetas."}
+  ],
+  "parts": [],
+  "signals": [],
+  "glossary": [
+    {"id": "arreglo", "name": "Fila de tarjetas", "meaning": "Valores colocados en un orden concreto, como [4, 2, 3].", "technical": "Fila de tarjetas (arreglo)."},
+    {"id": "intercambio", "name": "Cambio de sitio", "meaning": "Dos tarjetas ocupan una el lugar de la otra; por ejemplo, [4, 2, 3] pasa a [2, 4, 3].", "technical": "Cambio de sitio entre vecinas (intercambio adyacente)."},
+    {"id": "ascendente", "name": "De menor a mayor", "meaning": "Los números no disminuyen hacia la derecha, como en [2, 3, 4].", "technical": "De menor a mayor (orden ascendente): cada valor es menor o igual que el siguiente."}
+  ]
+}

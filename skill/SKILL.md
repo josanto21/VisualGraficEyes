@@ -5,6 +5,8 @@ description: "Convierte temas de cualquier materia en explicaciones visuales cla
 
 # VisualGraficEyes (VGE)
 
+Versión: 2.0.0-alpha.2.2.
+
 Convertir el tema en la representación que mejor permita comprenderlo, estudiarlo, explicarlo o experimentar con él. Hacer que cada elemento contribuya a una idea concreta. Mantener el texto necesario para la exactitud; evitar paredes de texto y adornos sin función.
 
 VGE es el método definido en este archivo. No depender de recordar otros chats, de un prompt externo ni de un servicio llamado VGE. Su núcleo coordina Anatomy, CircuitJS/Falstad, Manim, Remotion con sus skills oficiales, Spline y el motor Three.js de VGE. Son herramientas especializadas: comprobar su disponibilidad y ejecutar la elegida para la entrega; mencionarla o imitar su resultado en HTML no equivale a usarla.
@@ -23,6 +25,18 @@ Si el usuario está definiendo o modificando este atajo, guardar la instrucción
 - Preguntar una sola vez únicamente si un dato crítico impide producir un resultado útil. Continuar con supuestos explícitos cuando sean razonables.
 - Responder directamente si basta una frase, un cálculo sencillo, una traducción o una pequeña corrección. Aplicar el criterio visual sin forzar gráficos a toda consulta.
 - Respetar el formato, alcance y preferencias explícitos del usuario.
+
+### Tres capas obligatorias por escena
+
+Aplicar esta regla a toda escena educativa, incluido el visor genérico y los ejemplos ajenos a máquinas. Usar público general por defecto; no asumir nivel universitario. Conservar estas tres capas:
+
+1. Común, siempre visible: pregunta, analogía, qué cambia y para qué sirve cada parte; explicar con palabras familiares y un máximo de dos frases de explicación principal por paso.
+2. Técnica, opcional en «Ver el nombre técnico»: presentar cada término junto a su equivalente común, como «Fila de tarjetas (arreglo)» o «Pieza que gira (rotor)»; incluir valores y unidades explicados y un glosario tocable cuando el formato lo permita.
+3. Avanzada, opcional en «Saber más»: incluir fórmulas pertinentes, supuestos, límites y qué se calcula realmente.
+
+Abrir por defecto solo la común. Hacer que Nivel elija qué capas adicionales se abren al cambiar de escena; permitir abrirlas y cerrarlas por separado sin retirar la común. En video o imagen acompañar la escena común de detalles separados accesibles, sin prometer controles que ese medio no tiene. No exigir estos paneles en una consulta breve que no produzca una escena.
+
+Leer [capas-y-lecciones.md](references/capas-y-lecciones.md) al producir o modificar una lección. Usar el contrato [vge.lesson.schema.json](assets/vge.lesson.schema.json) para `psc.lesson.json` y las lecciones del visor genérico; en el proyecto, su copia canónica está en `schema/vge.lesson.schema.json`. Validar estructura y referencias antes de construir la vista. No inventar una explicación común a partir de una etiqueta técnica insuficiente: preparar los datos que falten o señalar el dato crítico.
 
 ## 2. Elegir un modo principal y hasta uno complementario
 
@@ -62,13 +76,13 @@ Leer [nucleo-y-herramientas.md](references/nucleo-y-herramientas.md) al elegir, 
 - Respetar símbolos, unidades, notación y convenciones de la disciplina.
 - Diseñar para móvil, lectura clara y contraste alto. Permitir interacción por toque y teclado; evitar depender solo de hover. Respetar movimiento reducido cuando sea posible.
 
-Aplicar solo las capas pedagógicas que aporten:
+Aplicar solo los recursos pedagógicos adicionales que aporten; las tres capas de lenguaje anteriores son obligatorias:
 - Predecir → observar → explicar: solicitar una predicción antes de revelar el cambio.
 - Modo límite: explorar extremos y explicar el límite físico, matemático o del modelo.
 - Zoom de escala: conectar sistema, componente y detalle.
-- Nivel ajustable: simple, universitario y experto, cuando cambie de verdad la explicación.
+- Nivel ajustable: Para todos / Con nombres técnicos / Con detalle avanzado, conservando la explicación común.
 
-No convertir estas capas en cuestionarios, paneles o controles obligatorios.
+No convertir estos recursos adicionales en cuestionarios, paneles o controles obligatorios.
 
 ### Funcionamiento visible como pauta general
 
@@ -125,6 +139,8 @@ Comprobar y corregir lo que aplique:
 - Cierre breve «Qué debes llevarte» en un máximo de dos líneas para explicaciones educativas.
 
 Inspeccionar el resultado renderizado cuando sea posible y probar la interacción principal. Si se afirma que se verificó en navegador, haberlo hecho realmente. Distinguir revisión estática, comprobación numérica y ejecución observada. No simular verificaciones ni declarar ejecutado un proyecto que solo se generó.
+
+Realizar dos lecturas de la captura a 390 px: una como persona sin conocimiento previo, que identifique qué ve, qué hace cada parte, qué significa cada color y por qué cambia; otra como persona con conocimiento, que revise términos, valores, relaciones y límites. Registrar confusiones, corregirlas y repetir la lectura afectada. Distinguir una autolectura o lectura con IA de una prueba con personas: comprensión humana y rendimiento en un teléfono físico permanecen «NO VERIFICADO» hasta medirlos. Si no se pudo renderizar la captura, declarar esta prueba «NO VERIFICADO».
 
 Probar solo lo necesario para resolver riesgos concretos. No agregar suites de pruebas que se limiten a repetir la implementación.
 
