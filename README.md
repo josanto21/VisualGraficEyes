@@ -52,7 +52,7 @@ El verde representa únicamente el campo. El azul identifica el rollo A y el nar
 | `src/graphics/CoilPulse.mjs` | Brillo de los rollos a partir de los mismos canales |
 | `src/ui/mountBeginnerVGE.mjs` | Historia, capas, escena, selección y controles para el público general |
 | `src/ui/SignalDiagram.mjs` | Ondas y cursor del reloj común |
-| `tests/` | 50 pruebas de núcleo, gráficos y sincronización de la lección |
+| `tests/` | Regresiones de núcleo, gráficos, lección y bloques; el total actual lo informa `npm test` |
 | `tools/check-390.cjs` | Comprobación puntual de navegador requerida para esta corrección |
 | `docs/FASE-2.md` | Arquitectura, convenciones, rendimiento y rigor |
 | `docs/CORRECCION-ADELANTO.md` | Corrección de B adelantada y nueva prueba de navegador a 390 px |
@@ -60,7 +60,7 @@ El verde representa únicamente el campo. El azul identifica el rollo A y el nar
 
 ## Desarrollar
 
-Requiere Node.js 22 o posterior:
+Requiere Node.js 22.12.0 o posterior:
 
 ```sh
 npm ci
@@ -72,15 +72,42 @@ npm run dev
 
 `dev` sirve la demo en `http://127.0.0.1:5173`; se puede cambiar con `VGE_PORT`. Las licencias de dependencias están dentro del HTML y en `dist/THIRD-PARTY-LICENSES.txt`.
 
-La revisión de navegador es opcional para desarrollar y requiere Playwright:
+La revisión usa Playwright 1.64.1 y el descargador `@puppeteer/browsers` 3.2.6,
+fijados en `devDependencies` y en el lock. Después de `npm ci`, un comando
+descarga Chrome Headless Shell **156.0.8078.4**, la versión que declara ese
+Playwright, desde Chrome for Testing de Google. Se guarda en la caché local
+`.cache/vge-browser/`, excluida de Git. No se instala Puppeteer para ejecutar
+pruebas: el ejecutor sigue siendo Playwright.
 
 ```sh
-npm install --no-save playwright@1.62.1
-npx playwright install chromium
+npm run browser:install
+npm run build
 npm run check:390
+npm run check:block-a
 ```
 
-`VGE_CHROME_PATH` permite usar un Chromium propio; `VGE_QA_DIR` cambia la salida de capturas. La comprobación de esta entrega utilizó Chromium 131 con WebGL por software. No es la matriz de Fase 5 ni mide FPS en un teléfono.
+No necesita `NODE_PATH`, un Playwright del host ni una ruta manual a Chrome.
+En Linux mínimo, usa `npm run browser:install -- --with-deps` para instalar
+también las bibliotecas del sistema que pide Playwright (puede requerir
+privilegios de administración). La descarga necesita conexión; repetirla reutiliza
+la caché. La demo empaquetada sigue siendo autónoma.
+
+Las capturas y los resultados se escriben en `out/qa-390/` y `out/qa-block-a/`;
+`VGE_QA_DIR` permite elegir otro directorio de salida. El check cuenta las frases
+del texto común y las etiquetas de piezas visibles en los estados recorridos:
+máximo dos de cada una. No mide comprensión humana, FPS en teléfono ni completa
+la matriz de Fase 5. El navegador real y la GPU observados figuran en su JSON.
+
+## Fuente canónica y licencia pendiente
+
+`src/` es la única implementación del motor; exports, demo, ejemplos y pruebas
+la consumen. Se retiraron las copias de `engine/`: cualquier consumidor externo
+de esas rutas debe migrar al export del paquete o a su módulo equivalente en
+`src/`. Las salidas `dist/index.html` y `docs/index.html` se regeneran juntas.
+
+La licencia del código propio sigue sin elegirse: [LICENSE-PENDIENTE.md](LICENSE-PENDIENTE.md).
+Los avisos de terceros se conservan; consulta también el
+[aviso sobre Spline](docs/TERMINOS-SPLINE.md).
 
 ## API conservada y extensión del reloj
 

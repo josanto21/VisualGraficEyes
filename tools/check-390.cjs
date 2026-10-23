@@ -1,16 +1,20 @@
 /* Revisión puntual de esta corrección; no es la matriz de Fase 5. */
-const {chromium}=require(process.env.VGE_PLAYWRIGHT_MODULE || 'playwright');
+const {launchBrowser}=require('./browser.cjs');
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
-const root=path.resolve(__dirname,'..'),out=path.resolve(process.env.VGE_QA_DIR || path.join(root,'qa'));
+const {pathToFileURL}=require('node:url');
+const {measureContent}=require('./qa-content.cjs');
+const root=path.resolve(__dirname,'..'),out=path.resolve(process.env.VGE_QA_DIR || path.join(root,'out/qa-390'));
 const near=(a,b,t=1e-6)=>assert.ok(Math.abs(a-b)<t,`${a} != ${b}`);
 (async()=>{
  fs.mkdirSync(out,{recursive:true});
- const browser=await chromium.launch({...(process.env.VGE_CHROME_PATH?{executablePath:process.env.VGE_CHROME_PATH}:{}),args:['--no-sandbox','--disable-dev-shm-usage','--use-angle=swiftshader','--enable-webgl','--ignore-gpu-blocklist','--enable-unsafe-swiftshader']});
+ const browser=await launchBrowser();
  try{
-  const page=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1});const errors=[],requests=[],checks=[];
+  const page=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1});const errors=[],requests=[],checks=[],contentMeasurements=[];
   page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text())});page.on('request',r=>{if(/^https?:/.test(r.url()))requests.push(r.url())});
   const mark=s=>{checks.push(s);console.log('✓ '+s)};
   const targets=async context=>{
+   const content=await page.evaluate(()=>({text:document.querySelector('.story-text').textContent,labels:[...document.querySelectorAll('.piece-label')].filter(e=>e.getClientRects().length&&getComputedStyle(e).visibility==='visible').map(e=>e.textContent.trim())}));
+   contentMeasurements.push({context,width:page.viewportSize().width,...content,...measureContent(content,context)});
    const result=await page.evaluate(()=>{
     const controls=[...document.querySelectorAll('button,input,select,summary,a')].filter(e=>e.getClientRects().length&&!e.disabled);
     const sizes=controls.map(e=>{const target=e.matches('input[type=checkbox]')?e.closest('label')||e:e,r=target.getBoundingClientRect();return{element:e.id||e.dataset.action||e.textContent.trim().slice(0,45)||e.tagName,width:r.width,height:r.height}});
@@ -19,9 +23,15 @@ const near=(a,b,t=1e-6)=>assert.ok(Math.abs(a-b)<t,`${a} != ${b}`);
   };
   const setRange=async(id,value)=>page.locator(id).evaluate((el,value)=>{el.value=String(value);el.dispatchEvent(new Event('input',{bubbles:true}))},value);
   const screenshot=async name=>{await page.evaluate(()=>scrollTo(0,0));await page.waitForTimeout(140);await page.screenshot({path:path.join(out,name),fullPage:true})};
-  await page.goto('file://'+path.join(root,'dist/index.html'));await page.waitForFunction(()=>window.VGEDemo?.current);
+  await page.goto(pathToFileURL(path.join(root,'dist/index.html')).href);await page.waitForFunction(()=>window.VGEDemo?.current);
   assert.equal(await page.locator('#vge-level').inputValue(),'1');assert.equal(await page.locator('.layer-two').isVisible(),false);assert.equal(await page.locator('.layer-three').isVisible(),false);assert.equal(await page.evaluate(()=>VGEDemo.current.engine),null);
   await targets('Inicio');await screenshot('despues-inicio-390.png');mark('Inicio en capa 1, pregunta y analogía antes de crear WebGL');
+  const originalText=await page.locator('.story-text').textContent();
+  try{
+   await page.locator('.story-text').evaluate(e=>{e.textContent='Una frase. Otra frase. Una tercera frase.'});
+   await assert.rejects(()=>targets('Prueba de tres frases'),/3 frases; máximo 2/);
+  }finally{await page.locator('.story-text').evaluate((e,text)=>{e.textContent=text},originalText);}
+  mark('Regresión del contador: una escena con tres frases se rechaza realmente');
   for(let i=0;i<4;i++){
    assert.equal(await page.locator('.step-count').textContent(),`Paso ${i+1} de 4`);
    assert.doesNotMatch(await page.locator('body').innerText(),/\bPSC\b|\bestator\b|\brotor\b|emisiv|senoide|normaliz|Σ/iu);
@@ -32,7 +42,13 @@ const near=(a,b,t=1e-6)=>assert.ok(Math.abs(a-b)<t,`${a} != ${b}`);
    if(i===1)await screenshot('despues-relevo-390.png');
    if(i<3)await page.locator('[data-action="story-next"]').click();
   }
-  await page.waitForFunction(()=>VGEDemo.current.engine);await page.evaluate(()=>{VGEDemo.current.engine.pause().seekCycle('mainCurrent',.10)});await screenshot('despues-comun-390.png');mark('Cuatro pasos, máximo dos frases por paso y lenguaje común sin jerga visible');
+  await page.waitForFunction(()=>VGEDemo.current.engine);await page.evaluate(()=>{VGEDemo.current.engine.pause().seekCycle('mainCurrent',.10)});await screenshot('despues-comun-390.png');mark('Cuatro pasos: conteo real de frases y etiquetas visibles, máximo dos de cada una; lenguaje común sin jerga visible');
+  const runtime={playwright:require('playwright/package.json').version,browser:browser.version(),gpu:await page.evaluate(()=>{const gl=VGEDemo.current.renderer.getContext(),info=gl.getExtension('WEBGL_debug_renderer_info');return info?gl.getParameter(info.UNMASKED_RENDERER_WEBGL):gl.getParameter(gl.RENDERER)})};
+  try{
+   await page.evaluate(()=>{const sample=document.querySelector('.piece-label'),extra=sample.cloneNode(true);extra.hidden=false;extra.style.visibility='visible';extra.dataset.qaExtra='true';sample.parentElement.append(extra)});
+   await assert.rejects(()=>targets('Prueba de tres etiquetas'),/3 etiquetas visibles; máximo 2/);
+  }finally{await page.locator('[data-qa-extra]').evaluateAll(elements=>elements.forEach(e=>e.remove()));}
+  mark('Regresión del contador: una tercera etiqueta visible se rechaza realmente');
   await page.selectOption('#vge-level','2');assert.ok(await page.locator('.story-text').isVisible());assert.ok(await page.locator('.layer-two').isVisible());assert.equal(await page.locator('.layer-three').isVisible(),false);await targets('Capa técnica');
   await screenshot('despues-tecnico-390.png');mark('Nivel técnico conserva la explicación común y añade nombres, ondas y escala explicada');
   for(const[f,a,b]of [[0,0,1],[.25,1,0],[.5,0,-1],[.75,-1,0]]){
@@ -53,7 +69,7 @@ const near=(a,b,t=1e-6)=>assert.ok(Math.abs(a-b)<t,`${a} != ${b}`);
   await page.locator('[data-action="story-next"]').click();
   for(const id of ['main_winding','aux_winding','capacitor','rotor_core','blades','stator','shaft_part']){
    await page.selectOption('#vge-part',id);assert.equal(await page.evaluate(()=>VGEDemo.current.engine.selectedId),id);assert.equal(await page.locator('.piece-label').count(),2);await targets('Pieza '+id);if(['main_winding','aux_winding','capacitor'].includes(id))await screenshot(`pieza-${id}-390.png`);assert.ok((await page.locator('.piece-label.label-0 strong').textContent()).length>0);
-  }mark('Siete piezas tienen nombre común, función y conexión gráfica; dos etiquetas como máximo');
+  }mark('Siete piezas tienen nombre común, función y conexión gráfica; etiquetas visibles contadas en cada selección, máximo dos');
   await page.selectOption('#vge-part','rotor_core');await page.selectOption('#vge-highlight','outline');assert.equal(await page.evaluate(()=>VGEDemo.current.graphics.stats.visibleOutlines),1);
   await page.selectOption('#vge-highlight','emissive');const light=await page.evaluate(()=>({selected:VGEDemo.current.engine.getMesh('rotor_core').material.emissive.toArray(),other:VGEDemo.current.engine.getMesh('shaft_part').material.emissive.toArray(),outlines:VGEDemo.current.graphics.stats.visibleOutlines}));assert.ok(light.selected.some(x=>x>0));assert.deepEqual(light.other,[0,0,0]);assert.equal(light.outlines,0);mark('Resaltado normal exclusivo y respaldo ligero sin aclarar otras piezas');
   await page.locator('[data-view="cut"]').click();await targets('Corte');
@@ -68,6 +84,6 @@ const near=(a,b,t=1e-6)=>assert.ok(Math.abs(a-b)<t,`${a} != ${b}`);
   await page.setViewportSize({width:320,height:844});await targets('Inicio 320 px');await page.evaluate(()=>VGEDemo.current.goStory(3));await page.selectOption('#vge-level','3');await targets('Capas 320 px');mark('Comprobación adicional a 320 px sin desbordamiento ni objetivos táctiles pequeños');
   await page.setViewportSize({width:390,height:844});await page.evaluate(()=>VGEDemo.mount({}));assert.ok(await page.locator('.error-panel').isVisible());assert.match(await page.locator('.error-detail').textContent(),/Documento VGE inválido/);mark('JSON inválido muestra un mensaje visible');
   assert.deepEqual(errors,[]);assert.deepEqual(requests,[]);mark('Consola limpia y HTML sin peticiones externas');
-  fs.writeFileSync(path.join(out,'comprobacion-390.json'),JSON.stringify({viewport:390,secondaryWidth:320,checks,direction,consoleErrors:errors,externalRequests:requests,renderer:'Chromium con WebGL por software',scope:'Comprobación puntual de la corrección de Fase 2, no matriz formal de Fase 5.'},null,2));
+  fs.writeFileSync(path.join(out,'comprobacion-390.json'),JSON.stringify({viewport:390,secondaryWidth:320,checks,contentMeasurements,direction,runtime,consoleErrors:errors,externalRequests:requests,renderer:'Chromium con WebGL por software',scope:'Comprobación puntual de Fase 2 y Bloque B; no matriz formal de Fase 5 ni prueba de comprensión humana.'},null,2));
  }finally{await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});

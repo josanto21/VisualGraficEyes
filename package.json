@@ -5,7 +5,7 @@
   "type": "module",
   "description": "VGE v2 · motor PSC y orquestación de motores nativos",
   "engines": {
-    "node": ">=22"
+    "node": ">=22.12.0"
   },
   "exports": {
     ".": "./src/VGEEngine.mjs",
@@ -18,17 +18,21 @@
     "example": "node examples/headless.mjs",
     "build": "node tools/build.mjs",
     "dev": "node tools/serve.mjs",
+    "browser:install": "node tools/install-browser.cjs",
     "check:390": "node tools/check-390.cjs",
+    "check:block-a": "node tools/check-block-a.cjs",
     "core:validate": "node tools/vge.mjs validate",
     "core:doctor": "node tools/vge.mjs doctor",
     "core:plan": "node tools/vge.mjs plan",
     "core:run": "node tools/vge.mjs run"
   },
   "dependencies": {
-    "ajv": "8.17.1",
+    "ajv": "8.20.0",
     "three": "0.180.0"
   },
   "devDependencies": {
-    "esbuild": "0.25.12"
+    "@puppeteer/browsers": "3.2.6",
+    "esbuild": "0.25.12",
+    "playwright": "1.64.1"
   }
 }

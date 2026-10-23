@@ -1,0 +1,617 @@
+{
+  "date": "2026-10-22 America/Panama",
+  "baseCommit": "20794263940eec07ebc1caee10305ae5f6672ecd",
+  "branch": "bloque-b",
+  "commands": {
+    "baseline-ci": {
+      "command": [
+        "npm",
+        "ci"
+      ],
+      "cwd": "/workspace/scratch/c949886d48cd/vge-bloque-b-evidencia/baseline",
+      "started": "2026-10-23T04:17:58.025820+00:00",
+      "seconds": 4.355,
+      "exitCode": 0,
+      "removedHostOverrides": [
+        "NODE_PATH"
+      ],
+      "stdout": "\nadded 8 packages in 4s\n",
+      "stderr": "npm warn Unknown env config \"http-proxy\". This will stop working in the next major version of npm.\n"
+    },
+    "baseline-regressions": {
+      "command": [
+        "node",
+        "--test",
+        "tests/block-b.test.mjs"
+      ],
+      "cwd": "/workspace/scratch/c949886d48cd/vge-bloque-b-evidencia/baseline",
+      "started": "2026-10-23T04:18:27.182954+00:00",
+      "seconds": 0.308,
+      "exitCode": 1,
+      "removedHostOverrides": [
+        "NODE_PATH"
+      ],
+      "stdout": "✖ VGE-009: Playwright se instala localmente con versión exacta y preparación documentada (2.447436ms)\n✖ VGE-010: AJV instalado y lock coinciden con una versión parcheada y fijada (0.5249ms)\n✖ VGE-011: una sola implementación del motor y entradas que consumen src/ (1.502395ms)\n✖ check:390 rechaza tres frases o tres etiquetas y registra las cantidades reales (1.505117ms)\nℹ tests 4\nℹ suites 0\nℹ pass 0\nℹ fail 4\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 195.564919\n\n✖ failing tests:\n\ntest at tests/block-b.test.mjs:12:1\n✖ VGE-009: Playwright se instala localmente con versión exacta y preparación documentada (2.447436ms)\n  AssertionError [ERR_ASSERTION]: Falta Playwright fijado en devDependencies\n      at TestContext.<anonymous> (file:///workspace/scratch/c949886d48cd/vge-bloque-b-evidencia/baseline/tests/block-b.test.mjs:14:10)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1382:25)\n      at Test.start (node:internal/test_runner/test:1242:17)\n      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {\n    generatedMessage: false,\n    code: 'ERR_ASSERTION',\n    actual: '',\n    expected: /^\\d+\\.\\d+\\.\\d+$/,\n    operator: 'match',\n    diff: 'simple'\n  }\n\ntest at tests/block-b.test.mjs:33:1\n✖ VGE-010: AJV instalado y lock coinciden con una versión parcheada y fijada (0.5249ms)\n  AssertionError [ERR_ASSERTION]: La versión está afectada por GHSA-2g4f-4pwh-qvx6\n      at TestContext.<anonymous> (file:///workspace/scratch/c949886d48cd/vge-bloque-b-evidencia/baseline/tests/block-b.test.mjs:37:10)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1382:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)\n      at Test.postRun (node:internal/test_runner/test:1522:19)\n      at Test.run (node:internal/test_runner/test:1447:12)\n      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {\n    generatedMessage: false,\n    code: 'ERR_ASSERTION',\n    actual: false,\n    expected: true,\n    operator: '==',\n    diff: 'simple'\n  }\n\ntest at tests/block-b.test.mjs:42:1\n✖ VGE-011: una sola implementación del motor y entradas que consumen src/ (1.502395ms)\n  AssertionError [ERR_ASSERTION]: Existe un segundo árbol engine/\n  \n  true !== false\n  \n      at TestContext.<anonymous> (file:///workspace/scratch/c949886d48cd/vge-bloque-b-evidencia/baseline/tests/block-b.test.mjs:43:10)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1382:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)\n      at Test.postRun (node:internal/test_runner/test:1522:19)\n      at Test.run (node:internal/test_runner/test:1447:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {\n    generatedMessage: false,\n    code: 'ERR_ASSERTION',\n    actual: true,\n    expected: false,\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n\ntest at tests/block-b.test.mjs:59:1\n✖ check:390 rechaza tres frases o tres etiquetas y registra las cantidades reales (1.505117ms)\n  Error: Cannot find module '../tools/qa-content.cjs'\n  Require stack:\n  - /workspace/scratch/c949886d48cd/vge-bloque-b-evidencia/baseline/tests/block-b.test.mjs\n      at Module._resolveFilename (node:internal/modules/cjs/loader:1517:15)\n      at wrapResolveFilename (node:internal/modules/cjs/loader:1071:27)\n      at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1095:10)\n      at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1122:12)\n      at Module._load (node:internal/modules/cjs/loader:1294:5)\n      at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)\n      at Module.require (node:internal/modules/cjs/loader:1617:12)\n      at require (node:internal/modules/helpers:153:16)\n      at TestContext.<anonymous> (file:///workspace/scratch/c949886d48cd/vge-bloque-b-evidencia/baseline/tests/block-b.test.mjs:60:30)\n      at Test.runInAsyncScope (node:async_hooks:227:14) {\n    code: 'MODULE_NOT_FOUND',\n    requireStack: [ '/workspace/scratch/c949886d48cd/vge-bloque-b-evidencia/baseline/tests/block-b.test.mjs' ]\n  }\n",
+      "stderr": ""
+    },
+    "baseline-browser": {
+      "command": [
+        "npm",
+        "run",
+        "check:390"
+      ],
+      "cwd": "/workspace/scratch/c949886d48cd/vge-bloque-b",
+      "started": "2026-10-22T22:04:40.753359+00:00",
+      "seconds": 0.206,
+      "exitCode": 1,
+      "removedHostOverrides": [
+        "NODE_PATH"
+      ],
+      "stdout": "\n> vge-v2-phase2@2.0.0-alpha.2.1 check:390\n> node tools/check-390.cjs\n\n",
+      "stderr": "npm warn Unknown env config \"http-proxy\". This will stop working in the next major version of npm.\nnode:internal/modules/cjs/loader:1520\n  throw err;\n  ^\n\nError: Cannot find module 'playwright'\nRequire stack:\n- /workspace/scratch/c949886d48cd/vge-bloque-b/tools/check-390.cjs\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1517:15)\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1071:27)\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1095:10)\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1122:12)\n    at Module._load (node:internal/modules/cjs/loader:1294:5)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)\n    at Module.require (node:internal/modules/cjs/loader:1617:12)\n    at require (node:internal/modules/helpers:153:16)\n    at Object.<anonymous> (/workspace/scratch/c949886d48cd/vge-bloque-b/tools/check-390.cjs:2:18)\n    at Module._compile (node:internal/modules/cjs/loader:1872:14) {\n  code: 'MODULE_NOT_FOUND',\n  requireStack: [\n    '/workspace/scratch/c949886d48cd/vge-bloque-b/tools/check-390.cjs'\n  ]\n}\n\nNode.js v24.19.0\n"
+    },
+    "baseline-audit": {
+      "command": [
+        "npm",
+        "audit",
+        "--json"
+      ],
+      "cwd": "/workspace/scratch/c949886d48cd/vge-bloque-b",
+      "started": "2026-10-22T22:04:40.761641+00:00",
+      "seconds": 3.784,
+      "exitCode": 1,
+      "removedHostOverrides": [
+        "NODE_PATH"
+      ],
+      "stdout": "{\n  \"auditReportVersion\": 2,\n  \"vulnerabilities\": {\n    \"ajv\": {\n      \"name\": \"ajv\",\n      \"severity\": \"moderate\",\n      \"isDirect\": true,\n      \"via\": [\n        {\n          \"source\": 1113715,\n          \"name\": \"ajv\",\n          \"dependency\": \"ajv\",\n          \"title\": \"ajv has ReDoS when using `$data` option\",\n          \"url\": \"https://github.com/advisories/GHSA-2g4f-4pwh-qvx6\",\n          \"severity\": \"moderate\",\n          \"cwe\": [\n            \"CWE-400\",\n            \"CWE-1333\"\n          ],\n          \"cvss\": {\n            \"score\": 0,\n            \"vectorString\": null\n          },\n          \"range\": \">=7.0.0-alpha.0 <8.18.0\"\n        }\n      ],\n      \"effects\": [],\n      \"range\": \"7.0.0-alpha.0 - 8.17.1\",\n      \"nodes\": [\n        \"node_modules/ajv\"\n      ],\n      \"fixAvailable\": {\n        \"name\": \"ajv\",\n        \"version\": \"8.20.0\",\n        \"isSemVerMajor\": false\n      }\n    }\n  },\n  \"metadata\": {\n    \"vulnerabilities\": {\n      \"info\": 0,\n      \"low\": 0,\n      \"moderate\": 1,\n      \"high\": 0,\n      \"critical\": 0,\n      \"total\": 1\n    },\n    \"dependencies\": {\n      \"prod\": 7,\n      \"dev\": 27,\n      \"optional\": 26,\n      \"peer\": 0,\n      \"peerOptional\": 0,\n      \"total\": 33\n    }\n  }\n}\n",
+      "stderr": "npm warn Unknown env config \"http-proxy\". This will stop working in the next major version of npm.\n"
+    },
+    "browser-install": {
+      "command": [
+        "npm",
+        "run",
+        "browser:install"
+      ],
+      "cwd": "/workspace/scratch/c949886d48cd/vge-bloque-b",
+      "started": "2026-10-22T22:06:41.232210+00:00",
+      "seconds": 16.827,
+      "exitCode": 1,
+      "removedHostOverrides": [
+        "NODE_PATH"
+      ],
+      "stdout": "\n> vge-v2-phase2@2.0.0-alpha.2.1 browser:install\n> playwright install --only-shell chromium\n\nDownloading Chrome Headless Shell 156.0.8078.4 (playwright chromium-headless-shell v1248)\u001b[2m from https://cdn.playwright.dev/builds/cft/156.0.8078.4/linux64/chrome-headless-shell-linux64.zip\u001b[22m\n|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 0 MiB\nDownloading Chrome Headless Shell 156.0.8078.4 (playwright chromium-headless-shell v1248)\u001b[2m from https://cdn.playwright.dev/builds/cft/156.0.8078.4/linux64/chrome-headless-shell-linux64.zip\u001b[22m\n|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 0 MiB\nDownloading Chrome Headless Shell 156.0.8078.4 (playwright chromium-headless-shell v1248)\u001b[2m from https://cdn.playwright.dev/builds/cft/156.0.8078.4/linux64/chrome-headless-shell-linux64.zip\u001b[22m\n|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 0 MiB\nDownloading Chrome Headless Shell 156.0.8078.4 (playwright chromium-headless-shell v1248)\u001b[2m from https://cdn.playwright.dev/builds/cft/156.0.8078.4/linux64/chrome-headless-shell-linux64.zip\u001b[22m\n|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 0 MiB\nDownloading Chrome Headless Shell 156.0.8078.4 (playwright chromium-headless-shell v1248)\u001b[2m from https://cdn.playwright.dev/builds/cft/156.0.8078.4/linux64/chrome-headless-shell-linux64.zip\u001b[22m\n|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 0 MiB\nFailed to install browsers\nError: Failed to download Chrome Headless Shell 156.0.8078.4 (playwright chromium-headless-shell v1248), caused by\nError: Download failure, code=1\n    at ChildProcess.<anonymous> (/workspace/scratch/c949886d48cd/vge-bloque-b/node_modules/playwright-core/lib/coreBundle.js:33774:32)\n    at ChildProcess.emit (node:events:509:28)\n    at ChildProcess._handle.onexit (node:internal/child_process:295:12)\n",
+      "stderr": "npm warn Unknown env config \"http-proxy\". This will stop working in the next major version of npm.\nError: End of central directory record signature not found. Either not a zip file, or file is truncated.\n    at /workspace/scratch/c949886d48cd/vge-bloque-b/node_modules/playwright-core/lib/utilsBundle.js:31441:18\n    at /workspace/scratch/c949886d48cd/vge-bloque-b/node_modules/playwright-core/lib/utilsBundle.js:31967:9\n    at /workspace/scratch/c949886d48cd/vge-bloque-b/node_modules/playwright-core/lib/utilsBundle.js:30864:11\n    at FSReqCallback.wrapper [as oncomplete] (node:fs:731:5)\nError: End of central directory record signature not found. Either not a zip file, or file is truncated.\n    at /workspace/scratch/c949886d48cd/vge-bloque-b/node_modules/playwright-core/lib/utilsBundle.js:31441:18\n    at /workspace/scratch/c949886d48cd/vge-bloque-b/node_modules/playwright-core/lib/utilsBundle.js:31967:9\n    at /workspace/scratch/c949886d48cd/vge-bloque-b/node_modules/playwright-core/lib/utilsBundle.js:30864:11\n    at FSReqCallback.wrapper [as oncomplete] (node:fs:731:5)\nError: End of central directory record signature not found. Either not a zip file, or file is truncated.\n    at /workspace/scratch/c949886d48cd/vge-bloque-b/node_modules/playwright-core/lib/utilsBundle.js:31441:18\n    at /workspace/scratch/c949886d48cd/vge-bloque-b/node_modules/playwright-core/lib/utilsBundle.js:31967:9\n    at /workspace/scratch/c949886d48cd/vge-bloque-b/node_modules/playwright-core/lib/utilsBundle.js:30864:11\n    at FSReqCallback.wrapper [as oncomplete] (node:fs:731:5)\nError: End of central directory record signature not found. Either not a zip file, or file is truncated.\n    at /workspace/scratch/c949886d48cd/vge-bloque-b/node_modules/playwright-core/lib/utilsBundle.js:31441:18\n    at /workspace/scratch/c949886d48cd/vge-bloque-b/node_modules/playwright-core/lib/utilsBundle.js:31967:9\n    at /workspace/scratch/c949886d48cd/vge-bloque-b/node_modules/playwright-core/lib/utilsBundle.js:30864:11\n    at FSReqCallback.wrapper [as oncomplete] (node:fs:731:5)\nError: End of central directory record signature not found. Either not a zip file, or file is truncated.\n    at /workspace/scratch/c949886d48cd/vge-bloque-b/node_modules/playwright-core/lib/utilsBundle.js:31441:18\n    at /workspace/scratch/c949886d48cd/vge-bloque-b/node_modules/playwright-core/lib/utilsBundle.js:31967:9\n    at /workspace/scratch/c949886d48cd/vge-bloque-b/node_modules/playwright-core/lib/utilsBundle.js:30864:11\n    at FSReqCallback.wrapper [as oncomplete] (node:fs:731:5)\n"
+    },
+    "launch-permissions-before": {
+      "command": [
+        "npm",
+        "run",
+        "check:390"
+      ],
+      "cwd": "/workspace/scratch/c949886d48cd/vge-bloque-b",
+      "started": "2026-10-23T04:21:02.163452+00:00",
+      "seconds": 1.551,
+      "exitCode": 1,
+      "removedHostOverrides": [
+        "NODE_PATH"
+      ],
+      "stdout": "\n> vge-v2-phase2@2.0.0-alpha.2.1 check:390\n> node tools/check-390.cjs\n\n",
+      "stderr": "npm warn Unknown env config \"http-proxy\". This will stop working in the next major version of npm.\nbrowserType.launch: Failed to launch: Error: spawn /workspace/scratch/c949886d48cd/vge-bloque-b/.cache/vge-browser/chrome-headless-shell/linux-156.0.8078.4/chrome-headless-shell-linux64/chrome-headless-shell EACCES\nCall log:\n\u001b[2m  - <launching> /workspace/scratch/c949886d48cd/vge-bloque-b/.cache/vge-browser/chrome-headless-shell/linux-156.0.8078.4/chrome-headless-shell-linux64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,AvoidCorsURLLoaderRestartOnRedirect,Translate,AutoDeElevate,OptimizationHints,NetworkTimeServiceQuerying,AimEnabled,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --disable-dev-shm-usage --use-angle=swiftshader --enable-webgl --ignore-gpu-blocklist --enable-unsafe-swiftshader --user-data-dir=/tmp/playwright_chromiumdev_profile-6XbeQ7 --remote-debugging-pipe --no-startup-window\u001b[22m\n\u001b[2m  - [pid=N/A] starting temporary directories cleanup\u001b[22m\n\u001b[2m  - [pid=N/A] finished temporary directories cleanup\u001b[22m\n\n    at launchBrowser (/workspace/scratch/c949886d48cd/vge-bloque-b/tools/browser.cjs:11:19)\n    at async /workspace/scratch/c949886d48cd/vge-bloque-b/tools/check-390.cjs:10:16 {\n  log: [\n    '  - <launching> /workspace/scratch/c949886d48cd/vge-bloque-b/.cache/vge-browser/chrome-headless-shell/linux-156.0.8078.4/chrome-headless-shell-linux64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,AvoidCorsURLLoaderRestartOnRedirect,Translate,AutoDeElevate,OptimizationHints,NetworkTimeServiceQuerying,AimEnabled,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --disable-dev-shm-usage --use-angle=swiftshader --enable-webgl --ignore-gpu-blocklist --enable-unsafe-swiftshader --user-data-dir=/tmp/playwright_chromiumdev_profile-6XbeQ7 --remote-debugging-pipe --no-startup-window',\n    '  - [pid=N/A] starting temporary directories cleanup',\n    '  - [pid=N/A] finished temporary directories cleanup'\n  ]\n}\n"
+    },
+    "final-ci": {
+      "command": [
+        "npm",
+        "ci"
+      ],
+      "cwd": "/workspace/scratch/c949886d48cd/vge-bloque-b",
+      "started": "2026-10-23T04:17:39.052316+00:00",
+      "seconds": 7.59,
+      "exitCode": 0,
+      "removedHostOverrides": [
+        "NODE_PATH"
+      ],
+      "stdout": "\nadded 27 packages in 7s\n",
+      "stderr": "npm warn Unknown env config \"http-proxy\". This will stop working in the next major version of npm.\n"
+    },
+    "final-browser-install": {
+      "command": [
+        "npm",
+        "run",
+        "browser:install"
+      ],
+      "cwd": "/workspace/scratch/c949886d48cd/vge-bloque-b",
+      "started": "2026-10-23T04:22:30.498410+00:00",
+      "seconds": 14.108,
+      "exitCode": 0,
+      "removedHostOverrides": [
+        "NODE_PATH"
+      ],
+      "stdout": "\n> vge-v2-phase2@2.0.0-alpha.2.1 browser:install\n> node tools/install-browser.cjs\n\nDescargando chrome-headless-shell 156.0.8078.4 desde Chrome for Testing (Google).\nGoogle Chrome for Testing 156.0.8078.4\nNavegador preparado: /workspace/scratch/c949886d48cd/vge-bloque-b/.cache/vge-browser/chrome-headless-shell/linux-156.0.8078.4/chrome-headless-shell-linux64/chrome-headless-shell\n",
+      "stderr": "npm warn Unknown env config \"http-proxy\". This will stop working in the next major version of npm.\n"
+    },
+    "final-test": {
+      "command": [
+        "npm",
+        "test"
+      ],
+      "cwd": "/workspace/scratch/c949886d48cd/vge-bloque-b",
+      "started": "2026-10-23T04:22:44.891161+00:00",
+      "seconds": 2.868,
+      "exitCode": 0,
+      "removedHostOverrides": [
+        "NODE_PATH"
+      ],
+      "stdout": "\n> vge-v2-phase2@2.0.0-alpha.2.1 test\n> node --test tests/*.test.mjs\n\n✔ VGE-001: un render fallido conserva los bytes y el hash de la exportación previa (226.493443ms)\n✔ VGE-001: error de ejecutable conserva también la exportación anterior (11.299885ms)\n✔ VGE-001: abortar espera al cierre del proceso y conserva la salida anterior (184.455733ms)\n✔ VGE-001: rechaza un MP4 truncado sin reemplazar el video válido (226.275771ms)\n✔ VGE-001: acepta el contenedor de un MP4 real generado para la regresión (230.220603ms)\n✔ VGE-001: una salida no vacía pero inválida tampoco reemplaza la anterior (165.630085ms)\n✔ VGE-001: un éxito se construye en temporal antes de sustituir la salida (205.886391ms)\n✔ VGE-002: rechaza escala efectiva LINEAR, base de paso 0.1 (19.625576ms)\n✔ VGE-002: rechaza escala efectiva LINEAR, base de paso 0.5 (2.108672ms)\n✔ VGE-002: rechaza escala efectiva SINE, base de paso 0.1 (0.975132ms)\n✔ VGE-002: la composición válida respeta pose, paso, parámetros y escala del fallo (19.03453ms)\n✔ VGE-003: seekCycle rechaza fases no finitas antes de modificar ningún vínculo (106.223433ms)\n✔ VGE-004: el plan admite la salida aunque relative use separadores Windows (10.647056ms)\n✔ VGE-004: rechaza salidas fuera de out, incluso con un prefijo parecido (2.004341ms)\n✔ VGE-009: Playwright se instala localmente con versión exacta y preparación documentada (9.461058ms)\n✔ VGE-010: AJV instalado y lock coinciden con una versión parcheada y fijada (1.936524ms)\n✔ VGE-011: una sola implementación del motor y entradas que consumen src/ (504.25666ms)\n✔ check:390 rechaza tres frases o tres etiquetas y registra las cantidades reales (34.668473ms)\n✔ el manifiesto reúne fuentes nativas y las tres capas, con errores legibles (26.402144ms)\n✔ sin exportación Spline o URL CircuitJS no se habilita una integración ficticia (1.533235ms)\n✔ sesión abre el motor PSC real y propaga un parámetro con unidad y rango (517.041075ms)\n✔ ocultar pausa y volver respeta la pausa elegida; liberar quita el listener (3.949304ms)\n✔ CircuitJS: contrato de API, importación, medidas y pausa con doble; no simulación nativa (5.893638ms)\n✔ Spline: contrato con doble, limpieza en error; no carga nativa de una escena (2.21535ms)\n✔ tareas nativas conservan su ejecutable y rechazan salir del proyecto (5.30636ms)\n✔ un proceso exitoso sin artefacto no se declara render terminado (230.719693ms)\n✔ las tareas nativas reciben el mismo contrato de datos y rechazan valores fuera de rango (7.357188ms)\n✔ ambos dominios cumplen el mismo contrato (54.466378ms)\n✔ rechaza errores de estructura y versiones antes de construir (17.380883ms)\n✔ rechaza IDs repetidos, padres inexistentes y ciclos (14.44092ms)\n✔ valida parámetros de las fábricas, referencias y canales duplicados (34.535118ms)\n✔ no acepta funciones, NaN, claves peligrosas ni documentos circulares (4.830646ms)\n✔ construye la jerarquía aunque los padres aparezcan después (92.121059ms)\n✔ reutiliza recursos idénticos incluso con IDs distintos (43.248782ms)\n✔ ninguna geometría/material se recrea durante 1.000 actualizaciones (108.670607ms)\n✔ el despiece usa coordenadas locales absolutas y no acumula desplazamientos (39.329596ms)\n✔ seleccionar emite evento sin mutar materiales compartidos (36.372297ms)\n✔ cambiar velocidad conserva la fase y cambia su derivada (59.673498ms)\n✔ corrientes normalizadas comparten reloj y respetan el desfase indicado (69.635253ms)\n✔ parámetros inválidos no alteran el estado (18.728578ms)\n✔ fallos reversibles conservan solicitudes y no contaminan materiales de otras piezas (17.91349ms)\n✔ un fallo fuera del rango falla de forma atómica (24.318902ms)\n✔ visible incluye subárbol y ancestros, sin activar hermanos (21.799572ms)\n✔ los pasos restablecen transformaciones, datos, fase y visibilidad (36.423122ms)\n✔ el mismo núcleo reproduce el ordenamiento y permite retroceder (6.14564ms)\n✔ el resultado y el multiconjunto de la traza concuerdan con el orden ascendente (1.918491ms)\n✔ la reserva .glb valida, pero se rechaza construir sin implementar el cargador (5.143053ms)\n✔ pausado dibuja cambios una vez y queda sin RAF pendiente (21.55561ms)\n✔ advance manual solicita un dibujo y admite intervalos finitos grandes sin NaN (31.839415ms)\n✔ ocultar pestaña cancela RAF y reanuda sin salto temporal (21.359851ms)\n✔ fuera de pantalla no dibuja, incluso con cambios pendientes (20.188292ms)\n✔ una escena estática no mantiene RAF aunque se invoque play (3.976478ms)\n✔ dispose libera cada recurso una sola vez y respeta la propiedad del renderer (45.32441ms)\n✔ la resolución mobile tiene menos triángulos; datos y API se conservan (36.553382ms)\n✔ las cuatro condiciones del contrato están presentes y son ejecutables (157.481178ms)\n✔ el slider mueve un plano real en el espacio del ancla y nunca modifica vértices (59.326506ms)\n✔ el clipping clona materiales sin recortar otras piezas que compartían material (36.800973ms)\n✔ el contorno solo aparece en la entidad seleccionada y conserva la geometría (28.505557ms)\n✔ la selección de un grupo cubre únicamente su subárbol (33.615408ms)\n✔ respaldo emisivo aislado, reversible y compatible con fallos (22.907412ms)\n✔ auto usa emisivo por equipo limitado, coste de grupo o intervalos lentos (71.022933ms)\n✔ el campo es la suma de los datos de corrientes, sin oscilador independiente (41.061771ms)\n✔ con corrientes en cuadratura de igual amplitud el módulo es constante (28.437382ms)\n✔ con desfase 0 el campo pulsa sobre una línea y puede anularse (36.272313ms)\n✔ la amplitud auxiliar nula elimina su contribución al campo (30.195271ms)\n✔ 1.000 frames no reemplazan geometrías ni expanden cachés tras calentar estados (79.202369ms)\n✔ el adaptador libera sus recursos y nunca dispone la geometría prestada (11.641582ms)\n✔ referencias gráficas erróneas se rechazan con un mensaje identificable (0.610883ms)\n✔ el modelo por capas conserva el contrato y sus referencias gráficas (111.03515ms)\n✔ buscar un instante sincroniza las dos señales con el campo, sin reconstruir el modelo (193.040349ms)\n✔ el cursor rechaza valores inválidos sin modificar el instante (74.683851ms)\n✔ el brillo empieza en B y pasa a A con el mismo cursor, sin cambiar sus colores (50.897785ms)\n✔ B alcanza el máximo positivo antes que A con adelantos de 30, 60 y 90 grados (32.998682ms)\n✔ el campo gira en el sentido del giro ilustrativo y la estela usa muestras anteriores de esas señales (34.020799ms)\n✔ el verde queda reservado al campo, con metal gris y cajita neutra (2.039639ms)\n✔ 1.000 actualizaciones con brillo y estela conservan geometrías y cachés (187.222494ms)\n✔ el adaptador libera la estela y los materiales de brillo una sola vez (39.949067ms)\nℹ tests 77\nℹ suites 0\nℹ pass 77\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 2273.145648\n",
+      "stderr": "npm warn Unknown env config \"http-proxy\". This will stop working in the next major version of npm.\n"
+    },
+    "final-validate": {
+      "command": [
+        "npm",
+        "run",
+        "validate"
+      ],
+      "cwd": "/workspace/scratch/c949886d48cd/vge-bloque-b",
+      "started": "2026-10-23T04:18:45.177353+00:00",
+      "seconds": 0.999,
+      "exitCode": 0,
+      "removedHostOverrides": [
+        "NODE_PATH"
+      ],
+      "stdout": "\n> vge-v2-phase2@2.0.0-alpha.2.1 validate\n> node tools/validate-examples.mjs\n\npsc: válido · 75 entidades · 10 pasos\npsc.beginner: válido · 75 entidades · 10 pasos\nbubble-sort: válido · 4 entidades · 7 pasos\n",
+      "stderr": "npm warn Unknown env config \"http-proxy\". This will stop working in the next major version of npm.\n"
+    },
+    "final-build": {
+      "command": [
+        "npm",
+        "run",
+        "build"
+      ],
+      "cwd": "/workspace/scratch/c949886d48cd/vge-bloque-b",
+      "started": "2026-10-23T04:20:28.386067+00:00",
+      "seconds": 1.535,
+      "exitCode": 0,
+      "removedHostOverrides": [
+        "NODE_PATH"
+      ],
+      "stdout": "\n> vge-v2-phase2@2.0.0-alpha.2.1 build\n> node tools/build.mjs\n\nDemo autónoma: 995020 bytes · Three.js y datos incluidos\n",
+      "stderr": "npm warn Unknown env config \"http-proxy\". This will stop working in the next major version of npm.\n"
+    },
+    "final-check390": {
+      "command": [
+        "npm",
+        "run",
+        "check:390"
+      ],
+      "cwd": "/workspace/scratch/c949886d48cd/vge-bloque-b",
+      "started": "2026-10-23T04:22:55.373490+00:00",
+      "seconds": 13.274,
+      "exitCode": 0,
+      "removedHostOverrides": [
+        "NODE_PATH"
+      ],
+      "stdout": "\n> vge-v2-phase2@2.0.0-alpha.2.1 check:390\n> node tools/check-390.cjs\n\n✓ Inicio en capa 1, pregunta y analogía antes de crear WebGL\n✓ Regresión del contador: una escena con tres frases se rechaza realmente\n✓ Cuatro pasos: conteo real de frases y etiquetas visibles, máximo dos de cada una; lenguaje común sin jerga visible\n✓ Regresión del contador: una tercera etiqueta visible se rechaza realmente\n✓ Nivel técnico conserva la explicación común y añade nombres, ondas y escala explicada\n✓ El mismo cursor actualiza ondas, texto, brillo de A/B y vector del campo en cuatro instantes conocidos\n✓ B alcanza su máximo antes que A a 30/60/90 grados; flecha, pieza central y aspas giran en el mismo sentido\n✓ Nivel avanzado añade fórmulas, convención de signos y límites, sin ocultar la capa común\n✓ Nivel controla la capa por defecto de cada escena y las capas se pueden abrir con un toque\n✓ Siete piezas tienen nombre común, función y conexión gráfica; etiquetas visibles contadas en cada selección, máximo dos\n✓ Resaltado normal exclusivo y respaldo ligero sin aclarar otras piezas\n✓ Corte real y separación/rearmado sin perder piezas ni explicación\n✓ Los turnos juntos muestran un campo pulsante y detienen el giro ilustrativo\n✓ Glosario tocable con analogías y controles de al menos 44 px\n✓ Movimiento observado; pausa congela dibujo, campo y reloj sin seguir dibujando\n✓ Al ocultar la escena no se sigue dibujando\n✓ Comprobación adicional a 320 px sin desbordamiento ni objetivos táctiles pequeños\n✓ JSON inválido muestra un mensaje visible\n✓ Consola limpia y HTML sin peticiones externas\n",
+      "stderr": "npm warn Unknown env config \"http-proxy\". This will stop working in the next major version of npm.\n"
+    },
+    "final-check-block-a": {
+      "command": [
+        "npm",
+        "run",
+        "check:block-a"
+      ],
+      "cwd": "/workspace/scratch/c949886d48cd/vge-bloque-b",
+      "started": "2026-10-23T04:23:56.074045+00:00",
+      "seconds": 14.022,
+      "exitCode": 0,
+      "removedHostOverrides": [
+        "NODE_PATH"
+      ],
+      "stdout": "\n> vge-v2-phase2@2.0.0-alpha.2.1 check:block-a\n> node tools/check-block-a.cjs\n\nPASS VGE-007\nPASS VGE-008\nPASS VGE-014\n{\"passed\":3,\"failed\":0}\n",
+      "stderr": "npm warn Unknown env config \"http-proxy\". This will stop working in the next major version of npm.\n"
+    },
+    "final-audit": {
+      "command": [
+        "npm",
+        "audit",
+        "--json"
+      ],
+      "cwd": "/workspace/scratch/c949886d48cd/vge-bloque-b",
+      "started": "2026-10-23T04:18:27.236265+00:00",
+      "seconds": 3.045,
+      "exitCode": 0,
+      "removedHostOverrides": [
+        "NODE_PATH"
+      ],
+      "stdout": "{\n  \"auditReportVersion\": 2,\n  \"vulnerabilities\": {},\n  \"metadata\": {\n    \"vulnerabilities\": {\n      \"info\": 0,\n      \"low\": 0,\n      \"moderate\": 0,\n      \"high\": 0,\n      \"critical\": 0,\n      \"total\": 0\n    },\n    \"dependencies\": {\n      \"prod\": 7,\n      \"dev\": 46,\n      \"optional\": 26,\n      \"peer\": 0,\n      \"peerOptional\": 0,\n      \"total\": 52\n    }\n  }\n}\n",
+      "stderr": "npm warn Unknown env config \"http-proxy\". This will stop working in the next major version of npm.\n"
+    },
+    "content-regression": {
+      "command": [
+        "python",
+        "../vge-bloque-b-evidencia/content-regression.py"
+      ],
+      "cwd": "/workspace/scratch/c949886d48cd/vge-bloque-b",
+      "started": "2026-10-23T04:24:10.705021+00:00",
+      "seconds": 14.514,
+      "exitCode": 0,
+      "removedHostOverrides": [
+        "NODE_PATH"
+      ],
+      "stdout": "{\"fixture\": \"Mismo HTML de A con tres frases en el primer paso\", \"fixtureSHA256\": \"8a343548dda7f30c2f6e93d9bc76e23628c06bc1c1968648c7c4968a47fed8b6\", \"regressionPass\": true}\n{\"stage\": \"before\", \"exitCode\": 0, \"tail\": \"✓ Inicio en capa 1, pregunta y analogía antes de crear WebGL\\n✓ Cuatro pasos, máximo dos frases por paso y lenguaje común sin jerga visible\\n✓ Nivel técnico conserva la explicación común y añade nombres, ondas y escala explicada\\n✓ El mismo cursor actualiza ondas, texto, brillo de A/B y vector del campo en cuatro instantes conocidos\\n✓ B alcanza su máximo antes que A a 30/60/90 grados; flecha, pieza central y aspas giran en el mismo sentido\\n✓ Nivel avanzado añade fórmulas, convención de signos y límites, sin ocultar la capa común\\n✓ Nivel controla la capa por defecto de cada escena y las capas se pueden abrir con un toque\\n✓ Siete piezas tienen nombre común, función y conexión gráfica; dos etiquetas como máximo\\n✓ Resaltado normal exclusivo y respaldo ligero sin aclarar otras piezas\\n✓ Corte real y separación/rearmado sin perder piezas ni explicación\\n✓ Los turnos juntos muestran un campo pulsante y detienen el giro ilustrativo\\n✓ Glosario tocable con analogías y controles de al menos 44 px\\n✓ Movimiento observado; pausa congela dibujo, campo y reloj sin seguir dibujando\\n✓ Al ocultar la escena no se sigue dibujando\\n✓ Comprobación adicional a 320 px sin desbordamiento ni objetivos táctiles pequeños\\n✓ JSON inválido muestra un mensaje visible\\n✓ Consola limpia y HTML sin peticiones externas\\n\"}\n{\"stage\": \"after\", \"exitCode\": 1, \"tail\": \"AssertionError [ERR_ASSERTION]: Inicio: 3 frases; máximo 2\\n    at measureContent (/workspace/scratch/c949886d48cd/vge-bloque-b-evidencia/content-after/tools/qa-content.cjs:10:10)\\n    at targets (/workspace/scratch/c949886d48cd/vge-bloque-b-evidencia/content-after/tools/check-390.cjs:17:84)\\n    at async /workspace/scratch/c949886d48cd/vge-bloque-b-evidencia/content-after/tools/check-390.cjs:28:3 {\\n  generatedMessage: false,\\n  code: 'ERR_ASSERTION',\\n  actual: false,\\n  expected: true,\\n  operator: '==',\\n  diff: 'simple'\\n}\\n\"}\n",
+      "stderr": ""
+    }
+  },
+  "regressionFileSHA256": {
+    "before": "8d562bc4e34b2b488e2af89302dc8efb03c3e463f71c8ed4ef7dbe9843db8f67",
+    "after": "8d562bc4e34b2b488e2af89302dc8efb03c3e463f71c8ed4ef7dbe9843db8f67"
+  },
+  "contentRegression": {
+    "command": [
+      "python",
+      "../vge-bloque-b-evidencia/content-regression.py"
+    ],
+    "cwd": "/workspace/scratch/c949886d48cd/vge-bloque-b",
+    "started": "2026-10-23T04:24:10.705021+00:00",
+    "seconds": 14.514,
+    "exitCode": 0,
+    "removedHostOverrides": [
+      "NODE_PATH"
+    ],
+    "stdout": "{\"fixture\": \"Mismo HTML de A con tres frases en el primer paso\", \"fixtureSHA256\": \"8a343548dda7f30c2f6e93d9bc76e23628c06bc1c1968648c7c4968a47fed8b6\", \"regressionPass\": true}\n{\"stage\": \"before\", \"exitCode\": 0, \"tail\": \"✓ Inicio en capa 1, pregunta y analogía antes de crear WebGL\\n✓ Cuatro pasos, máximo dos frases por paso y lenguaje común sin jerga visible\\n✓ Nivel técnico conserva la explicación común y añade nombres, ondas y escala explicada\\n✓ El mismo cursor actualiza ondas, texto, brillo de A/B y vector del campo en cuatro instantes conocidos\\n✓ B alcanza su máximo antes que A a 30/60/90 grados; flecha, pieza central y aspas giran en el mismo sentido\\n✓ Nivel avanzado añade fórmulas, convención de signos y límites, sin ocultar la capa común\\n✓ Nivel controla la capa por defecto de cada escena y las capas se pueden abrir con un toque\\n✓ Siete piezas tienen nombre común, función y conexión gráfica; dos etiquetas como máximo\\n✓ Resaltado normal exclusivo y respaldo ligero sin aclarar otras piezas\\n✓ Corte real y separación/rearmado sin perder piezas ni explicación\\n✓ Los turnos juntos muestran un campo pulsante y detienen el giro ilustrativo\\n✓ Glosario tocable con analogías y controles de al menos 44 px\\n✓ Movimiento observado; pausa congela dibujo, campo y reloj sin seguir dibujando\\n✓ Al ocultar la escena no se sigue dibujando\\n✓ Comprobación adicional a 320 px sin desbordamiento ni objetivos táctiles pequeños\\n✓ JSON inválido muestra un mensaje visible\\n✓ Consola limpia y HTML sin peticiones externas\\n\"}\n{\"stage\": \"after\", \"exitCode\": 1, \"tail\": \"AssertionError [ERR_ASSERTION]: Inicio: 3 frases; máximo 2\\n    at measureContent (/workspace/scratch/c949886d48cd/vge-bloque-b-evidencia/content-after/tools/qa-content.cjs:10:10)\\n    at targets (/workspace/scratch/c949886d48cd/vge-bloque-b-evidencia/content-after/tools/check-390.cjs:17:84)\\n    at async /workspace/scratch/c949886d48cd/vge-bloque-b-evidencia/content-after/tools/check-390.cjs:28:3 {\\n  generatedMessage: false,\\n  code: 'ERR_ASSERTION',\\n  actual: false,\\n  expected: true,\\n  operator: '==',\\n  diff: 'simple'\\n}\\n\"}\n",
+    "stderr": ""
+  },
+  "browserCheck": {
+    "viewport": 390,
+    "secondaryWidth": 320,
+    "checks": [
+      "Inicio en capa 1, pregunta y analogía antes de crear WebGL",
+      "Regresión del contador: una escena con tres frases se rechaza realmente",
+      "Cuatro pasos: conteo real de frases y etiquetas visibles, máximo dos de cada una; lenguaje común sin jerga visible",
+      "Regresión del contador: una tercera etiqueta visible se rechaza realmente",
+      "Nivel técnico conserva la explicación común y añade nombres, ondas y escala explicada",
+      "El mismo cursor actualiza ondas, texto, brillo de A/B y vector del campo en cuatro instantes conocidos",
+      "B alcanza su máximo antes que A a 30/60/90 grados; flecha, pieza central y aspas giran en el mismo sentido",
+      "Nivel avanzado añade fórmulas, convención de signos y límites, sin ocultar la capa común",
+      "Nivel controla la capa por defecto de cada escena y las capas se pueden abrir con un toque",
+      "Siete piezas tienen nombre común, función y conexión gráfica; etiquetas visibles contadas en cada selección, máximo dos",
+      "Resaltado normal exclusivo y respaldo ligero sin aclarar otras piezas",
+      "Corte real y separación/rearmado sin perder piezas ni explicación",
+      "Los turnos juntos muestran un campo pulsante y detienen el giro ilustrativo",
+      "Glosario tocable con analogías y controles de al menos 44 px",
+      "Movimiento observado; pausa congela dibujo, campo y reloj sin seguir dibujando",
+      "Al ocultar la escena no se sigue dibujando",
+      "Comprobación adicional a 320 px sin desbordamiento ni objetivos táctiles pequeños",
+      "JSON inválido muestra un mensaje visible",
+      "Consola limpia y HTML sin peticiones externas"
+    ],
+    "contentMeasurements": [
+      {
+        "context": "Inicio",
+        "width": 390,
+        "text": "Las bobinas son rollos de alambre: imagina dos personas que empujan una rueda, una después de la otra. En este relevo B empuja primero y A después.",
+        "labels": [],
+        "sentenceCount": 2,
+        "labelCount": 0
+      },
+      {
+        "context": "Historia 0",
+        "width": 390,
+        "text": "Las bobinas son rollos de alambre: imagina dos personas que empujan una rueda, una después de la otra. En este relevo B empuja primero y A después.",
+        "labels": [],
+        "sentenceCount": 2,
+        "labelCount": 0
+      },
+      {
+        "context": "Historia 1",
+        "width": 390,
+        "text": "La cajita de arranque es la que adelanta a B, como quien avisa a una persona para que empuje primero. A empuja después y la cajita sigue ayudando mientras el motor gira.",
+        "labels": [],
+        "sentenceCount": 2,
+        "labelCount": 0
+      },
+      {
+        "context": "Historia 2",
+        "width": 390,
+        "text": "Ese relevo crea un imán invisible que da vueltas. Es una forma de imaginar un empuje sin tocar: no hay un imán sólido girando dentro.",
+        "labels": [],
+        "sentenceCount": 2,
+        "labelCount": 0
+      },
+      {
+        "context": "Historia 3",
+        "width": 390,
+        "text": "Como dos personas empujando una rueda, B empuja primero y A después gracias a la cajita que adelanta a B. Juntas crean un imán invisible que gira, arrastra la pieza central y mueve las aspas por la barra.",
+        "labels": [
+          "Pieza que giraSigue al imán invisible.",
+          "AspasEmpujan el aire."
+        ],
+        "sentenceCount": 2,
+        "labelCount": 2
+      },
+      {
+        "context": "Capa técnica",
+        "width": 390,
+        "text": "Como dos personas empujando una rueda, B empuja primero y A después gracias a la cajita que adelanta a B. Juntas crean un imán invisible que gira, arrastra la pieza central y mueve las aspas por la barra.",
+        "labels": [
+          "Pieza que gira (rotor)Sigue al imán invisible.",
+          "Aspas (hélice)Empujan el aire."
+        ],
+        "sentenceCount": 2,
+        "labelCount": 2
+      },
+      {
+        "context": "Capa avanzada",
+        "width": 390,
+        "text": "Como dos personas empujando una rueda, B empuja primero y A después gracias a la cajita que adelanta a B. Juntas crean un imán invisible que gira, arrastra la pieza central y mueve las aspas por la barra.",
+        "labels": [
+          "Pieza que gira (rotor)Sigue al imán invisible.",
+          "Aspas (hélice)Empujan el aire."
+        ],
+        "sentenceCount": 2,
+        "labelCount": 2
+      },
+      {
+        "context": "Pieza main_winding",
+        "width": 390,
+        "text": "Como dos personas empujando una rueda, B empuja primero y A después gracias a la cajita que adelanta a B. Juntas crean un imán invisible que gira, arrastra la pieza central y mueve las aspas por la barra.",
+        "labels": [
+          "Bobina AEmpuja después de B.",
+          "AspasEmpujan el aire."
+        ],
+        "sentenceCount": 2,
+        "labelCount": 2
+      },
+      {
+        "context": "Pieza aux_winding",
+        "width": 390,
+        "text": "Como dos personas empujando una rueda, B empuja primero y A después gracias a la cajita que adelanta a B. Juntas crean un imán invisible que gira, arrastra la pieza central y mueve las aspas por la barra.",
+        "labels": [
+          "Bobina BEmpuja primero.",
+          "AspasEmpujan el aire."
+        ],
+        "sentenceCount": 2,
+        "labelCount": 2
+      },
+      {
+        "context": "Pieza capacitor",
+        "width": 390,
+        "text": "Como dos personas empujando una rueda, B empuja primero y A después gracias a la cajita que adelanta a B. Juntas crean un imán invisible que gira, arrastra la pieza central y mueve las aspas por la barra.",
+        "labels": [
+          "Arranque eléctricoLa que adelanta a B.",
+          "AspasEmpujan el aire."
+        ],
+        "sentenceCount": 2,
+        "labelCount": 2
+      },
+      {
+        "context": "Pieza rotor_core",
+        "width": 390,
+        "text": "Como dos personas empujando una rueda, B empuja primero y A después gracias a la cajita que adelanta a B. Juntas crean un imán invisible que gira, arrastra la pieza central y mueve las aspas por la barra.",
+        "labels": [
+          "Pieza que giraSigue al imán invisible.",
+          "AspasEmpujan el aire."
+        ],
+        "sentenceCount": 2,
+        "labelCount": 2
+      },
+      {
+        "context": "Pieza blades",
+        "width": 390,
+        "text": "Como dos personas empujando una rueda, B empuja primero y A después gracias a la cajita que adelanta a B. Juntas crean un imán invisible que gira, arrastra la pieza central y mueve las aspas por la barra.",
+        "labels": [
+          "AspasEmpujan el aire.",
+          "Pieza que giraSigue al imán invisible."
+        ],
+        "sentenceCount": 2,
+        "labelCount": 2
+      },
+      {
+        "context": "Pieza stator",
+        "width": 390,
+        "text": "Como dos personas empujando una rueda, B empuja primero y A después gracias a la cajita que adelanta a B. Juntas crean un imán invisible que gira, arrastra la pieza central y mueve las aspas por la barra.",
+        "labels": [
+          "Parte fija con bobinasSostiene los rollos de alambre.",
+          "AspasEmpujan el aire."
+        ],
+        "sentenceCount": 2,
+        "labelCount": 2
+      },
+      {
+        "context": "Pieza shaft_part",
+        "width": 390,
+        "text": "Como dos personas empujando una rueda, B empuja primero y A después gracias a la cajita que adelanta a B. Juntas crean un imán invisible que gira, arrastra la pieza central y mueve las aspas por la barra.",
+        "labels": [
+          "Barra centralLleva el giro a las aspas.",
+          "AspasEmpujan el aire."
+        ],
+        "sentenceCount": 2,
+        "labelCount": 2
+      },
+      {
+        "context": "Corte",
+        "width": 390,
+        "text": "Como dos personas empujando una rueda, B empuja primero y A después gracias a la cajita que adelanta a B. Juntas crean un imán invisible que gira, arrastra la pieza central y mueve las aspas por la barra.",
+        "labels": [
+          "Pieza que giraSigue al imán invisible.",
+          "AspasEmpujan el aire."
+        ],
+        "sentenceCount": 2,
+        "labelCount": 2
+      },
+      {
+        "context": "Turnos",
+        "width": 390,
+        "text": "Como dos personas empujando una rueda, B empuja primero y A después gracias a la cajita que adelanta a B. Juntas crean un imán invisible que gira, arrastra la pieza central y mueve las aspas por la barra.",
+        "labels": [
+          "Pieza que giraSigue al imán invisible.",
+          "AspasEmpujan el aire."
+        ],
+        "sentenceCount": 2,
+        "labelCount": 2
+      },
+      {
+        "context": "Glosario",
+        "width": 390,
+        "text": "Como dos personas empujando una rueda, B empuja primero y A después gracias a la cajita que adelanta a B. Juntas crean un imán invisible que gira, arrastra la pieza central y mueve las aspas por la barra.",
+        "labels": [
+          "Pieza que giraSigue al imán invisible.",
+          "AspasEmpujan el aire."
+        ],
+        "sentenceCount": 2,
+        "labelCount": 2
+      },
+      {
+        "context": "Definición",
+        "width": 390,
+        "text": "Como dos personas empujando una rueda, B empuja primero y A después gracias a la cajita que adelanta a B. Juntas crean un imán invisible que gira, arrastra la pieza central y mueve las aspas por la barra.",
+        "labels": [
+          "Pieza que giraSigue al imán invisible.",
+          "AspasEmpujan el aire."
+        ],
+        "sentenceCount": 2,
+        "labelCount": 2
+      },
+      {
+        "context": "Inicio 320 px",
+        "width": 320,
+        "text": "Las bobinas son rollos de alambre: imagina dos personas que empujan una rueda, una después de la otra. En este relevo B empuja primero y A después.",
+        "labels": [],
+        "sentenceCount": 2,
+        "labelCount": 0
+      },
+      {
+        "context": "Capas 320 px",
+        "width": 320,
+        "text": "Como dos personas empujando una rueda, B empuja primero y A después gracias a la cajita que adelanta a B. Juntas crean un imán invisible que gira, arrastra la pieza central y mueve las aspas por la barra.",
+        "labels": [
+          "Pieza que gira (rotor)Sigue al imán invisible.",
+          "Aspas (hélice)Empujan el aire."
+        ],
+        "sentenceCount": 2,
+        "labelCount": 2
+      }
+    ],
+    "direction": {
+      "lead": [
+        {
+          "delta": 30,
+          "bPeak": {
+            "a": 0.8660254037844389,
+            "b": 1
+          },
+          "aPeak": {
+            "a": 1,
+            "b": 0.8660254037844387
+          }
+        },
+        {
+          "delta": 60,
+          "bPeak": {
+            "a": 0.5000000000000002,
+            "b": 1
+          },
+          "aPeak": {
+            "a": 1,
+            "b": 0.5000000000000003
+          }
+        },
+        {
+          "delta": 90,
+          "bPeak": {
+            "a": 0,
+            "b": 1
+          },
+          "aPeak": {
+            "a": 1,
+            "b": 1.2246467991473532e-16
+          }
+        }
+      ],
+      "fieldTurn": 0.037699111843077726,
+      "rotorTurn": 0.02932153143350469,
+      "bladesTurn": 0.02932153143350469
+    },
+    "runtime": {
+      "playwright": "1.64.1",
+      "browser": "156.0.8078.4",
+      "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    "consoleErrors": [],
+    "externalRequests": [],
+    "renderer": "Chromium con WebGL por software",
+    "scope": "Comprobación puntual de Fase 2 y Bloque B; no matriz formal de Fase 5 ni prueba de comprensión humana."
+  },
+  "blockA": {
+    "viewport": 390,
+    "renderer": "Chromium / WebGL por software",
+    "results": [
+      {
+        "id": "VGE-007",
+        "status": "PASS",
+        "pageErrors": [],
+        "consoleErrors": [],
+        "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "expectedWebGLFailure": false
+      },
+      {
+        "id": "VGE-008",
+        "status": "PASS",
+        "pageErrors": [],
+        "consoleErrors": [],
+        "gpu": null,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "expectedWebGLFailure": true
+      },
+      {
+        "id": "VGE-014",
+        "status": "PASS",
+        "pageErrors": [],
+        "consoleErrors": [],
+        "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "expectedWebGLFailure": false
+      }
+    ],
+    "mobileHardware": "NO VERIFICADO",
+    "userComprehension": "NO VERIFICADO"
+  },
+  "artifacts": {
+    "dist/index.html": {
+      "bytes": 995020,
+      "sha256": "e0c6f84fb79c96aa3752b654c10ec9fa88475d227a51e6ab68e5349e428aaac4"
+    },
+    "docs/index.html": {
+      "bytes": 995020,
+      "sha256": "e0c6f84fb79c96aa3752b654c10ec9fa88475d227a51e6ab68e5349e428aaac4"
+    },
+    "qa/block-b/inicio-390.png": {
+      "bytes": 83021,
+      "sha256": "b006dd018f64f7a4f1938dd52d103356af13531ba51e893f3ab77a2180769548"
+    },
+    "qa/block-b/comun-390.png": {
+      "bytes": 150818,
+      "sha256": "6b426abc2558bea2a862fa7f8ed982858dfe03ed5485d34eb7657649ac6205c5"
+    }
+  },
+  "countingScope": {
+    "sentences": "Texto común .story-text con Intl.Segmenter(es, sentence).",
+    "labels": "Etiquetas de piezas .piece-label con rectángulo y visibilidad CSS; no leyenda general, títulos ni controles."
+  },
+  "limits": {
+    "mobileHardware": "NO VERIFICADO",
+    "userComprehension": "NO VERIFICADO",
+    "nativeWindowsMacOS": "NO VERIFICADO",
+    "allNativeEngines": "NO VERIFICADO en este bloque",
+    "minimumNodeExact": "NO VERIFICADO: pruebas con Node 24.19.0",
+    "githubActions": "NO VERIFICADO"
+  }
+}
