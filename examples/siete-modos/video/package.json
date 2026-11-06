@@ -1,0 +1,23 @@
+{
+  "name": "vge-siete-modos-video",
+  "private": true,
+  "type": "module",
+  "description": "Video del modo VIDEO-ESCENAS: cómo funciona un transistor (Remotion, 20 s, 1080 × 1080).",
+  "scripts": {
+    "postinstall": "node copy-fonts.mjs",
+    "studio": "remotion studio src/index.jsx",
+    "render": "remotion render src/index.jsx Transistor ../../../docs/ejemplos/siete-modos/transistor.mp4 --codec=h264 --crf=20",
+    "poster": "ffmpeg -y -ss 12.5 -i ../../../docs/ejemplos/siete-modos/transistor.mp4 -frames:v 1 -vf scale=720:-1 -q:v 4 ../../../docs/ejemplos/siete-modos/transistor-poster.jpg"
+  },
+  "dependencies": {
+    "@fontsource/big-shoulders-display": "5.3.0",
+    "@fontsource/ibm-plex-mono": "5.3.0",
+    "@fontsource/ibm-plex-sans": "5.3.0",
+    "@remotion/cli": "4.0.541",
+    "@remotion/fonts": "4.0.541",
+    "@remotion/transitions": "4.0.541",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "remotion": "4.0.541"
+  }
+}
