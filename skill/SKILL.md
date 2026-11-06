@@ -5,7 +5,7 @@ description: "Convierte temas de cualquier materia en explicaciones visuales cla
 
 # VisualGraficEyes (VGE)
 
-Versión: 2.0.0-alpha.2.2.
+Versión: 2.0.0-alpha.2.3.
 
 Convertir el tema en la representación que mejor permita comprenderlo, estudiarlo, explicarlo o experimentar con él. Hacer que cada elemento contribuya a una idea concreta. Mantener el texto necesario para la exactitud; evitar paredes de texto y adornos sin función.
 
@@ -57,6 +57,8 @@ Indicar la elección en una línea, cuando el formato de respuesta lo permita: �
 ### Núcleo de herramientas y unificación
 
 Leer [nucleo-y-herramientas.md](references/nucleo-y-herramientas.md) al elegir, combinar, instalar o ejecutar estos motores. Leer también [formatos-y-motores.md](references/formatos-y-motores.md) para los contratos de entrega.
+
+**Comprobar el entorno antes de elegir motor.** Cuando la entrega sea un archivo, video, escena 3D, simulación o página, ejecutar primero `npm run core:doctor` en el proyecto VGE; sin el proyecto, comprobar lo mismo a mano (ejecutables con `--version`, dependencias instaladas y acceso a los sitios de descarga que use el motor). El doctor clasifica cada motor como LISTO, PREPARABLE (con el comando que falta) o BLOQUEADO (con la alternativa) y devuelve un plan por modo. Elegir con ese plan, no con la tabla ideal: un motor bloqueado se sustituye por su alternativa declarada y la entrega lo dice. Estimar también el tiempo del motor elegido con la tabla de [nucleo-y-herramientas.md](references/nucleo-y-herramientas.md) y preferir el que quepa en la tarea.
 
 - Tratar estas herramientas como motores de primera clase, seleccionados por el objetivo; no ejecutar todas en cada respuesta. Una experiencia puede combinar varias con datos, colores, entidades, narrativa y procedencia coherentes.
 - Registrar el motor real de cada escena, su fuente editable, parámetros, salida y evidencia de ejecución. Distinguir adaptador implementado, dependencia disponible, fuente preparada, ejecución observada y salida inspeccionada; un estado no demuestra los demás.
@@ -113,6 +115,8 @@ Instalar dependencias locales cuando la tarea lo autorice y el entorno lo permit
 - Hacer que los controles cambien un parámetro, una etapa, una escala o una perspectiva relevante. Evitar interactividad decorativa.
 - Obtener dibujos, valores y animaciones del mismo estado y modelo. Hacer visible una relación de causa y efecto.
 - Distinguir una ilustración, una analogía, un modelo simplificado y un simulador. Declarar supuestos y alcance sin añadir advertencias genéricas.
+- Mostrar en cada escena una **ficha de procedencia** visible y breve: tipo (ILUSTRACIÓN, MODELO, SIMULACIÓN, CÁLCULO o VIDEO), motor y versión realmente usados, y lo que quedó «NO VERIFICADO». Escribir las versiones de software dentro de `<code>` o con `data-version` para no confundirlas con cantidades.
+- Fijar una sola **convención numérica** para toda la entrega, incluidos imágenes y video: coma o punto decimal según el idioma o la preferencia del usuario, y la misma en controles, ejes, rótulos y textos. Al formatear con `toLocaleString`, fijar el locale elegido en lugar de heredar el del navegador.
 - Investigar cuando la exactitud dependa de información actual, especializada o no proporcionada. Citar las fuentes que respalden datos o afirmaciones externas.
 - Usar herramientas de gráficos para datos exactos y herramientas científicas para figuras de investigación o publicación. Reservar la generación de imágenes para ilustraciones apropiadas.
 - Crear una composición original. Utilizar recursos propios o con derechos de uso; respetar las licencias y atribuciones de bibliotecas y materiales.
@@ -140,6 +144,8 @@ Comprobar y corregir lo que aplique:
 
 Inspeccionar el resultado renderizado cuando sea posible y probar la interacción principal. Si se afirma que se verificó en navegador, haberlo hecho realmente. Distinguir revisión estática, comprobación numérica y ejecución observada. No simular verificaciones ni declarar ejecutado un proyecto que solo se generó.
 
+Con el proyecto VGE disponible, verificar cada página con `npm run verify:page -- <página.html>` (añadir `--artefacto` si se publicará como artefacto de claude.ai). Revisa 390 y 1280 px en tema claro y oscuro, recorre pestañas (`role="tab"`) y etapas (`data-step`), y guarda capturas e informe. Corregir toda FALLA antes de entregar y revisar cada AVISO. Usar esos mismos atributos en las páginas para que el recorrido las encuentre. Si el navegador no es el fijado del proyecto, el informe lo marca como no reproducible y la entrega debe decirlo.
+
 Realizar dos lecturas de la captura a 390 px: una como persona sin conocimiento previo, que identifique qué ve, qué hace cada parte, qué significa cada color y por qué cambia; otra como persona con conocimiento, que revise términos, valores, relaciones y límites. Registrar confusiones, corregirlas y repetir la lectura afectada. Distinguir una autolectura o lectura con IA de una prueba con personas: comprensión humana y rendimiento en un teléfono físico permanecen «NO VERIFICADO» hasta medirlos. Si no se pudo renderizar la captura, declarar esta prueba «NO VERIFICADO».
 
 Probar solo lo necesario para resolver riesgos concretos. No agregar suites de pruebas que se limiten a repetir la implementación.
@@ -151,6 +157,8 @@ Responder en español, directo y sin relleno, salvo que se pida otro idioma. Usa
 - Visual dentro del chat: mostrarlo mediante el mecanismo admitido por el entorno y acompañarlo de la explicación mínima necesaria.
 - Archivo reutilizable: entregar el archivo completo, autocontenido cuando sea viable, y cómo abrirlo o usarlo en una o dos líneas.
 - Proyecto Manim, Remotion o equivalente: entregar código, estructura de escenas, dependencias y comandos de instalación, ejecución y exportación. No afirmar que un video existe si solo se entregó su código.
+- Video dentro de una página o «ejemplo funcional»: el MP4 es la entrega, así que cuenta como petición explícita de render para la skill oficial de Remotion. Renderizarlo, comprobar duración, resolución y cuadros, y publicarlo junto a la página con póster. Si Remotion no puede descargar su navegador, usar `--browser-executable` con el navegador que indique el doctor y decirlo en la entrega.
+- Artefacto de claude.ai: seguir [entrega-en-artefactos.md](references/entrega-en-artefactos.md) (orígenes permitidos, carga de Three.js, archivos adjuntos y lo que no se puede incrustar).
 - Simulador o servicio externo: dar acceso verificable o un archivo importable cuando se haya producido; no inventar enlaces, instalaciones ni publicaciones.
 
 Guardar los entregables mediante el mecanismo persistente del entorno cuando corresponda. No guardar fragmentos visuales internos como archivos entregables salvo petición de exportación. Terminar las explicaciones visuales con «Qué debes llevarte» en un máximo de dos líneas, sin repetir todo el contenido.

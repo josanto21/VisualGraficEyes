@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: pasos-burbuja
+expected_outcome: |
+  Pasos navegables (anterior, siguiente, reproducir) sincronizados con el código, con contadores coherentes con la ejecución real del algoritmo.

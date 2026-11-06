@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: manim-sin-entorno
+expected_outcome: |
+  Si Manim no está disponible, la ejecución lo detecta, entrega la escena y los comandos sin afirmar que existe el video, y propone la alternativa más cercana declarándola como tal.

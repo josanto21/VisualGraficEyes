@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: datos-led
+expected_outcome: |
+  Un gráfico con una sola escala que usa I = (Vs − Vf)/R, marca el límite de corriente y recomienda un valor comercial.

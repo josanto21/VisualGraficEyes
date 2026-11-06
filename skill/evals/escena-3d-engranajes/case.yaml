@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: escena-3d-engranajes
+expected_outcome: |
+  Una escena 3D justificada por una duda espacial (giro y corte), con la relación de transmisión correcta y alternativa si falla WebGL.

@@ -1,0 +1,38 @@
+<title>Prueba buena</title>
+<style>
+:root { --bg: #f4f6f8; --fg: #14202b; --line: #c9d3da; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #10171d; --fg: #e6edf2; --line: #2a3843; color-scheme: dark; } }
+:root[data-theme="dark"] { --bg: #10171d; --fg: #e6edf2; --line: #2a3843; color-scheme: dark; }
+body { background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, sans-serif; }
+.wrap { max-width: 640px; margin: 0 auto; padding-block: 16px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 12px; }
+button { min-height: 44px; min-width: 44px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 8px; background: transparent; color: inherit; font: inherit; }
+[aria-selected="true"], [aria-pressed="true"] { background: var(--fg); color: var(--bg); }
+.row { display: flex; flex-wrap: wrap; gap: 8px; }
+</style>
+<div class="wrap">
+  <h1>Engranajes</h1>
+  <div class="row" role="tablist">
+    <button role="tab" aria-selected="true" data-tab="a">Relación</button>
+    <button role="tab" aria-selected="false" data-tab="b">Pasos</button>
+  </div>
+  <section id="a"><p>Relación 27 : 18 = <span id="ratio">1,5</span>. Revisión de three: <code id="rev">—</code>.</p></section>
+  <section id="b" hidden>
+    <div class="row"><button data-step="0" aria-pressed="true">1 · Engranan</button><button data-step="1" aria-pressed="false">2 · Cortamos</button></div>
+    <p id="say">La rueda pequeña empuja a la grande.</p>
+  </section>
+</div>
+<script>
+document.querySelectorAll('[role=tab]').forEach(t => t.addEventListener('click', () => {
+  document.querySelectorAll('[role=tab]').forEach(x => x.setAttribute('aria-selected', x === t));
+  document.querySelectorAll('section').forEach(s => { s.hidden = s.id !== t.dataset.tab; });
+}));
+document.querySelectorAll('[data-step]').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('[data-step]').forEach(x => x.setAttribute('aria-pressed', x === b));
+  document.getElementById('say').textContent = b.dataset.step === '0' ? 'La rueda pequeña empuja a la grande.' : 'Cortada por la mitad se ve el alma delgada.';
+}));
+</script>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.min.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+document.getElementById('rev').textContent = THREE.REVISION;
+</script>

@@ -15,18 +15,25 @@ try {
     console.log(JSON.stringify(plan,null,2));
     if(action==='run')console.log(JSON.stringify(await runNativeJob(plan),null,2));
   } else if(action==='doctor'){
-    const dependency=(path,name)=>{try{const req=createRequire(resolve(root,path,'package.json'));const resolved=req.resolve(name);return {available:true,path:resolved};}catch{return {available:false};}};
-    const manim=spawnSync(process.env.VGE_PYTHON??'python3',['-m','manim','--version'],{encoding:'utf8',timeout:15000});
-    const anatomy=await import('../integrations/anatomy/vendor/kit/iso-kit.mjs');
-    const status={
-      contract:'valid',
-      anatomy:{kitImported:typeof anatomy.solidSvg==='function',vendoredCopy:'partial',globalSkill:'NO VERIFICADO'},
-      threejs:dependency('.','three'),
-      circuitjs:{adapterImplemented:true,configurationDeclared:project.stages.find(s=>s.engine==='circuitjs').enabled,nativeSimulation:'NO VERIFICADO'},
-      manim:{available:manim.status===0,version:manim.status===0?manim.stdout.trim():null,reason:manim.status===0?null:manim.error?.message??manim.stderr.trim()},
-      remotion:dependency('integrations/remotion','@remotion/cli'),
-      spline:{...dependency('integrations/spline','@splinetool/runtime'),sceneConfigured:project.stages.find(s=>s.engine==='spline').enabled},
-      note:'Disponibilidad e importación no demuestran una ejecución visual. Consultar docs/NUCLEO-HERRAMIENTAS.md.'};
-    console.log(JSON.stringify(status,null,2));
-  } else throw new Error('Uso: node tools/vge.mjs doctor|validate|plan ID OPERACION|run ID OPERACION');
+    const flags=process.argv.slice(3);
+    const {doctor}=await import('../src/core/doctor.mjs');
+    const report=await doctor({root,network:!flags.includes('--sin-red')});
+    report.contrato='válido';
+    if(flags.includes('--json'))console.log(JSON.stringify(report,null,2));
+    else{
+      const {plan}=report,pad=(s,n)=>String(s).padEnd(n);
+      console.log(`Entorno: Node ${report.entorno.node} · ${report.entorno.platform} · contrato ${report.contrato}`);
+      console.log(`\nVerificación visual: ${plan.verificacion.estado} — ${plan.verificacion.motivo}`);
+      if(plan.verificacion.siguiente)console.log(`  siguiente: ${plan.verificacion.siguiente}`);
+      console.log('\nMotores');
+      for(const [name,s] of Object.entries(plan.motores)){
+        console.log(`  ${pad(s.estado,11)} ${pad(name,10)} ${s.motivo}`);
+        for(const k of ['siguiente','alternativa','presupuesto','nota'])if(s[k])console.log(`  ${pad('',23)}${k}: ${s[k]}`);
+      }
+      console.log('\nPlan por modo');
+      for(const [mode,m] of Object.entries(plan.modos))console.log(`  ${pad(mode,14)} ${m.estado==='LISTO'?m.motor:m.estado==='PREPARABLE'?`${m.motor} tras preparar; mientras tanto: ${m.alternativa}`:`${m.alternativa} (${m.motor} bloqueado)`}`);
+      console.log('\n'+plan.notas.map(n=>'· '+n).join('\n'));
+      console.log('\nDetalle completo: npm run core:doctor -- --json');
+    }
+  } else throw new Error('Uso: node tools/vge.mjs doctor [--json] [--sin-red]|validate|plan ID OPERACION|run ID OPERACION');
 } catch(error){console.error(error.message);process.exitCode=1;}
