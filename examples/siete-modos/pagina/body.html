@@ -1,0 +1,357 @@
+<div class="wrap">
+  <header class="top">
+    <div>
+      <p class="eyebrow">VisualGraficEyes · VGE</p>
+      <h1>Siete modos</h1>
+      <p class="lede">Siete temas, cada uno explicado con el modo visual que mejor lo hace entender.</p>
+    </div>
+    <fieldset class="level">
+      <legend>Nivel</legend>
+      <div class="seg" role="radiogroup" aria-label="Nivel de explicación">
+        <label><input type="radio" name="nivel" id="lv-1" value="1" checked><span>Para todos</span></label>
+        <label><input type="radio" name="nivel" id="lv-2" value="2"><span>Técnico</span></label>
+        <label><input type="radio" name="nivel" id="lv-3" value="3"><span>Avanzado</span></label>
+      </div>
+    </fieldset>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Modos">
+    <button class="tab" role="tab" id="t-anatomia" aria-controls="anatomia" data-tab="anatomia"><b>Anatomía</b><small>Ventilador</small></button>
+    <button class="tab" role="tab" id="t-laboratorio" aria-controls="laboratorio" data-tab="laboratorio"><b>Laboratorio</b><small>Filtro RC</small></button>
+    <button class="tab" role="tab" id="t-escena-3d" aria-controls="escena-3d" data-tab="escena-3d"><b>Escena 3D</b><small>Engranajes</small></button>
+    <button class="tab" role="tab" id="t-pasos" aria-controls="pasos" data-tab="pasos"><b>Pasos</b><small>Burbuja</small></button>
+    <button class="tab" role="tab" id="t-video" aria-controls="video" data-tab="video"><b>Video</b><small>Transistor</small></button>
+    <button class="tab" role="tab" id="t-mapa" aria-controls="mapa" data-tab="mapa"><b>Mapa</b><small>Corrosión</small></button>
+    <button class="tab" role="tab" id="t-datos" aria-controls="datos" data-tab="datos"><b>Datos</b><small>LED y resistencia</small></button>
+  </nav>
+
+  <main id="main" data-level="1">
+
+  <!-- 1 · ANATOMÍA -->
+  <section class="panel" id="anatomia" role="tabpanel" aria-labelledby="t-anatomia" hidden>
+    <div class="phead">
+      <h2>¿Qué hace cada pieza de un ventilador?</h2>
+      <p class="why"><b>Anatomía + 3D</b>porque el ventilador es un aparato con piezas, y cada una se entiende al verla funcionar, separarla y volver a armarla.</p>
+      <div class="prov"><span class="chip kind">Ilustración</span><span class="chip">Three.js <code data-version>0.180</code></span><span class="chip">despiece didáctico</span><span class="chip">medidas no a escala</span></div>
+    </div>
+    <div class="steps" id="fan-steps" role="group" aria-label="Recorrido">
+      <button class="btn" data-step="0"><i>1</i>Funciona</button>
+      <button class="btn" data-step="1"><i>2</i>Entramos</button>
+      <button class="btn" data-step="2"><i>3</i>Aislamos</button>
+      <button class="btn" data-step="3"><i>4</i>Despiece</button>
+      <button class="btn" data-step="4"><i>5</i>Volvemos</button>
+    </div>
+    <div class="stage three" id="fan-stage">
+      <div class="stage-cap"><span class="step" id="fan-stepname">1 · Funciona</span><span class="say" id="fan-say">El motor hace girar las aspas y estas empujan el aire hacia ti.</span></div>
+      <svg class="leader" id="fan-leader" aria-hidden="true"></svg>
+      <div class="callout" id="fan-callout" hidden></div>
+    </div>
+    <div class="row">
+      <button class="btn" id="fan-play" aria-pressed="true">Pausar giro</button>
+      <button class="btn" id="fan-tour">▶ Recorrido automático</button>
+      <div class="ctl" style="flex:1 1 200px">
+        <label for="fan-explode"><span>Separar piezas</span><output id="fan-explode-out">0 %</output></label>
+        <input type="range" id="fan-explode" min="0" max="100" value="0">
+      </div>
+    </div>
+    <div class="ctl">
+      <span class="lbl">Toca una pieza en el dibujo o aquí</span>
+      <div class="parts" id="fan-parts"></div>
+    </div>
+    <div class="layer lv2">
+      <span class="lbl">Técnico</span>
+      <p>Es un motor de inducción con capacitor permanente (PSC). El estator tiene dos devanados; el capacitor adelanta la corriente del auxiliar respecto del principal y así el campo magnético gira. El rotor de jaula no recibe corriente por cables: la corriente se induce en sus barras.</p>
+    </div>
+    <div class="layer lv3">
+      <span class="lbl">Avanzado · límites del modelo</span>
+      <p>La velocidad de giro del dibujo es ilustrativa. En un motor real el rotor gira un poco más lento que el campo (deslizamiento); con 60 Hz y 4 polos el campo gira a 1800 rpm. Número de polos, bobinado y medidas son esquemáticos.</p>
+    </div>
+    <div class="take"><span class="lbl">Qué debes llevarte</span><p>Las bobinas fijas crean un campo que gira; arrastra al rotor, y el eje lleva ese giro hasta las aspas.</p></div>
+  </section>
+
+  <!-- 2 · LABORATORIO -->
+  <section class="panel" id="laboratorio" role="tabpanel" aria-labelledby="t-laboratorio" hidden>
+    <div class="phead">
+      <h2>Filtro RC pasa-bajos: ¿qué frecuencias deja pasar?</h2>
+      <p class="why"><b>Laboratorio</b>porque la relación se descubre moviendo R, C y la frecuencia y viendo cambiar juntas la curva, la onda y las medidas.</p>
+      <div class="prov"><span class="chip kind">Modelo calculado</span><span class="chip">fórmula de primer orden en JS</span><span class="chip warn">CircuitJS: archivo listo, importación no verificada</span></div>
+    </div>
+    <div class="grid2">
+      <div class="stage svgbox" style="padding:6px 8px">
+        <svg id="rc-schem" viewBox="0 0 300 150" role="img" aria-label="Esquema: fuente de entrada, resistencia R en serie y capacitor C a tierra; la salida se mide en el capacitor."></svg>
+      </div>
+      <div class="ctl-col" style="display:grid; gap:8px; align-content:start">
+        <div class="ctl"><label for="rc-r"><span>Resistencia R</span><output id="rc-r-out"></output></label><input type="range" id="rc-r" min="2" max="5" step="0.01" value="3"></div>
+        <div class="ctl"><label for="rc-c"><span>Capacitor C</span><output id="rc-c-out"></output></label><input type="range" id="rc-c" min="-9" max="-6" step="0.01" value="-7"></div>
+        <div class="ctl"><label for="rc-f"><span>Frecuencia de entrada</span><output id="rc-f-out"></output></label><input type="range" id="rc-f" min="0" max="6" step="0.01" value="3"></div>
+      </div>
+    </div>
+    <div class="readout" aria-live="polite">
+      <div><span>Frecuencia de corte</span><b id="rc-fc">—</b></div>
+      <div><span>La salida conserva</span><b id="rc-gain">—</b></div>
+      <div><span>Atenuación</span><b id="rc-db">—</b></div>
+      <div><span>Retraso (fase)</span><b id="rc-ph">—</b></div>
+    </div>
+    <div class="grid2">
+      <figure class="stage" style="margin:0;padding:8px">
+        <svg id="rc-bode" viewBox="0 0 340 210" role="img" aria-label="Curva de respuesta: ganancia en decibelios según la frecuencia"></svg>
+      </figure>
+      <figure class="stage" style="margin:0;padding:8px">
+        <svg id="rc-time" viewBox="0 0 340 210" role="img" aria-label="Onda de entrada y de salida en el tiempo"></svg>
+      </figure>
+    </div>
+    <div class="legend"><span><i style="background:var(--ink-3)"></i>Entrada</span><span><i style="background:var(--flow)"></i>Salida (en el capacitor)</span><span><i style="background:var(--ctrl)"></i>Tu frecuencia</span><span><i style="background:var(--ok)"></i>Corte (−3 dB)</span></div>
+    <p class="why" style="color:var(--ink)"><b>Pruébalo</b>Sube la frecuencia por encima del corte: la salida se encoge y se atrasa. Luego sube C y mira hacia dónde se mueve el corte.</p>
+    <div class="layer">
+      <span class="lbl">La idea</span>
+      <p>El capacitor es como un tanque que tarda en llenarse a través de la resistencia. Si la señal cambia despacio, el tanque la sigue. Si cambia muy rápido, no alcanza a llenarse ni vaciarse y en la salida casi no queda nada.</p>
+    </div>
+    <div class="layer lv2">
+      <span class="lbl">Técnico</span>
+      <p class="mono">f<sub>c</sub> = 1 / (2π·R·C) &nbsp;·&nbsp; |H| = 1 / √(1 + (f/f<sub>c</sub>)²) &nbsp;·&nbsp; φ = −arctan(f/f<sub>c</sub>)</p>
+      <p>En f<sub>c</sub> la salida queda en 70,7 % (−3 dB) y atrasada 45°. Por encima, cae 20 dB por década.</p>
+    </div>
+    <details class="more lv2">
+      <summary>Abrir en CircuitJS (Falstad)</summary>
+      <p style="margin-bottom:8px;color:var(--ink-2);font-size:14px">Copia este texto, abre el simulador en <span class="mono">falstad.com/circuit</span> y pégalo en <span class="mono">File → Import From Text</span>. Usa los valores actuales de los controles. No lo pude importar desde aquí, así que no está verificado.</p>
+      <pre class="code" id="rc-cjs"></pre>
+      <div class="row" style="margin-top:8px"><button class="btn sm" id="rc-copy">Copiar texto</button><span id="rc-copy-msg" class="mono" style="font-size:12px"></span></div>
+    </details>
+    <div class="layer lv3">
+      <span class="lbl">Avanzado · supuestos</span>
+      <p>Fuente ideal, salida sin carga y régimen permanente (la onda ya se estabilizó; no se muestra el transitorio de encendido). Constante de tiempo τ = R·C. Si conectas algo a la salida, su resistencia queda en paralelo con C y cambia la respuesta.</p>
+    </div>
+    <div class="take"><span class="lbl">Qué debes llevarte</span><p>R·C fija la frecuencia de corte: por debajo la señal pasa casi completa, por encima se atenúa y se atrasa cada vez más.</p></div>
+  </section>
+
+  <!-- 3 · ESCENA 3D -->
+  <section class="panel" id="escena-3d" role="tabpanel" aria-labelledby="t-escena-3d" hidden>
+    <div class="phead">
+      <h2>Engranajes rectos: ¿cómo pasa el giro de una rueda a otra?</h2>
+      <p class="why"><b>Escena 3D</b>porque hay que girar las piezas y cortarlas para ver el alma delgada de la rueda grande, algo que una vista plana no muestra.</p>
+      <div class="prov"><span class="chip kind">Modelo geométrico</span><span class="chip">Three.js <code data-version>0.180</code></span><span class="chip">perfil de evolvente calculado</span></div>
+    </div>
+    <div class="steps" id="gear-steps" role="group" aria-label="Recorrido">
+      <button class="btn" data-step="0"><i>1</i>Engranan</button>
+      <button class="btn" data-step="1"><i>2</i>Cortamos</button>
+      <button class="btn" data-step="2"><i>3</i>Un diente</button>
+      <button class="btn" data-step="3"><i>4</i>Volvemos</button>
+    </div>
+    <div class="stage three" id="gear-stage">
+      <div class="stage-cap"><span class="step" id="gear-stepname">1 · Engranan</span><span class="say" id="gear-say">La rueda pequeña empuja diente a diente a la grande, que gira al revés y más despacio.</span></div>
+    </div>
+    <div class="row">
+      <button class="btn" id="gear-play" aria-pressed="true">Pausar giro</button>
+      <div class="ctl" style="flex:1 1 200px">
+        <label for="gear-cut"><span>Corte</span><output id="gear-cut-out">sin corte</output></label>
+        <input type="range" id="gear-cut" min="0" max="100" value="0">
+      </div>
+      <div class="row" role="group" aria-label="Vista"><button class="btn sm" data-view="front">Frente</button><button class="btn sm" data-view="iso">3/4</button><button class="btn sm" data-view="top">Arriba</button></div>
+    </div>
+    <div class="readout" aria-live="off">
+      <div><span>Motriz · 18 dientes</span><b id="gear-n1">0,00 vueltas</b></div>
+      <div><span>Conducida · 27 dientes</span><b id="gear-n2">0,00 vueltas</b></div>
+      <div><span>Relación</span><b>27 : 18 = 1,5</b></div>
+    </div>
+    <div class="legend"><span><i style="background:var(--ctrl)"></i>Rueda motriz (la que mueve el motor)</span><span><i style="background:var(--flow)"></i>Rueda conducida</span><span><i style="background:var(--ink-2)"></i>Cara cortada (rayado)</span></div>
+    <div class="layer lv2">
+      <span class="lbl">Técnico</span>
+      <p class="mono">módulo m = 2 mm · ángulo de presión 20° · d = m·z → 36 mm y 54 mm · distancia entre centros a = m(z₁+z₂)/2 = 45 mm · i = z₂/z₁ = 1,5</p>
+      <p>En «Un diente» se ven los círculos primitivos (ruedan sin deslizar uno sobre otro) y la línea de acción: los dientes siempre se empujan a lo largo de ella, inclinada 20°.</p>
+    </div>
+    <div class="layer lv3">
+      <span class="lbl">Avanzado · cómo se dibujó</span>
+      <p>El flanco es una evolvente del círculo base r<sub>b</sub> = r·cos 20°: x = r<sub>b</sub>(cos t + t·sin t), y = r<sub>b</sub>(sin t − t·cos t). El espesor del diente a cada radio usa inv(α) = tan α − α. Sin juego entre dientes ni socavado de tallado; con 18 dientes no hace falta corrección.</p>
+    </div>
+    <div class="take"><span class="lbl">Qué debes llevarte</span><p>Los dientes obligan a las ruedas a avanzar el mismo número de dientes: la de 27 da 2 vueltas por cada 3 de la de 18, al revés y con más fuerza.</p></div>
+  </section>
+
+  <!-- 4 · PASOS -->
+  <section class="panel" id="pasos" role="tabpanel" aria-labelledby="t-pasos" hidden>
+    <div class="phead">
+      <h2>Ordenamiento burbuja, paso a paso</h2>
+      <p class="why"><b>Animado-pasos</b>porque un algoritmo se entiende siguiendo cada comparación junto a la línea de código que la hace.</p>
+      <div class="prov"><span class="chip kind">Simulación</span><span class="chip">ejecuta el algoritmo real en JS</span><span class="chip">orden ascendente</span></div>
+    </div>
+    <div class="row" role="group" aria-label="Lista de entrada">
+      <span class="lbl" style="margin-right:4px">Entrada</span>
+      <button class="btn sm on" data-input="ejemplo">Ejemplo</button>
+      <button class="btn sm" data-input="casi">Casi ordenada</button>
+      <button class="btn sm" data-input="reves">Al revés</button>
+      <button class="btn sm" data-input="azar">Al azar</button>
+    </div>
+    <div class="sortbox">
+      <div class="stage">
+        <div class="bars" id="bs-bars" aria-hidden="true"></div>
+      </div>
+      <ol class="code-lines" id="bs-code" aria-label="Pseudocódigo">
+<li>repetir</li>
+<li>  cambió ← falso</li>
+<li>  para i desde 0 hasta fin − 1</li>
+<li>    si a[i] &gt; a[i+1]</li>
+<li>      intercambiar a[i] y a[i+1]</li>
+<li>      cambió ← verdadero</li>
+<li>  fin ← fin − 1</li>
+<li>hasta que no cambió</li>
+      </ol>
+    </div>
+    <p class="status" id="bs-status" aria-live="polite"></p>
+    <div class="ctl"><label for="bs-slider"><span>Paso</span><output id="bs-step-out"></output></label><input type="range" id="bs-slider" min="0" max="1" value="0"></div>
+    <div class="row">
+      <button class="btn" id="bs-prev">◀ Anterior</button>
+      <button class="btn" id="bs-play">▶ Reproducir</button>
+      <button class="btn" id="bs-next">Siguiente ▶</button>
+      <button class="btn" id="bs-reset">Reiniciar</button>
+    </div>
+    <div class="readout">
+      <div><span>Pasada</span><b id="bs-pass">—</b></div>
+      <div><span>Comparaciones</span><b id="bs-cmp">0</b></div>
+      <div><span>Intercambios</span><b id="bs-swp">0</b></div>
+    </div>
+    <div class="legend"><span><i style="background:var(--flow)"></i>Se comparan</span><span><i style="background:var(--ctrl)"></i>Se intercambian</span><span><i style="background:var(--ok)"></i>Ya en su lugar</span></div>
+    <div class="layer lv2">
+      <span class="lbl">Técnico</span>
+      <p>Cada pasada deja el mayor de los que quedan en su posición final, por eso «fin» baja en 1. La bandera «cambió» corta el algoritmo en cuanto una pasada no intercambia nada: prueba «Casi ordenada».</p>
+    </div>
+    <div class="layer lv3">
+      <span class="lbl">Avanzado · costo</span>
+      <p>Peor caso (al revés): n(n−1)/2 comparaciones e intercambios, O(n²). Mejor caso (ya ordenada): una sola pasada, n−1 comparaciones, O(n). Es estable: con «&gt;» estricto, dos valores iguales nunca se cruzan.</p>
+    </div>
+    <div class="take"><span class="lbl">Qué debes llevarte</span><p>Comparando solo vecinos, cada pasada empuja al mayor hasta el final; repitiendo, la lista queda ordenada.</p></div>
+  </section>
+
+  <!-- 5 · VIDEO -->
+  <section class="panel" id="video" role="tabpanel" aria-labelledby="t-video" hidden>
+    <div class="phead">
+      <h2>¿Cómo funciona un transistor?</h2>
+      <p class="why"><b>Video-escenas</b>porque es una explicación corta para compartir: apertura, desarrollo y cierre con tiempos fijos.</p>
+      <div class="prov"><span class="chip kind">Video renderizado</span><span class="chip">Remotion <code data-version>4.0.541</code></span><span class="chip">1080 × 1080 · 30 fps · 20 s</span><span class="chip">sin audio</span></div>
+    </div>
+    <video class="vid" id="vid" controls playsinline preload="metadata" poster="transistor-poster.jpg" aria-label="Video sin audio: cómo una corriente pequeña en la base controla la corriente del colector">
+      <source src="transistor.mp4" type="video/mp4">
+    </video>
+    <div class="timeline" role="group" aria-label="Escenas">
+      <button class="btn" data-seek="0"><small>0–5 s</small>Apertura</button>
+      <button class="btn" data-seek="5"><small>5–15 s</small>Desarrollo</button>
+      <button class="btn" data-seek="15.5"><small>15–20 s</small>Cierre</button>
+    </div>
+    <div class="layer">
+      <span class="lbl">La idea</span>
+      <p>La base funciona como la llave de un grifo: una corriente pequeña en la base decide cuánta corriente grande pasa del colector al emisor. Cuando la llave está abierta del todo, la carga es la que limita (saturación).</p>
+    </div>
+    <div class="layer lv2">
+      <span class="lbl">Técnico · supuestos del video</span>
+      <p class="mono">β = 100 · carga 240 Ω a 5 V · V<sub>CE(sat)</sub> ≈ 0,2 V → I<sub>C,máx</sub> = (5 − 0,2)/240 = 20 mA</p>
+      <p>En zona activa I<sub>C</sub> = β·I<sub>B</sub>; con I<sub>B</sub> = 0,2 mA se llega a 20 mA y desde ahí el colector ya no sube. β real varía mucho entre transistores; los puntos muestran el sentido convencional de la corriente y su velocidad es ilustrativa.</p>
+    </div>
+    <details class="more lv3">
+      <summary>Fuente Remotion y comandos</summary>
+      <pre class="code">// Un solo modelo alimenta los puntos, la lámpara y los medidores
+const BETA = 100, IC_SAT = 20; // mA
+const icAt = (f) =&gt; Math.min(BETA * ibAt(f), IC_SAT);
+
+&lt;TransitionSeries&gt;
+  &lt;TransitionSeries.Sequence durationInFrames={150}&gt;&lt;Apertura/&gt;…
+  &lt;TransitionSeries.Transition presentation={fade()} timing={linearTiming({durationInFrames: 15})}/&gt;
+  &lt;TransitionSeries.Sequence durationInFrames={330}&gt;&lt;Desarrollo/&gt;…
+  …&lt;Cierre/&gt; (150)
+&lt;/TransitionSeries&gt;   // 150 + 330 + 150 − 2×15 = 600 cuadros
+
+npm i remotion@4.0.541 @remotion/cli@4.0.541 @remotion/transitions@4.0.541 @remotion/fonts@4.0.541 react react-dom
+npx remotion studio src/index.jsx
+npx remotion render src/index.jsx Transistor out/transistor.mp4 --codec=h264</pre>
+    </details>
+    <div class="take"><span class="lbl">Qué debes llevarte</span><p>Una corriente pequeña en la base controla una grande en el colector: como amplificador en la zona media y como interruptor en los extremos.</p></div>
+  </section>
+
+  <!-- 6 · MAPA -->
+  <section class="panel" id="mapa" role="tabpanel" aria-labelledby="t-mapa" hidden>
+    <div class="phead">
+      <h2>¿Por qué se corroe el hierro y cómo se evita?</h2>
+      <p class="why"><b>Mapa</b>porque la corrosión es una cadena de causas: si se corta un eslabón, se detiene. Activa una protección y mira qué parte de la cadena rompe.</p>
+      <div class="prov"><span class="chip kind">Mapa causal</span><span class="chip">SVG</span><span class="chip">corrosión atmosférica del hierro</span></div>
+    </div>
+    <div class="row toggles" role="group" aria-label="Condiciones">
+      <span class="lbl" style="margin-right:4px">Proteger</span>
+      <button class="btn sm" data-tg="pintura" aria-pressed="false">Pintura</button>
+      <button class="btn sm" data-tg="zinc" aria-pressed="false">Galvanizado (zinc)</button>
+      <button class="btn sm" data-tg="seco" aria-pressed="false">Aire seco</button>
+      <span class="lbl" style="margin:0 4px 0 8px">Acelerar</span>
+      <button class="btn sm" data-tg="sal" aria-pressed="false">Aire salino</button>
+    </div>
+    <div class="stage map" style="padding:10px 6px">
+      <svg id="map-svg" viewBox="0 0 384 444" role="img" aria-label="Mapa causal: hierro, agua y oxígeno forman una pila de corrosión que produce herrumbre; la herrumbre debilita la pieza y, al ser porosa, deja seguir la corrosión."></svg>
+    </div>
+    <p class="status" id="map-status" aria-live="polite"></p>
+    <div class="legend"><span><i style="background:var(--flow)"></i>Condiciones necesarias</span><span><i style="background:var(--ctrl)"></i>Mecanismo</span><span><i style="background:var(--cons)"></i>Resultado</span><span><i style="border:1.5px dashed var(--ink-3)"></i>Eslabón cortado</span></div>
+    <div class="layer lv2">
+      <span class="lbl">Técnico</span>
+      <p>Es una celda electroquímica: en el ánodo el hierro se oxida y en el cátodo se reduce el oxígeno. El agua actúa como electrolito y el propio metal conduce los electrones. Los iones Fe²⁺ y OH⁻ forman Fe(OH)₂, que el oxígeno convierte en herrumbre (Fe₂O₃·nH₂O).</p>
+    </div>
+    <div class="layer lv3">
+      <span class="lbl">Avanzado · matices</span>
+      <p>El zinc es más activo que el hierro: actúa como ánodo de sacrificio y protege incluso donde la capa se raya. La pintura solo funciona mientras esté entera. Los cloruros (aire de costa) aumentan la conductividad del agua y rompen películas protectoras. Sin humedad relativa alta (aprox. bajo 60 %) la corrosión atmosférica es muy lenta.</p>
+    </div>
+    <div class="take"><span class="lbl">Qué debes llevarte</span><p>El hierro se corroe porque forma una pila con el agua y el oxígeno; toda protección funciona quitando una pieza de esa pila.</p></div>
+  </section>
+
+  <!-- 7 · DATOS -->
+  <section class="panel" id="datos" role="tabpanel" aria-labelledby="t-datos" hidden>
+    <div class="phead">
+      <h2>¿Cuánta corriente pasa por un LED según su resistencia?</h2>
+      <p class="why"><b>Datos</b>porque se comparan varias resistencias con una sola escala y un límite visible: el gráfico muestra de un vistazo cuáles son seguras.</p>
+      <div class="prov"><span class="chip kind">Cálculo</span><span class="chip">ley de Ohm con caída fija del LED</span><span class="chip">valores típicos</span></div>
+    </div>
+    <div class="grid2">
+      <div class="ctl"><span class="lbl">Fuente</span>
+        <div class="seg" role="radiogroup" aria-label="Voltaje de la fuente">
+          <label><input type="radio" name="vs" id="vs-33" value="3.3"><span>3,3 V</span></label>
+          <label><input type="radio" name="vs" id="vs-5" value="5" checked><span>5 V</span></label>
+          <label><input type="radio" name="vs" id="vs-9" value="9"><span>9 V</span></label>
+          <label><input type="radio" name="vs" id="vs-12" value="12"><span>12 V</span></label>
+        </div>
+      </div>
+      <div class="ctl"><span class="lbl">LED</span>
+        <div class="seg" role="radiogroup" aria-label="Color del LED">
+          <label><input type="radio" name="vf" id="vf-r" value="2.0" checked><span>Rojo · 2,0 V</span></label>
+          <label><input type="radio" name="vf" id="vf-y" value="2.1"><span>Amarillo · 2,1 V</span></label>
+          <label><input type="radio" name="vf" id="vf-b" value="3.1"><span>Azul/blanco · 3,1 V</span></label>
+        </div>
+      </div>
+    </div>
+    <div class="stage chart" id="led-chart" style="padding:8px 6px 4px">
+      <svg id="led-svg" viewBox="0 0 360 236" role="img" aria-label="Barras: corriente del LED para cada resistencia"></svg>
+      <div class="tip" id="led-tip" hidden></div>
+    </div>
+    <div class="ledbox">
+      <div class="led" id="led-dot" aria-hidden="true"></div>
+      <p id="led-sel" aria-live="polite"></p>
+    </div>
+    <div class="readout">
+      <div><span>Resistencia mínima</span><b id="led-rmin">—</b></div>
+      <div><span>Valor comercial (E12)</span><b id="led-rpick">—</b></div>
+      <div><span>Corriente con ese valor</span><b id="led-ipick">—</b></div>
+    </div>
+    <div class="layer lv2">
+      <span class="lbl">Técnico</span>
+      <p class="mono">I = (V<sub>fuente</sub> − V<sub>LED</sub>) / R · R<sub>mín</sub> = (V<sub>fuente</sub> − V<sub>LED</sub>) / 20 mA · P<sub>R</sub> = I²·R</p>
+      <p>La línea roja marca 20 mA, una corriente continua típica para LED de 5 mm. Elige el valor comercial que queda por encima de R<sub>mín</sub>. <span id="led-pw"></span></p>
+    </div>
+    <details class="more">
+      <summary>Ver como tabla</summary>
+      <div style="overflow-x:auto"><table class="data" id="led-table"></table></div>
+    </details>
+    <div class="layer lv3">
+      <span class="lbl">Avanzado · límites</span>
+      <p>Se toma la caída del LED como fija; en realidad sube un poco con la corriente y cambia con el fabricante y la temperatura. Revisa la hoja de datos de tu LED para su corriente máxima y su caída real.</p>
+    </div>
+    <div class="take"><span class="lbl">Qué debes llevarte</span><p>La resistencia absorbe el voltaje que sobra: a más resistencia, menos corriente. Usa la menor que mantenga el LED bajo su límite.</p></div>
+  </section>
+
+  </main>
+
+  <footer class="foot">
+    <span>Ejemplo práctico de VisualGraficEyes (VGE)</span>
+    <a href="https://github.com/josanto21/VisualGraficEyes/tree/main/examples/siete-modos" target="_blank" rel="noopener">Código fuente y verificación</a>
+  </footer>
+</div>

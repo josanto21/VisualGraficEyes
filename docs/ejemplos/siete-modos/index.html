@@ -1,0 +1,1453 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Siete temas de ingeniería explicados con los siete modos de VisualGraficEyes: anatomía 3D, laboratorio, engranajes, pasos, video, mapa y datos.">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Siete modos VGE</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: panel de instrumentos — cabecera, selector de modos tipo conmutador, un banco de trabajo con cuadrícula por modo. */
+:root {
+  --paper: #eef2f4;
+  --panel: #fbfcfd;
+  --stage: #f4f7f9;
+  --grid: rgba(35, 70, 100, .07);
+  --ink: #142029;
+  --ink-2: #4b5a67;
+  --ink-3: #6f7e8a;
+  --rule: #d3dce2;
+  --flow: #2763c9;
+  --ctrl: #d4650b;
+  --ok: #17824a;
+  --cons: #7d3cc4;
+  --crit: #d03b3b;
+  --flow-soft: rgba(39, 99, 201, .12);
+  --ctrl-soft: rgba(212, 101, 11, .12);
+  --ok-soft: rgba(23, 130, 74, .12);
+  --cons-soft: rgba(125, 60, 196, .11);
+  --on-ink: #f5f8fa;
+  --f-display: "Big Shoulders Display", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --f-sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --r: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0d1419; --panel: #131c23; --stage: #0f171d; --grid: rgba(150, 190, 220, .06);
+    --ink: #e6edf2; --ink-2: #a5b4c0; --ink-3: #8191a0; --rule: #26343e;
+    --flow: #6aa0f2; --ctrl: #f0913f; --ok: #44c27f; --cons: #b48af2; --crit: #e25656;
+    --flow-soft: rgba(106, 160, 242, .16); --ctrl-soft: rgba(240, 145, 63, .15); --ok-soft: rgba(68, 194, 127, .15); --cons-soft: rgba(180, 138, 242, .15);
+    --on-ink: #0d1419; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0d1419; --panel: #131c23; --stage: #0f171d; --grid: rgba(150, 190, 220, .06);
+  --ink: #e6edf2; --ink-2: #a5b4c0; --ink-3: #8191a0; --rule: #26343e;
+  --flow: #6aa0f2; --ctrl: #f0913f; --ok: #44c27f; --cons: #b48af2; --crit: #e25656;
+  --flow-soft: rgba(106, 160, 242, .16); --ctrl-soft: rgba(240, 145, 63, .15); --ok-soft: rgba(68, 194, 127, .15); --cons-soft: rgba(180, 138, 242, .15);
+  --on-ink: #0d1419; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font: 15px/1.55 var(--f-sans); }
+.wrap { max-width: 940px; margin: 0 auto; padding-block: 20px 56px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 16px; }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+p { margin: 0; }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--flow); outline-offset: 2px; border-radius: 6px; }
+
+/* Cabecera */
+.top { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 24px; }
+.top .eyebrow { font: 500 11.5px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); }
+.top h1 { font: 800 clamp(40px, 9vw, 64px)/.92 var(--f-display); text-transform: uppercase; letter-spacing: .01em; margin-top: 6px; }
+.top .lede { color: var(--ink-2); max-width: 46ch; margin-top: 8px; }
+.level { display: grid; gap: 6px; }
+.level legend, .lbl { font: 500 11px/1 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); }
+.seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 9px; background: var(--panel); padding: 3px; gap: 2px; flex-wrap: wrap; }
+.seg label { position: relative; }
+.seg input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.seg span { display: block; padding: 7px 12px; border-radius: 6px; font-size: 13.5px; font-weight: 500; color: var(--ink-2); min-height: 44px; display: flex; align-items: center; }
+.seg input:checked + span { background: var(--ink); color: var(--on-ink); }
+.seg input:focus-visible + span { outline: 3px solid var(--flow); outline-offset: 1px; }
+fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+
+/* Selector de modos */
+.tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: thin; padding-bottom: 4px; scroll-snap-type: x proximity; }
+.tab { flex: 0 0 auto; scroll-snap-align: start; display: grid; gap: 2px; text-align: left; border: 1px solid var(--rule); background: var(--panel); border-radius: 9px; padding: 8px 12px 9px; cursor: pointer; min-height: 52px; }
+.tab b { font: 700 17px/1 var(--f-display); letter-spacing: .04em; text-transform: uppercase; }
+.tab small { font-size: 12px; color: var(--ink-3); }
+.tab[aria-selected="true"] { background: var(--ink); color: var(--on-ink); border-color: var(--ink); }
+.tab[aria-selected="true"] small { color: inherit; opacity: .78; }
+
+/* Panel de cada modo */
+.panel { background: var(--panel); border: 1px solid var(--rule); border-radius: 14px; padding: 18px; display: grid; gap: 14px; min-width: 0; }
+.phead { display: grid; gap: 6px; }
+.phead h2 { font: 600 clamp(19px, 3.4vw, 23px)/1.25 var(--f-sans); }
+.why { color: var(--ink-2); font-size: 14px; max-width: 70ch; }
+.why b { font: 500 11.5px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink); margin-right: 4px; }
+.prov { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font: 500 11px/1.2 var(--f-mono); letter-spacing: .04em; border: 1px solid var(--rule); border-radius: 5px; padding: 4px 7px; color: var(--ink-2); }
+.chip code { font: inherit; color: inherit; }
+.chip.kind { color: var(--ink); border-color: var(--ink-3); font-weight: 500; letter-spacing: .1em; }
+.chip.warn { border-style: dashed; }
+
+.stage { position: relative; background-color: var(--stage); background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 22px 22px; border: 1px solid var(--rule); border-radius: var(--r); overflow: hidden; min-width: 0; }
+.stage canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+.stage.three { height: clamp(360px, 62vw, 480px); }
+.stage-cap { position: absolute; left: 10px; top: 10px; right: 10px; pointer-events: none; display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.stage-cap .step { font: 500 11px/1 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; background: var(--ink); color: var(--on-ink); padding: 5px 7px; border-radius: 4px; }
+.stage-cap .say { font-size: 14px; font-weight: 500; background: color-mix(in srgb, var(--panel) 86%, transparent); padding: 3px 8px; border-radius: 5px; max-width: 46ch; }
+.fallback { padding: 24px; color: var(--ink-2); }
+
+.callout { position: absolute; max-width: min(240px, 62%); background: var(--panel); border: 1px solid var(--ink-3); border-radius: 8px; padding: 8px 10px; font-size: 13px; line-height: 1.4; box-shadow: 0 6px 20px rgba(0,0,0,.12); pointer-events: none; }
+.callout b { display: block; font-size: 14px; }
+.callout .tec { color: var(--ink-2); margin-top: 4px; font-size: 12.5px; }
+.leader { position: absolute; inset: 0; pointer-events: none; overflow: visible; }
+
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.btn { border: 1px solid var(--rule); background: var(--panel); border-radius: 8px; min-height: 44px; padding: 8px 13px; cursor: pointer; font-size: 14px; font-weight: 500; }
+.btn:hover { border-color: var(--ink-3); }
+.btn[aria-pressed="true"], .btn.on { background: var(--ink); color: var(--on-ink); border-color: var(--ink); }
+.btn.sm { min-height: 44px; padding: 5px 11px; font-size: 13px; }
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); gap: 6px; }
+.steps .btn { text-align: left; display: flex; gap: 8px; align-items: center; }
+.steps .btn i { font: 500 11px/1 var(--f-mono); font-style: normal; opacity: .7; }
+.ctl { display: grid; gap: 4px; min-width: 0; }
+.ctl label { display: flex; justify-content: space-between; gap: 8px; font-size: 13.5px; }
+.ctl output, .num { font: 500 13.5px/1.2 var(--f-mono); font-variant-numeric: tabular-nums; }
+input[type="range"] { width: 100%; accent-color: var(--ink); min-height: 44px; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px 18px; }
+
+.readout { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+.readout div { border: 1px solid var(--rule); border-radius: 8px; padding: 8px 10px; display: grid; gap: 2px; min-width: 0; }
+.readout span { font: 500 10.5px/1.2 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+.readout b { font: 500 17px/1.25 var(--f-mono); font-variant-numeric: tabular-nums; }
+
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; color: var(--ink-2); }
+.legend i { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+
+.layer { border-left: 3px solid var(--rule); padding: 2px 0 2px 12px; display: grid; gap: 6px; color: var(--ink-2); font-size: 14px; }
+.layer .lbl { color: var(--ink-3); }
+.layer code, .mono { font: 13px/1.5 var(--f-mono); color: var(--ink); }
+main[data-level="1"] .lv2, main[data-level="1"] .lv3, main[data-level="2"] .lv3 { display: none !important; }
+
+.take { display: grid; gap: 4px; border-top: 1px solid var(--rule); padding-top: 12px; }
+.take .lbl { color: var(--ink); }
+.take p { font-weight: 500; max-width: 70ch; }
+
+.parts { display: flex; flex-wrap: wrap; gap: 6px; }
+details.more { border: 1px solid var(--rule); border-radius: 8px; padding: 0 12px; }
+details.more summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; font-weight: 500; font-size: 14px; }
+details.more[open] { padding-bottom: 12px; }
+pre.code { margin: 0; overflow-x: auto; background: var(--stage); border: 1px solid var(--rule); border-radius: 8px; padding: 10px 12px; font: 12.5px/1.6 var(--f-mono); }
+
+/* Laboratorio */
+.svgbox { overflow-x: auto; }
+svg text { font-family: var(--f-sans); }
+svg .mono { font-family: var(--f-mono); }
+
+/* Pasos */
+.sortbox { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 12px; }
+@media (max-width: 640px) { .sortbox { grid-template-columns: 1fr; } }
+.bars { position: relative; height: 200px; margin: 14px 12px 6px; }
+.bar { position: absolute; bottom: 22px; width: 0; transition: transform .45s cubic-bezier(.3,.7,.2,1), background-color .2s; border-radius: 6px 6px 0 0; display: flex; align-items: flex-start; justify-content: center; }
+.bar span { font: 600 15px/1 var(--f-mono); padding-top: 6px; color: var(--on-ink); }
+.bar.idle { background: var(--ink-3); }
+.bar.cmp { background: var(--flow); }
+.bar.swap { background: var(--ctrl); }
+.bar.done { background: var(--ok); }
+.slotlbl { position: absolute; bottom: 0; font: 11px/1 var(--f-mono); color: var(--ink-3); text-align: center; }
+.code-lines { margin: 0; padding: 8px 0; background: var(--stage); border: 1px solid var(--rule); border-radius: 8px; font: 13px/1.75 var(--f-mono); list-style: none; counter-reset: ln; overflow-x: auto; }
+.code-lines li { padding: 0 12px 0 0; white-space: pre; counter-increment: ln; border-left: 3px solid transparent; }
+.code-lines li::before { content: counter(ln); display: inline-block; width: 28px; text-align: right; margin-right: 10px; color: var(--ink-3); }
+.code-lines li.hl { background: var(--ctrl-soft); border-left-color: var(--ctrl); }
+.status { min-height: 46px; font-weight: 500; }
+
+/* Video */
+.vid { width: 100%; max-width: 540px; aspect-ratio: 1; display: block; margin: 0 auto; background: #0f161c; border-radius: 10px; max-height: 70vh; }
+.timeline { display: grid; grid-template-columns: 5fr 10fr 5fr; gap: 4px; max-width: 540px; margin: 0 auto; width: 100%; }
+.timeline .btn { text-align: left; display: grid; gap: 2px; font-size: 13px; padding: 7px 9px; }
+.timeline .btn small { font: 11px/1 var(--f-mono); opacity: .75; }
+
+/* Mapa */
+.map svg { width: 100%; max-width: 560px; display: block; margin: 0 auto; height: auto; }
+.node rect { stroke-width: 1.5; }
+.node text { font-size: 12.5px; fill: var(--ink); }
+.node .t { font-weight: 600; font-size: 13.5px; }
+.node .s { fill: var(--ink-2); }
+.node .f { font-family: var(--f-mono); font-size: 10.5px; fill: var(--ink-2); }
+.edge { fill: none; stroke-width: 2; transition: opacity .3s; }
+.cut { stroke-dasharray: 5 5; opacity: .45; }
+.faded { opacity: .3; transition: opacity .3s; }
+.toggles .btn { display: inline-flex; align-items: center; gap: 6px; }
+.toggles .btn::before { content: ""; width: 12px; height: 12px; border-radius: 3px; border: 1.5px solid currentColor; }
+.toggles .btn[aria-pressed="true"]::before { background: currentColor; box-shadow: inset 0 0 0 2px var(--ink); }
+
+/* Datos */
+.chart svg { width: 100%; max-width: 640px; height: auto; display: block; margin: 0 auto; }
+.chart .ax { stroke: var(--rule); }
+.chart .tick text, .chart .axt { fill: var(--ink-3); font-size: 11px; }
+.chart .lim { stroke: var(--crit); stroke-dasharray: 5 4; stroke-width: 1.5; }
+.tip { position: absolute; pointer-events: none; background: var(--ink); color: var(--on-ink); font: 12px/1.35 var(--f-mono); padding: 6px 8px; border-radius: 6px; white-space: nowrap; transform: translate(-50%, calc(-100% - 8px)); }
+.ledbox { display: flex; align-items: center; gap: 14px; }
+.led { width: 46px; height: 46px; border-radius: 50%; flex: 0 0 auto; border: 2px solid var(--rule); }
+.warn-t { color: var(--crit); font-weight: 600; }
+table.data { border-collapse: collapse; width: 100%; font-size: 13px; }
+table.data th, table.data td { padding: 6px 8px; border-bottom: 1px solid var(--rule); text-align: right; font-variant-numeric: tabular-nums; }
+table.data th:first-child, table.data td:first-child { text-align: left; }
+
+.foot { display: flex; flex-wrap: wrap; gap: 4px 12px; justify-content: space-between; color: var(--ink-3); font-size: 13px; border-top: 1px solid var(--rule); padding-top: 12px; }
+.foot a { color: var(--ink-2); display: inline-flex; align-items: center; min-height: 44px; }
+@media (max-width: 520px) {
+  .panel { padding: 14px; }
+  .stage-cap .say { font-size: 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bar, .edge, .faded { transition: none; }
+}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <p class="eyebrow">VisualGraficEyes · VGE</p>
+      <h1>Siete modos</h1>
+      <p class="lede">Siete temas, cada uno explicado con el modo visual que mejor lo hace entender.</p>
+    </div>
+    <fieldset class="level">
+      <legend>Nivel</legend>
+      <div class="seg" role="radiogroup" aria-label="Nivel de explicación">
+        <label><input type="radio" name="nivel" id="lv-1" value="1" checked><span>Para todos</span></label>
+        <label><input type="radio" name="nivel" id="lv-2" value="2"><span>Técnico</span></label>
+        <label><input type="radio" name="nivel" id="lv-3" value="3"><span>Avanzado</span></label>
+      </div>
+    </fieldset>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Modos">
+    <button class="tab" role="tab" id="t-anatomia" aria-controls="anatomia" data-tab="anatomia"><b>Anatomía</b><small>Ventilador</small></button>
+    <button class="tab" role="tab" id="t-laboratorio" aria-controls="laboratorio" data-tab="laboratorio"><b>Laboratorio</b><small>Filtro RC</small></button>
+    <button class="tab" role="tab" id="t-escena-3d" aria-controls="escena-3d" data-tab="escena-3d"><b>Escena 3D</b><small>Engranajes</small></button>
+    <button class="tab" role="tab" id="t-pasos" aria-controls="pasos" data-tab="pasos"><b>Pasos</b><small>Burbuja</small></button>
+    <button class="tab" role="tab" id="t-video" aria-controls="video" data-tab="video"><b>Video</b><small>Transistor</small></button>
+    <button class="tab" role="tab" id="t-mapa" aria-controls="mapa" data-tab="mapa"><b>Mapa</b><small>Corrosión</small></button>
+    <button class="tab" role="tab" id="t-datos" aria-controls="datos" data-tab="datos"><b>Datos</b><small>LED y resistencia</small></button>
+  </nav>
+
+  <main id="main" data-level="1">
+
+  <!-- 1 · ANATOMÍA -->
+  <section class="panel" id="anatomia" role="tabpanel" aria-labelledby="t-anatomia" hidden>
+    <div class="phead">
+      <h2>¿Qué hace cada pieza de un ventilador?</h2>
+      <p class="why"><b>Anatomía + 3D</b>porque el ventilador es un aparato con piezas, y cada una se entiende al verla funcionar, separarla y volver a armarla.</p>
+      <div class="prov"><span class="chip kind">Ilustración</span><span class="chip">Three.js <code data-version>0.180</code></span><span class="chip">despiece didáctico</span><span class="chip">medidas no a escala</span></div>
+    </div>
+    <div class="steps" id="fan-steps" role="group" aria-label="Recorrido">
+      <button class="btn" data-step="0"><i>1</i>Funciona</button>
+      <button class="btn" data-step="1"><i>2</i>Entramos</button>
+      <button class="btn" data-step="2"><i>3</i>Aislamos</button>
+      <button class="btn" data-step="3"><i>4</i>Despiece</button>
+      <button class="btn" data-step="4"><i>5</i>Volvemos</button>
+    </div>
+    <div class="stage three" id="fan-stage">
+      <div class="stage-cap"><span class="step" id="fan-stepname">1 · Funciona</span><span class="say" id="fan-say">El motor hace girar las aspas y estas empujan el aire hacia ti.</span></div>
+      <svg class="leader" id="fan-leader" aria-hidden="true"></svg>
+      <div class="callout" id="fan-callout" hidden></div>
+    </div>
+    <div class="row">
+      <button class="btn" id="fan-play" aria-pressed="true">Pausar giro</button>
+      <button class="btn" id="fan-tour">▶ Recorrido automático</button>
+      <div class="ctl" style="flex:1 1 200px">
+        <label for="fan-explode"><span>Separar piezas</span><output id="fan-explode-out">0 %</output></label>
+        <input type="range" id="fan-explode" min="0" max="100" value="0">
+      </div>
+    </div>
+    <div class="ctl">
+      <span class="lbl">Toca una pieza en el dibujo o aquí</span>
+      <div class="parts" id="fan-parts"></div>
+    </div>
+    <div class="layer lv2">
+      <span class="lbl">Técnico</span>
+      <p>Es un motor de inducción con capacitor permanente (PSC). El estator tiene dos devanados; el capacitor adelanta la corriente del auxiliar respecto del principal y así el campo magnético gira. El rotor de jaula no recibe corriente por cables: la corriente se induce en sus barras.</p>
+    </div>
+    <div class="layer lv3">
+      <span class="lbl">Avanzado · límites del modelo</span>
+      <p>La velocidad de giro del dibujo es ilustrativa. En un motor real el rotor gira un poco más lento que el campo (deslizamiento); con 60 Hz y 4 polos el campo gira a 1800 rpm. Número de polos, bobinado y medidas son esquemáticos.</p>
+    </div>
+    <div class="take"><span class="lbl">Qué debes llevarte</span><p>Las bobinas fijas crean un campo que gira; arrastra al rotor, y el eje lleva ese giro hasta las aspas.</p></div>
+  </section>
+
+  <!-- 2 · LABORATORIO -->
+  <section class="panel" id="laboratorio" role="tabpanel" aria-labelledby="t-laboratorio" hidden>
+    <div class="phead">
+      <h2>Filtro RC pasa-bajos: ¿qué frecuencias deja pasar?</h2>
+      <p class="why"><b>Laboratorio</b>porque la relación se descubre moviendo R, C y la frecuencia y viendo cambiar juntas la curva, la onda y las medidas.</p>
+      <div class="prov"><span class="chip kind">Modelo calculado</span><span class="chip">fórmula de primer orden en JS</span><span class="chip warn">CircuitJS: archivo listo, importación no verificada</span></div>
+    </div>
+    <div class="grid2">
+      <div class="stage svgbox" style="padding:6px 8px">
+        <svg id="rc-schem" viewBox="0 0 300 150" role="img" aria-label="Esquema: fuente de entrada, resistencia R en serie y capacitor C a tierra; la salida se mide en el capacitor."></svg>
+      </div>
+      <div class="ctl-col" style="display:grid; gap:8px; align-content:start">
+        <div class="ctl"><label for="rc-r"><span>Resistencia R</span><output id="rc-r-out"></output></label><input type="range" id="rc-r" min="2" max="5" step="0.01" value="3"></div>
+        <div class="ctl"><label for="rc-c"><span>Capacitor C</span><output id="rc-c-out"></output></label><input type="range" id="rc-c" min="-9" max="-6" step="0.01" value="-7"></div>
+        <div class="ctl"><label for="rc-f"><span>Frecuencia de entrada</span><output id="rc-f-out"></output></label><input type="range" id="rc-f" min="0" max="6" step="0.01" value="3"></div>
+      </div>
+    </div>
+    <div class="readout" aria-live="polite">
+      <div><span>Frecuencia de corte</span><b id="rc-fc">—</b></div>
+      <div><span>La salida conserva</span><b id="rc-gain">—</b></div>
+      <div><span>Atenuación</span><b id="rc-db">—</b></div>
+      <div><span>Retraso (fase)</span><b id="rc-ph">—</b></div>
+    </div>
+    <div class="grid2">
+      <figure class="stage" style="margin:0;padding:8px">
+        <svg id="rc-bode" viewBox="0 0 340 210" role="img" aria-label="Curva de respuesta: ganancia en decibelios según la frecuencia"></svg>
+      </figure>
+      <figure class="stage" style="margin:0;padding:8px">
+        <svg id="rc-time" viewBox="0 0 340 210" role="img" aria-label="Onda de entrada y de salida en el tiempo"></svg>
+      </figure>
+    </div>
+    <div class="legend"><span><i style="background:var(--ink-3)"></i>Entrada</span><span><i style="background:var(--flow)"></i>Salida (en el capacitor)</span><span><i style="background:var(--ctrl)"></i>Tu frecuencia</span><span><i style="background:var(--ok)"></i>Corte (−3 dB)</span></div>
+    <p class="why" style="color:var(--ink)"><b>Pruébalo</b>Sube la frecuencia por encima del corte: la salida se encoge y se atrasa. Luego sube C y mira hacia dónde se mueve el corte.</p>
+    <div class="layer">
+      <span class="lbl">La idea</span>
+      <p>El capacitor es como un tanque que tarda en llenarse a través de la resistencia. Si la señal cambia despacio, el tanque la sigue. Si cambia muy rápido, no alcanza a llenarse ni vaciarse y en la salida casi no queda nada.</p>
+    </div>
+    <div class="layer lv2">
+      <span class="lbl">Técnico</span>
+      <p class="mono">f<sub>c</sub> = 1 / (2π·R·C) &nbsp;·&nbsp; |H| = 1 / √(1 + (f/f<sub>c</sub>)²) &nbsp;·&nbsp; φ = −arctan(f/f<sub>c</sub>)</p>
+      <p>En f<sub>c</sub> la salida queda en 70,7 % (−3 dB) y atrasada 45°. Por encima, cae 20 dB por década.</p>
+    </div>
+    <details class="more lv2">
+      <summary>Abrir en CircuitJS (Falstad)</summary>
+      <p style="margin-bottom:8px;color:var(--ink-2);font-size:14px">Copia este texto, abre el simulador en <span class="mono">falstad.com/circuit</span> y pégalo en <span class="mono">File → Import From Text</span>. Usa los valores actuales de los controles. No lo pude importar desde aquí, así que no está verificado.</p>
+      <pre class="code" id="rc-cjs"></pre>
+      <div class="row" style="margin-top:8px"><button class="btn sm" id="rc-copy">Copiar texto</button><span id="rc-copy-msg" class="mono" style="font-size:12px"></span></div>
+    </details>
+    <div class="layer lv3">
+      <span class="lbl">Avanzado · supuestos</span>
+      <p>Fuente ideal, salida sin carga y régimen permanente (la onda ya se estabilizó; no se muestra el transitorio de encendido). Constante de tiempo τ = R·C. Si conectas algo a la salida, su resistencia queda en paralelo con C y cambia la respuesta.</p>
+    </div>
+    <div class="take"><span class="lbl">Qué debes llevarte</span><p>R·C fija la frecuencia de corte: por debajo la señal pasa casi completa, por encima se atenúa y se atrasa cada vez más.</p></div>
+  </section>
+
+  <!-- 3 · ESCENA 3D -->
+  <section class="panel" id="escena-3d" role="tabpanel" aria-labelledby="t-escena-3d" hidden>
+    <div class="phead">
+      <h2>Engranajes rectos: ¿cómo pasa el giro de una rueda a otra?</h2>
+      <p class="why"><b>Escena 3D</b>porque hay que girar las piezas y cortarlas para ver el alma delgada de la rueda grande, algo que una vista plana no muestra.</p>
+      <div class="prov"><span class="chip kind">Modelo geométrico</span><span class="chip">Three.js <code data-version>0.180</code></span><span class="chip">perfil de evolvente calculado</span></div>
+    </div>
+    <div class="steps" id="gear-steps" role="group" aria-label="Recorrido">
+      <button class="btn" data-step="0"><i>1</i>Engranan</button>
+      <button class="btn" data-step="1"><i>2</i>Cortamos</button>
+      <button class="btn" data-step="2"><i>3</i>Un diente</button>
+      <button class="btn" data-step="3"><i>4</i>Volvemos</button>
+    </div>
+    <div class="stage three" id="gear-stage">
+      <div class="stage-cap"><span class="step" id="gear-stepname">1 · Engranan</span><span class="say" id="gear-say">La rueda pequeña empuja diente a diente a la grande, que gira al revés y más despacio.</span></div>
+    </div>
+    <div class="row">
+      <button class="btn" id="gear-play" aria-pressed="true">Pausar giro</button>
+      <div class="ctl" style="flex:1 1 200px">
+        <label for="gear-cut"><span>Corte</span><output id="gear-cut-out">sin corte</output></label>
+        <input type="range" id="gear-cut" min="0" max="100" value="0">
+      </div>
+      <div class="row" role="group" aria-label="Vista"><button class="btn sm" data-view="front">Frente</button><button class="btn sm" data-view="iso">3/4</button><button class="btn sm" data-view="top">Arriba</button></div>
+    </div>
+    <div class="readout" aria-live="off">
+      <div><span>Motriz · 18 dientes</span><b id="gear-n1">0,00 vueltas</b></div>
+      <div><span>Conducida · 27 dientes</span><b id="gear-n2">0,00 vueltas</b></div>
+      <div><span>Relación</span><b>27 : 18 = 1,5</b></div>
+    </div>
+    <div class="legend"><span><i style="background:var(--ctrl)"></i>Rueda motriz (la que mueve el motor)</span><span><i style="background:var(--flow)"></i>Rueda conducida</span><span><i style="background:var(--ink-2)"></i>Cara cortada (rayado)</span></div>
+    <div class="layer lv2">
+      <span class="lbl">Técnico</span>
+      <p class="mono">módulo m = 2 mm · ángulo de presión 20° · d = m·z → 36 mm y 54 mm · distancia entre centros a = m(z₁+z₂)/2 = 45 mm · i = z₂/z₁ = 1,5</p>
+      <p>En «Un diente» se ven los círculos primitivos (ruedan sin deslizar uno sobre otro) y la línea de acción: los dientes siempre se empujan a lo largo de ella, inclinada 20°.</p>
+    </div>
+    <div class="layer lv3">
+      <span class="lbl">Avanzado · cómo se dibujó</span>
+      <p>El flanco es una evolvente del círculo base r<sub>b</sub> = r·cos 20°: x = r<sub>b</sub>(cos t + t·sin t), y = r<sub>b</sub>(sin t − t·cos t). El espesor del diente a cada radio usa inv(α) = tan α − α. Sin juego entre dientes ni socavado de tallado; con 18 dientes no hace falta corrección.</p>
+    </div>
+    <div class="take"><span class="lbl">Qué debes llevarte</span><p>Los dientes obligan a las ruedas a avanzar el mismo número de dientes: la de 27 da 2 vueltas por cada 3 de la de 18, al revés y con más fuerza.</p></div>
+  </section>
+
+  <!-- 4 · PASOS -->
+  <section class="panel" id="pasos" role="tabpanel" aria-labelledby="t-pasos" hidden>
+    <div class="phead">
+      <h2>Ordenamiento burbuja, paso a paso</h2>
+      <p class="why"><b>Animado-pasos</b>porque un algoritmo se entiende siguiendo cada comparación junto a la línea de código que la hace.</p>
+      <div class="prov"><span class="chip kind">Simulación</span><span class="chip">ejecuta el algoritmo real en JS</span><span class="chip">orden ascendente</span></div>
+    </div>
+    <div class="row" role="group" aria-label="Lista de entrada">
+      <span class="lbl" style="margin-right:4px">Entrada</span>
+      <button class="btn sm on" data-input="ejemplo">Ejemplo</button>
+      <button class="btn sm" data-input="casi">Casi ordenada</button>
+      <button class="btn sm" data-input="reves">Al revés</button>
+      <button class="btn sm" data-input="azar">Al azar</button>
+    </div>
+    <div class="sortbox">
+      <div class="stage">
+        <div class="bars" id="bs-bars" aria-hidden="true"></div>
+      </div>
+      <ol class="code-lines" id="bs-code" aria-label="Pseudocódigo">
+<li>repetir</li>
+<li>  cambió ← falso</li>
+<li>  para i desde 0 hasta fin − 1</li>
+<li>    si a[i] &gt; a[i+1]</li>
+<li>      intercambiar a[i] y a[i+1]</li>
+<li>      cambió ← verdadero</li>
+<li>  fin ← fin − 1</li>
+<li>hasta que no cambió</li>
+      </ol>
+    </div>
+    <p class="status" id="bs-status" aria-live="polite"></p>
+    <div class="ctl"><label for="bs-slider"><span>Paso</span><output id="bs-step-out"></output></label><input type="range" id="bs-slider" min="0" max="1" value="0"></div>
+    <div class="row">
+      <button class="btn" id="bs-prev">◀ Anterior</button>
+      <button class="btn" id="bs-play">▶ Reproducir</button>
+      <button class="btn" id="bs-next">Siguiente ▶</button>
+      <button class="btn" id="bs-reset">Reiniciar</button>
+    </div>
+    <div class="readout">
+      <div><span>Pasada</span><b id="bs-pass">—</b></div>
+      <div><span>Comparaciones</span><b id="bs-cmp">0</b></div>
+      <div><span>Intercambios</span><b id="bs-swp">0</b></div>
+    </div>
+    <div class="legend"><span><i style="background:var(--flow)"></i>Se comparan</span><span><i style="background:var(--ctrl)"></i>Se intercambian</span><span><i style="background:var(--ok)"></i>Ya en su lugar</span></div>
+    <div class="layer lv2">
+      <span class="lbl">Técnico</span>
+      <p>Cada pasada deja el mayor de los que quedan en su posición final, por eso «fin» baja en 1. La bandera «cambió» corta el algoritmo en cuanto una pasada no intercambia nada: prueba «Casi ordenada».</p>
+    </div>
+    <div class="layer lv3">
+      <span class="lbl">Avanzado · costo</span>
+      <p>Peor caso (al revés): n(n−1)/2 comparaciones e intercambios, O(n²). Mejor caso (ya ordenada): una sola pasada, n−1 comparaciones, O(n). Es estable: con «&gt;» estricto, dos valores iguales nunca se cruzan.</p>
+    </div>
+    <div class="take"><span class="lbl">Qué debes llevarte</span><p>Comparando solo vecinos, cada pasada empuja al mayor hasta el final; repitiendo, la lista queda ordenada.</p></div>
+  </section>
+
+  <!-- 5 · VIDEO -->
+  <section class="panel" id="video" role="tabpanel" aria-labelledby="t-video" hidden>
+    <div class="phead">
+      <h2>¿Cómo funciona un transistor?</h2>
+      <p class="why"><b>Video-escenas</b>porque es una explicación corta para compartir: apertura, desarrollo y cierre con tiempos fijos.</p>
+      <div class="prov"><span class="chip kind">Video renderizado</span><span class="chip">Remotion <code data-version>4.0.541</code></span><span class="chip">1080 × 1080 · 30 fps · 20 s</span><span class="chip">sin audio</span></div>
+    </div>
+    <video class="vid" id="vid" controls playsinline preload="metadata" poster="transistor-poster.jpg" aria-label="Video sin audio: cómo una corriente pequeña en la base controla la corriente del colector">
+      <source src="transistor.mp4" type="video/mp4">
+    </video>
+    <div class="timeline" role="group" aria-label="Escenas">
+      <button class="btn" data-seek="0"><small>0–5 s</small>Apertura</button>
+      <button class="btn" data-seek="5"><small>5–15 s</small>Desarrollo</button>
+      <button class="btn" data-seek="15.5"><small>15–20 s</small>Cierre</button>
+    </div>
+    <div class="layer">
+      <span class="lbl">La idea</span>
+      <p>La base funciona como la llave de un grifo: una corriente pequeña en la base decide cuánta corriente grande pasa del colector al emisor. Cuando la llave está abierta del todo, la carga es la que limita (saturación).</p>
+    </div>
+    <div class="layer lv2">
+      <span class="lbl">Técnico · supuestos del video</span>
+      <p class="mono">β = 100 · carga 240 Ω a 5 V · V<sub>CE(sat)</sub> ≈ 0,2 V → I<sub>C,máx</sub> = (5 − 0,2)/240 = 20 mA</p>
+      <p>En zona activa I<sub>C</sub> = β·I<sub>B</sub>; con I<sub>B</sub> = 0,2 mA se llega a 20 mA y desde ahí el colector ya no sube. β real varía mucho entre transistores; los puntos muestran el sentido convencional de la corriente y su velocidad es ilustrativa.</p>
+    </div>
+    <details class="more lv3">
+      <summary>Fuente Remotion y comandos</summary>
+      <pre class="code">// Un solo modelo alimenta los puntos, la lámpara y los medidores
+const BETA = 100, IC_SAT = 20; // mA
+const icAt = (f) =&gt; Math.min(BETA * ibAt(f), IC_SAT);
+
+&lt;TransitionSeries&gt;
+  &lt;TransitionSeries.Sequence durationInFrames={150}&gt;&lt;Apertura/&gt;…
+  &lt;TransitionSeries.Transition presentation={fade()} timing={linearTiming({durationInFrames: 15})}/&gt;
+  &lt;TransitionSeries.Sequence durationInFrames={330}&gt;&lt;Desarrollo/&gt;…
+  …&lt;Cierre/&gt; (150)
+&lt;/TransitionSeries&gt;   // 150 + 330 + 150 − 2×15 = 600 cuadros
+
+npm i remotion@4.0.541 @remotion/cli@4.0.541 @remotion/transitions@4.0.541 @remotion/fonts@4.0.541 react react-dom
+npx remotion studio src/index.jsx
+npx remotion render src/index.jsx Transistor out/transistor.mp4 --codec=h264</pre>
+    </details>
+    <div class="take"><span class="lbl">Qué debes llevarte</span><p>Una corriente pequeña en la base controla una grande en el colector: como amplificador en la zona media y como interruptor en los extremos.</p></div>
+  </section>
+
+  <!-- 6 · MAPA -->
+  <section class="panel" id="mapa" role="tabpanel" aria-labelledby="t-mapa" hidden>
+    <div class="phead">
+      <h2>¿Por qué se corroe el hierro y cómo se evita?</h2>
+      <p class="why"><b>Mapa</b>porque la corrosión es una cadena de causas: si se corta un eslabón, se detiene. Activa una protección y mira qué parte de la cadena rompe.</p>
+      <div class="prov"><span class="chip kind">Mapa causal</span><span class="chip">SVG</span><span class="chip">corrosión atmosférica del hierro</span></div>
+    </div>
+    <div class="row toggles" role="group" aria-label="Condiciones">
+      <span class="lbl" style="margin-right:4px">Proteger</span>
+      <button class="btn sm" data-tg="pintura" aria-pressed="false">Pintura</button>
+      <button class="btn sm" data-tg="zinc" aria-pressed="false">Galvanizado (zinc)</button>
+      <button class="btn sm" data-tg="seco" aria-pressed="false">Aire seco</button>
+      <span class="lbl" style="margin:0 4px 0 8px">Acelerar</span>
+      <button class="btn sm" data-tg="sal" aria-pressed="false">Aire salino</button>
+    </div>
+    <div class="stage map" style="padding:10px 6px">
+      <svg id="map-svg" viewBox="0 0 384 444" role="img" aria-label="Mapa causal: hierro, agua y oxígeno forman una pila de corrosión que produce herrumbre; la herrumbre debilita la pieza y, al ser porosa, deja seguir la corrosión."></svg>
+    </div>
+    <p class="status" id="map-status" aria-live="polite"></p>
+    <div class="legend"><span><i style="background:var(--flow)"></i>Condiciones necesarias</span><span><i style="background:var(--ctrl)"></i>Mecanismo</span><span><i style="background:var(--cons)"></i>Resultado</span><span><i style="border:1.5px dashed var(--ink-3)"></i>Eslabón cortado</span></div>
+    <div class="layer lv2">
+      <span class="lbl">Técnico</span>
+      <p>Es una celda electroquímica: en el ánodo el hierro se oxida y en el cátodo se reduce el oxígeno. El agua actúa como electrolito y el propio metal conduce los electrones. Los iones Fe²⁺ y OH⁻ forman Fe(OH)₂, que el oxígeno convierte en herrumbre (Fe₂O₃·nH₂O).</p>
+    </div>
+    <div class="layer lv3">
+      <span class="lbl">Avanzado · matices</span>
+      <p>El zinc es más activo que el hierro: actúa como ánodo de sacrificio y protege incluso donde la capa se raya. La pintura solo funciona mientras esté entera. Los cloruros (aire de costa) aumentan la conductividad del agua y rompen películas protectoras. Sin humedad relativa alta (aprox. bajo 60 %) la corrosión atmosférica es muy lenta.</p>
+    </div>
+    <div class="take"><span class="lbl">Qué debes llevarte</span><p>El hierro se corroe porque forma una pila con el agua y el oxígeno; toda protección funciona quitando una pieza de esa pila.</p></div>
+  </section>
+
+  <!-- 7 · DATOS -->
+  <section class="panel" id="datos" role="tabpanel" aria-labelledby="t-datos" hidden>
+    <div class="phead">
+      <h2>¿Cuánta corriente pasa por un LED según su resistencia?</h2>
+      <p class="why"><b>Datos</b>porque se comparan varias resistencias con una sola escala y un límite visible: el gráfico muestra de un vistazo cuáles son seguras.</p>
+      <div class="prov"><span class="chip kind">Cálculo</span><span class="chip">ley de Ohm con caída fija del LED</span><span class="chip">valores típicos</span></div>
+    </div>
+    <div class="grid2">
+      <div class="ctl"><span class="lbl">Fuente</span>
+        <div class="seg" role="radiogroup" aria-label="Voltaje de la fuente">
+          <label><input type="radio" name="vs" id="vs-33" value="3.3"><span>3,3 V</span></label>
+          <label><input type="radio" name="vs" id="vs-5" value="5" checked><span>5 V</span></label>
+          <label><input type="radio" name="vs" id="vs-9" value="9"><span>9 V</span></label>
+          <label><input type="radio" name="vs" id="vs-12" value="12"><span>12 V</span></label>
+        </div>
+      </div>
+      <div class="ctl"><span class="lbl">LED</span>
+        <div class="seg" role="radiogroup" aria-label="Color del LED">
+          <label><input type="radio" name="vf" id="vf-r" value="2.0" checked><span>Rojo · 2,0 V</span></label>
+          <label><input type="radio" name="vf" id="vf-y" value="2.1"><span>Amarillo · 2,1 V</span></label>
+          <label><input type="radio" name="vf" id="vf-b" value="3.1"><span>Azul/blanco · 3,1 V</span></label>
+        </div>
+      </div>
+    </div>
+    <div class="stage chart" id="led-chart" style="padding:8px 6px 4px">
+      <svg id="led-svg" viewBox="0 0 360 236" role="img" aria-label="Barras: corriente del LED para cada resistencia"></svg>
+      <div class="tip" id="led-tip" hidden></div>
+    </div>
+    <div class="ledbox">
+      <div class="led" id="led-dot" aria-hidden="true"></div>
+      <p id="led-sel" aria-live="polite"></p>
+    </div>
+    <div class="readout">
+      <div><span>Resistencia mínima</span><b id="led-rmin">—</b></div>
+      <div><span>Valor comercial (E12)</span><b id="led-rpick">—</b></div>
+      <div><span>Corriente con ese valor</span><b id="led-ipick">—</b></div>
+    </div>
+    <div class="layer lv2">
+      <span class="lbl">Técnico</span>
+      <p class="mono">I = (V<sub>fuente</sub> − V<sub>LED</sub>) / R · R<sub>mín</sub> = (V<sub>fuente</sub> − V<sub>LED</sub>) / 20 mA · P<sub>R</sub> = I²·R</p>
+      <p>La línea roja marca 20 mA, una corriente continua típica para LED de 5 mm. Elige el valor comercial que queda por encima de R<sub>mín</sub>. <span id="led-pw"></span></p>
+    </div>
+    <details class="more">
+      <summary>Ver como tabla</summary>
+      <div style="overflow-x:auto"><table class="data" id="led-table"></table></div>
+    </details>
+    <div class="layer lv3">
+      <span class="lbl">Avanzado · límites</span>
+      <p>Se toma la caída del LED como fija; en realidad sube un poco con la corriente y cambia con el fabricante y la temperatura. Revisa la hoja de datos de tu LED para su corriente máxima y su caída real.</p>
+    </div>
+    <div class="take"><span class="lbl">Qué debes llevarte</span><p>La resistencia absorbe el voltaje que sobra: a más resistencia, menos corriente. Usa la menor que mantenga el LED bajo su límite.</p></div>
+  </section>
+
+  </main>
+
+  <footer class="foot">
+    <span>Ejemplo práctico de VisualGraficEyes (VGE)</span>
+    <a href="https://github.com/josanto21/VisualGraficEyes/tree/main/examples/siete-modos" target="_blank" rel="noopener">Código fuente y verificación</a>
+  </footer>
+</div>
+
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.min.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"}}</script>
+<script>
+(() => {
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const NS = 'http://www.w3.org/2000/svg';
+const el = (tag, attrs = {}, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; };
+const fmt = (x, d = 0) => x.toLocaleString('es-ES', { minimumFractionDigits: d, maximumFractionDigits: d });
+const store = { get(k) { try { return localStorage.getItem(k); } catch { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} } };
+const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+window.VGE = { $, $$, el, fmt, reduced, active: null };
+
+/* ---------- Nivel ---------- */
+const main = $('#main');
+const setLevel = (v) => { main.dataset.level = v; const i = $(`#lv-${v}`); if (i) i.checked = true; store.set('vge-nivel', v); document.dispatchEvent(new CustomEvent('vge:level', { detail: +v })); };
+$$('input[name="nivel"]').forEach((i) => i.addEventListener('change', () => setLevel(i.value)));
+setLevel(store.get('vge-nivel') || '1');
+
+/* ---------- Pestañas (con #enlace) ---------- */
+const ids = $$('.tab').map((t) => t.dataset.tab);
+function show(id) {
+  if (!ids.includes(id)) id = 'anatomia';
+  $$('.tab').forEach((t) => { const on = t.dataset.tab === id; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; });
+  $$('.panel').forEach((p) => { p.hidden = p.id !== id; });
+  window.VGE.active = id;
+  document.dispatchEvent(new CustomEvent('vge:tab', { detail: id }));
+}
+$$('.tab').forEach((t, i, all) => {
+  t.addEventListener('click', () => { if (location.hash !== '#' + t.dataset.tab) location.hash = t.dataset.tab; else show(t.dataset.tab); });
+  t.addEventListener('keydown', (e) => {
+    const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0; if (!d) return;
+    const n = all[(i + d + all.length) % all.length]; n.focus(); n.click();
+  });
+});
+addEventListener('hashchange', () => show(location.hash.slice(1)));
+window.VGE.start = () => show(location.hash.slice(1));
+
+/* =====================================================================
+   LABORATORIO · filtro RC
+   ===================================================================== */
+{
+  const R = $('#rc-r'), Cc = $('#rc-c'), F = $('#rc-f');
+  const si = (x, unit) => {
+    const P = [[1e6, 'M'], [1e3, 'k'], [1, ''], [1e-3, 'm'], [1e-6, 'µ'], [1e-9, 'n']];
+    const [m, p] = P.find(([m]) => Math.abs(x) >= m * 0.9995) || P[P.length - 1];
+    const v = x / m; return `${fmt(v, v >= 100 ? 0 : v >= 10 ? 1 : 2)} ${p}${unit}`;
+  };
+  // Esquema estático
+  const sch = $('#rc-schem');
+  sch.innerHTML = `
+    <g fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round">
+      <path d="M40 40H96M150 40H210V60M210 84V110H40V96M40 40V54"/>
+      <path d="M210 40H262"/>
+    </g>
+    <circle cx="40" cy="75" r="20" fill="var(--stage)" stroke="var(--ink-3)" stroke-width="2"/>
+    <path d="M28 75q6-12 12 0t12 0" fill="none" stroke="var(--ink-3)" stroke-width="2"/>
+    <rect x="96" y="31" width="54" height="18" rx="2" fill="var(--stage)" stroke="var(--ink)" stroke-width="2"/>
+    <path d="M194 60H226M194 84H226" stroke="var(--flow)" stroke-width="3"/>
+    <circle cx="262" cy="40" r="4" fill="var(--flow)"/>
+    <path d="M28 110H52M32 116H48M37 122H43" stroke="var(--ink)" stroke-width="2"/>
+    <text x="123" y="24" text-anchor="middle" font-size="13" fill="var(--ink)">R</text>
+    <text x="236" y="76" font-size="13" fill="var(--flow)">C</text>
+    <text x="270" y="44" font-size="12" fill="var(--flow)">salida</text>
+    <text x="40" y="146" text-anchor="middle" font-size="12" fill="var(--ink-3)">entrada ~</text>
+    <text x="123" y="68" text-anchor="middle" font-size="11" class="mono" fill="var(--ink-3)" id="rc-s-r"></text>
+    <text x="236" y="96" font-size="11" class="mono" fill="var(--ink-3)" id="rc-s-c"></text>`;
+
+  const bode = $('#rc-bode'), time = $('#rc-time');
+  const B = { x0: 40, x1: 330, y0: 18, y1: 178, fmin: 0, fmax: 6, dbmin: -60 };
+  const bx = (lf) => B.x0 + (lf - B.fmin) / (B.fmax - B.fmin) * (B.x1 - B.x0);
+  const by = (db) => B.y0 + (Math.max(db, B.dbmin) / B.dbmin) * (B.y1 - B.y0);
+  // Rejilla del diagrama de Bode (una vez)
+  {
+    const g = el('g', {}, bode);
+    for (let d = 0; d <= 6; d++) {
+      el('line', { x1: bx(d), x2: bx(d), y1: B.y0, y2: B.y1, stroke: 'var(--rule)' }, g);
+      const t = el('text', { x: bx(d), y: B.y1 + 14, 'text-anchor': 'middle', 'font-size': 10.5, fill: 'var(--ink-3)', class: 'mono' }, g);
+      t.textContent = ['1', '10', '100', '1k', '10k', '100k', '1M'][d];
+    }
+    for (const db of [0, -20, -40, -60]) {
+      el('line', { x1: B.x0, x2: B.x1, y1: by(db), y2: by(db), stroke: 'var(--rule)' }, g);
+      const t = el('text', { x: B.x0 - 5, y: by(db) + 4, 'text-anchor': 'end', 'font-size': 10.5, fill: 'var(--ink-3)', class: 'mono' }, g); t.textContent = db;
+    }
+    const tx = el('text', { x: (B.x0 + B.x1) / 2, y: 206, 'text-anchor': 'middle', 'font-size': 11, fill: 'var(--ink-3)' }, g); tx.textContent = 'Frecuencia (Hz)';
+    const ty = el('text', { x: 10, y: 12, 'font-size': 11, fill: 'var(--ink-3)' }, g); ty.textContent = 'dB';
+  }
+  const bCurve = el('path', { fill: 'none', stroke: 'var(--flow)', 'stroke-width': 2.2 }, bode);
+  const bFc = el('line', { stroke: 'var(--ok)', 'stroke-width': 1.5, 'stroke-dasharray': '4 3', y1: B.y0, y2: B.y1 }, bode);
+  const bFcDot = el('circle', { r: 4.5, fill: 'var(--ok)' }, bode);
+  const bF = el('line', { stroke: 'var(--ctrl)', 'stroke-width': 2, y1: B.y0, y2: B.y1 }, bode);
+  const bFDot = el('circle', { r: 5, fill: 'var(--ctrl)', stroke: 'var(--stage)', 'stroke-width': 2 }, bode);
+
+  const T = { x0: 30, x1: 330, ym: 98, a: 66 };
+  {
+    const g = el('g', {}, time);
+    el('line', { x1: T.x0, x2: T.x1, y1: T.ym, y2: T.ym, stroke: 'var(--rule)' }, g);
+    for (const v of [1, -1]) el('line', { x1: T.x0, x2: T.x1, y1: T.ym - v * T.a, y2: T.ym - v * T.a, stroke: 'var(--rule)', 'stroke-dasharray': '2 4' }, g);
+    const t1 = el('text', { x: T.x0 - 5, y: T.ym - T.a + 4, 'text-anchor': 'end', 'font-size': 10.5, class: 'mono', fill: 'var(--ink-3)' }, g); t1.textContent = '+1';
+    const t2 = el('text', { x: T.x0 - 5, y: T.ym + T.a + 4, 'text-anchor': 'end', 'font-size': 10.5, class: 'mono', fill: 'var(--ink-3)' }, g); t2.textContent = '−1';
+    const t3 = el('text', { x: T.x0 - 5, y: T.ym + 4, 'text-anchor': 'end', 'font-size': 10.5, class: 'mono', fill: 'var(--ink-3)' }, g); t3.textContent = '0';
+    const ty = el('text', { x: 4, y: 12, 'font-size': 11, fill: 'var(--ink-3)' }, g); ty.textContent = 'V (relativo a la entrada)';
+  }
+  const tIn = el('path', { fill: 'none', stroke: 'var(--ink-3)', 'stroke-width': 2 }, time);
+  const tOut = el('path', { fill: 'none', stroke: 'var(--flow)', 'stroke-width': 2.4 }, time);
+  const tAx = el('text', { x: 180, y: 206, 'text-anchor': 'middle', 'font-size': 11, fill: 'var(--ink-3)' }, time);
+
+  function cjs(r, c, f) {
+    const dt = Math.min(5e-6, 1 / (f * 200));
+    return [
+      `$ 1 ${dt.toExponential(3)} 10.20027730826997 50 5 50 5e-11`,
+      `v 96 336 96 112 0 1 ${+f.toPrecision(4)} 1 0 0 0.5`,
+      `r 96 112 272 112 0 ${+r.toPrecision(4)}`,
+      `c 272 112 272 336 0 ${(+c.toPrecision(4)).toExponential()} 0`,
+      `w 96 336 272 336 0`,
+      `g 96 336 96 368 0 0`,
+    ].join('\n');
+  }
+
+  function update() {
+    const r = 10 ** +R.value, c = 10 ** +Cc.value, lf = +F.value, f = 10 ** lf;
+    const fc = 1 / (2 * Math.PI * r * c), x = f / fc;
+    const gain = 1 / Math.sqrt(1 + x * x), db = 20 * Math.log10(gain), ph = -Math.atan(x) * 180 / Math.PI;
+    $('#rc-r-out').textContent = si(r, 'Ω'); $('#rc-c-out').textContent = si(c, 'F'); $('#rc-f-out').textContent = si(f, 'Hz');
+    $('#rc-s-r').textContent = si(r, 'Ω'); $('#rc-s-c').textContent = si(c, 'F');
+    $('#rc-fc').textContent = si(fc, 'Hz');
+    $('#rc-gain').textContent = `${fmt(gain * 100, gain < 0.1 ? 1 : 0)} %`;
+    $('#rc-db').textContent = `${fmt(db, 1)} dB`;
+    $('#rc-ph').textContent = `${fmt(ph, 0)}°`;
+    // Bode
+    let d = '';
+    for (let k = 0; k <= 160; k++) { const l = B.fmin + (B.fmax - B.fmin) * k / 160, xx = 10 ** l / fc; d += (k ? 'L' : 'M') + bx(l).toFixed(1) + ' ' + by(-10 * Math.log10(1 + xx * xx)).toFixed(1); }
+    bCurve.setAttribute('d', d);
+    const lfc = Math.log10(fc), inFc = lfc >= B.fmin && lfc <= B.fmax;
+    for (const e of [bFc, bFcDot]) e.style.display = inFc ? '' : 'none';
+    bFc.setAttribute('x1', bx(lfc)); bFc.setAttribute('x2', bx(lfc)); bFcDot.setAttribute('cx', bx(lfc)); bFcDot.setAttribute('cy', by(-3.01));
+    bF.setAttribute('x1', bx(lf)); bF.setAttribute('x2', bx(lf)); bFDot.setAttribute('cx', bx(lf)); bFDot.setAttribute('cy', by(db));
+    // Onda: 2 periodos de la entrada, régimen permanente
+    const per = 1 / f, tspan = 2 * per; let di = '', dout = '';
+    const phr = -Math.atan(x);
+    for (let k = 0; k <= 200; k++) {
+      const t = tspan * k / 200, xp = T.x0 + (T.x1 - T.x0) * k / 200, w = 2 * Math.PI * f * t;
+      di += (k ? 'L' : 'M') + xp.toFixed(1) + ' ' + (T.ym - T.a * Math.sin(w)).toFixed(1);
+      dout += (k ? 'L' : 'M') + xp.toFixed(1) + ' ' + (T.ym - T.a * gain * Math.sin(w + phr)).toFixed(1);
+    }
+    tIn.setAttribute('d', di); tOut.setAttribute('d', dout);
+    tAx.textContent = `Tiempo: 2 periodos = ${si(tspan, 's')}`;
+    $('#rc-cjs').textContent = cjs(r, c, f);
+  }
+  [R, Cc, F].forEach((i) => i.addEventListener('input', update));
+  update();
+  $('#rc-copy').addEventListener('click', () => {
+    const txt = $('#rc-cjs').textContent, msg = $('#rc-copy-msg');
+    const sel = () => { const rg = document.createRange(); rg.selectNodeContents($('#rc-cjs')); const s = getSelection(); s.removeAllRanges(); s.addRange(rg); msg.textContent = 'Texto seleccionado: cópialo con Ctrl+C.'; };
+    try { navigator.clipboard.writeText(txt).then(() => { msg.textContent = 'Copiado.'; }, sel); } catch { sel(); }
+  });
+}
+
+/* =====================================================================
+   PASOS · burbuja (ejecuta el algoritmo y guarda la traza)
+   ===================================================================== */
+{
+  const inputs = {
+    ejemplo: [5, 3, 8, 1, 6, 2],
+    casi: [1, 2, 4, 3, 5, 6],
+    reves: [6, 5, 4, 3, 2, 1],
+  };
+  const randomInput = () => { const a = [1, 2, 3, 4, 5, 6, 7, 8, 9].sort(() => Math.random() - 0.5).slice(0, 6); return a; };
+  let trace = [], i = 0, timer = null, items = [];
+  const barsEl = $('#bs-bars');
+
+  function run(a0) {
+    const a = a0.map((v, k) => ({ v, id: k }));
+    const T = []; let cmp = 0, swp = 0, end = a.length - 1, pass = 0;
+    const snap = (o) => T.push({ order: a.map((x) => x.id), cmp, swp, pass, end, ...o });
+    snap({ line: 0, msg: `Lista de entrada: ${a.map((x) => x.v).join(', ')}. Se recorrerá comparando vecinos.`, done: -1 });
+    let changed;
+    do {
+      pass++; changed = false;
+      snap({ line: 1, msg: `Pasada ${pass}: se recorre desde el inicio hasta la posición ${end}.`, done: end + 1 });
+      for (let k = 0; k < end; k++) {
+        cmp++;
+        const L = a[k].v, Rr = a[k + 1].v;
+        if (L > Rr) {
+          snap({ line: 3, a: k, b: k + 1, kind: 'cmp', msg: `¿${L} > ${Rr}? Sí: están al revés.`, done: end + 1 });
+          [a[k], a[k + 1]] = [a[k + 1], a[k]]; swp++; changed = true;
+          snap({ line: 4, a: k, b: k + 1, kind: 'swap', msg: `Se intercambian: ${Rr} pasa a la izquierda y ${L} sigue hacia la derecha.`, done: end + 1 });
+        } else {
+          snap({ line: 3, a: k, b: k + 1, kind: 'cmp', msg: `¿${L} > ${Rr}? No: se quedan donde están.`, done: end + 1 });
+        }
+      }
+      end--;
+      snap({ line: 6, msg: changed ? `Fin de la pasada ${pass}: ${a[end + 1].v} ya está en su lugar.` : `La pasada ${pass} no intercambió nada: la lista ya está ordenada.`, done: end + 1 });
+    } while (changed && end > 0);
+    snap({ line: 7, msg: `Lista ordenada: ${a.map((x) => x.v).join(', ')}. ${cmp} comparaciones y ${swp} intercambios.`, done: 0, final: true });
+    return T;
+  }
+
+  function build(arr) {
+    stop();
+    barsEl.innerHTML = '';
+    const max = Math.max(...arr);
+    items = arr.map((v, k) => {
+      const b = document.createElement('div'); b.className = 'bar idle';
+      b.style.height = `${18 + (v / max) * 150}px`;
+      b.innerHTML = `<span>${v}</span>`; barsEl.appendChild(b); return b;
+    });
+    for (let k = 0; k < arr.length; k++) { const s = document.createElement('div'); s.className = 'slotlbl'; s.textContent = k; s.dataset.slot = k; barsEl.appendChild(s); }
+    trace = run(arr); i = 0;
+    $('#bs-slider').max = trace.length - 1;
+    layout(); render();
+  }
+  function layout() {
+    const w = barsEl.clientWidth, n = items.length, gap = 8, bw = Math.min(56, (w - gap * (n - 1)) / n);
+    const x0 = (w - (bw * n + gap * (n - 1))) / 2;
+    items.forEach((b) => { b.style.width = bw + 'px'; b.style.left = x0 + 'px'; });
+    $$('.slotlbl', barsEl).forEach((s) => { s.style.left = x0 + s.dataset.slot * (bw + gap) + 'px'; s.style.width = bw + 'px'; });
+    barsEl.dataset.bw = bw; barsEl.dataset.gap = gap;
+  }
+  function render() {
+    const s = trace[i], bw = +barsEl.dataset.bw, gap = +barsEl.dataset.gap;
+    s.order.forEach((id, pos) => {
+      const b = items[id];
+      b.style.transform = `translateX(${pos * (bw + gap)}px)`;
+      let c = 'idle';
+      if (s.done >= 0 && pos >= s.done) c = 'done';
+      if (pos === s.a || pos === s.b) c = s.kind === 'swap' ? 'swap' : 'cmp';
+      b.className = 'bar ' + c;
+    });
+    $$('#bs-code li').forEach((li, k) => li.classList.toggle('hl', k === s.line || (s.kind === 'swap' && k === 5)));
+    $('#bs-status').textContent = s.msg;
+    $('#bs-pass').textContent = s.pass ? s.pass : '—';
+    $('#bs-cmp').textContent = s.cmp; $('#bs-swp').textContent = s.swp;
+    $('#bs-slider').value = i; $('#bs-step-out').textContent = `${i + 1} de ${trace.length}`;
+    $('#bs-prev').disabled = i === 0; $('#bs-next').disabled = i === trace.length - 1;
+  }
+  const go = (d) => { i = Math.max(0, Math.min(trace.length - 1, i + d)); render(); if (i === trace.length - 1) stop(); };
+  function stop() { clearInterval(timer); timer = null; $('#bs-play').textContent = '▶ Reproducir'; }
+  $('#bs-prev').onclick = () => { stop(); go(-1); };
+  $('#bs-next').onclick = () => { stop(); go(1); };
+  $('#bs-reset').onclick = () => { stop(); i = 0; render(); };
+  $('#bs-slider').oninput = (e) => { stop(); i = +e.target.value; render(); };
+  $('#bs-play').onclick = () => {
+    if (timer) return stop();
+    if (i === trace.length - 1) i = 0;
+    $('#bs-play').textContent = '⏸ Pausar';
+    timer = setInterval(() => { if (window.VGE.active !== 'pasos' || document.hidden) return; go(1); }, reduced.matches ? 1400 : 950);
+  };
+  $$('[data-input]').forEach((b) => b.addEventListener('click', () => {
+    $$('[data-input]').forEach((x) => x.classList.toggle('on', x === b));
+    build(b.dataset.input === 'azar' ? randomInput() : inputs[b.dataset.input]);
+  }));
+  build(inputs.ejemplo);
+  document.addEventListener('vge:tab', (e) => { if (e.detail === 'pasos') { layout(); render(); } else stop(); });
+  addEventListener('resize', () => { if (window.VGE.active === 'pasos') { layout(); render(); } });
+}
+
+/* =====================================================================
+   VIDEO · escenas
+   ===================================================================== */
+{
+  const v = $('#vid'), chips = $$('[data-seek]');
+  chips.forEach((b) => b.addEventListener('click', () => { v.currentTime = +b.dataset.seek; v.play().catch(() => {}); }));
+  const mark = () => { const t = v.currentTime; const k = t < 5 ? 0 : t < 15.5 ? 1 : 2; chips.forEach((c, j) => c.classList.toggle('on', j === k)); };
+  v.addEventListener('timeupdate', mark); mark();
+  document.addEventListener('vge:tab', (e) => { if (e.detail !== 'video') v.pause(); });
+}
+
+/* =====================================================================
+   MAPA · corrosión
+   ===================================================================== */
+{
+  const svg = $('#map-svg');
+  const state = { pintura: false, zinc: false, seco: false, sal: false };
+  const node = (id, x, y, w, h, color, lines, opts = {}) => {
+    const g = el('g', { class: 'node', id }, svg);
+    el('rect', { x, y, width: w, height: h, rx: 8, fill: `var(--${color}-soft)`, stroke: `var(--${color})` }, g);
+    let ty = y + (opts.top ?? 20);
+    lines.forEach(([cls, txt, lv]) => {
+      const t = el('text', { x: x + 10, y: ty, class: cls + (lv ? ' lv' + lv : '') }, g); t.textContent = txt; ty += cls === 't' ? 17 : 15;
+    });
+    return g;
+  };
+  const defs = el('defs', {}, svg);
+  for (const c of ['flow', 'ctrl', 'cons', 'ink-3']) {
+    const m = el('marker', { id: 'ar-' + c, viewBox: '0 0 10 10', refX: 9, refY: 5, markerWidth: 7, markerHeight: 7, orient: 'auto-start-reverse' }, defs);
+    el('path', { d: 'M0 0L10 5L0 10z', fill: `var(--${c})` }, m);
+  }
+  const edge = (id, d, color) => el('path', { id, d, class: 'edge', stroke: `var(--${color})`, 'marker-end': `url(#ar-${color})` }, svg);
+  // Aristas primero (quedan debajo)
+  const eFe = edge('e-fe', 'M62 64 L80 114', 'flow');
+  const eH2o = edge('e-h2o', 'M180 64 L180 102', 'flow');
+  const eO2 = edge('e-o2', 'M298 64 L280 114', 'flow');
+  const eCell = edge('e-cell', 'M180 234 L180 268', 'ctrl');
+  const eC1 = edge('e-c1', 'M150 322 L104 358', 'cons');
+  const eC2 = edge('e-c2', 'M210 322 L256 358', 'cons');
+  const eLoop = edge('e-loop', 'M354 392 C 378 392, 378 170, 356 170', 'cons');
+  // Nodos
+  node('n-fe', 8, 12, 108, 52, 'flow', [['t', 'Hierro'], ['s', 'el metal']]);
+  node('n-h2o', 126, 12, 108, 52, 'flow', [['t', 'Agua'], ['s', 'humedad, lluvia']]);
+  node('n-o2', 244, 12, 108, 52, 'flow', [['t', 'Oxígeno'], ['s', 'del aire']]);
+  const cell = el('g', { id: 'n-cell' }, svg);
+  el('rect', { x: 8, y: 104, width: 344, height: 130, rx: 10, fill: 'none', stroke: 'var(--ctrl)', 'stroke-width': 1.5 }, cell);
+  const ct = el('text', { x: 20, y: 228, 'font-size': 12, 'font-weight': 600, fill: 'var(--ctrl)' }, cell); ct.textContent = 'Pila de corrosión';
+  svg.appendChild(cell);
+  const an = node('n-an', 20, 116, 150, 94, 'ctrl', [['t', 'Ánodo'], ['s', 'el hierro suelta'], ['s', 'electrones'], ['f', 'Fe → Fe²⁺ + 2e⁻', 2]]);
+  const ca = node('n-ca', 190, 116, 150, 94, 'ctrl', [['t', 'Cátodo'], ['s', 'el oxígeno y el agua'], ['s', 'los recogen'], ['f', 'O₂+2H₂O+4e⁻ → 4OH⁻', 2]]);
+  const eE = el('path', { d: 'M171 150 L188 150', class: 'edge', stroke: 'var(--ctrl)', 'marker-end': 'url(#ar-ctrl)' }, svg);
+  const eLbl = el('text', { x: 180, y: 142, 'text-anchor': 'middle', 'font-size': 11, fill: 'var(--ctrl)', class: 'mono' }, svg); eLbl.textContent = 'e⁻';
+  const rust = node('n-rust', 100, 268, 160, 54, 'cons', [['t', 'Herrumbre'], ['s', 'óxido de hierro']]);
+  const c1 = node('n-c1', 8, 358, 172, 62, 'cons', [['t', 'Pierde espesor'], ['s', 'y resistencia']]);
+  const c2 = node('n-c2', 188, 358, 166, 62, 'cons', [['t', 'Capa porosa'], ['s', 'no frena el avance']]);
+  const loopT = el('text', { x: 370, y: 300, 'font-size': 11, fill: 'var(--cons)', transform: 'rotate(-90 370 300)', 'text-anchor': 'middle' }, svg); loopT.textContent = 'sigue';
+  // Marcas de corte
+  const xMark = (x, y) => { const g = el('g', { class: 'xm', transform: `translate(${x} ${y})` }, svg); el('circle', { r: 8, fill: 'var(--stage)', stroke: 'var(--ink-3)' }, g); el('path', { d: 'M-4 -4L4 4M4 -4L-4 4', stroke: 'var(--ink)', 'stroke-width': 1.8 }, g); return g; };
+  const xFe = xMark(71, 89), xH2o = xMark(180, 83), xO2 = xMark(289, 89);
+  const zincTag = el('g', {}, svg); el('rect', { x: 64, y: 4, width: 60, height: 18, rx: 4, fill: 'var(--ink)' }, zincTag);
+  const zt = el('text', { x: 94, y: 17, 'text-anchor': 'middle', 'font-size': 11, fill: 'var(--on-ink)', class: 'mono' }, zincTag); zt.textContent = 'capa Zn';
+  const fastT = el('text', { x: 188, y: 90, 'font-size': 11, fill: 'var(--flow)', 'font-weight': 600 }, svg); fastT.textContent = '+ sal: más rápido';
+
+  const lvls = () => { const L = +main.dataset.level; $$('.lv2', svg).forEach((t) => { t.style.display = L >= 2 ? '' : 'none'; }); };
+  document.addEventListener('vge:level', lvls); lvls();
+
+  function update() {
+    const cutFe = state.zinc, cutH2o = state.pintura || state.seco, cutO2 = state.pintura;
+    const active = !cutFe && !cutH2o && !cutO2;
+    eFe.classList.toggle('cut', cutFe); xFe.style.display = cutFe ? '' : 'none';
+    eH2o.classList.toggle('cut', cutH2o); xH2o.style.display = cutH2o ? '' : 'none';
+    eO2.classList.toggle('cut', cutO2); xO2.style.display = cutO2 ? '' : 'none';
+    zincTag.style.display = state.zinc ? '' : 'none';
+    const fast = active && state.sal;
+    eH2o.setAttribute('stroke-width', fast ? 4.5 : 2); fastT.style.display = fast ? '' : 'none';
+    for (const e of [cell, an, ca, eE, eLbl, eCell, rust, eC1, eC2, c1, c2, eLoop, loopT]) e.classList.toggle('faded', !active);
+    let msg;
+    if (active) msg = state.sal ? 'Con sal, el agua conduce mejor: la pila trabaja más rápido. Así se oxida tanto el metal cerca del mar.' : 'Sin protección: hierro, agua y oxígeno forman la pila, y la herrumbre porosa deja que siga avanzando.';
+    else {
+      const why = [];
+      if (state.pintura) why.push('la pintura no deja llegar agua ni oxígeno al metal');
+      if (state.seco && !state.pintura) why.push('sin humedad no hay agua que conecte la pila');
+      if (state.zinc) why.push('el zinc se corroe en lugar del hierro y lo protege, aun si se raya');
+      msg = 'Se detiene: ' + why.join('; ') + '.';
+    }
+    $('#map-status').textContent = msg;
+  }
+  $$('[data-tg]').forEach((b) => b.addEventListener('click', () => { const k = b.dataset.tg; state[k] = !state[k]; b.setAttribute('aria-pressed', state[k]); update(); }));
+  update();
+}
+
+/* =====================================================================
+   DATOS · LED
+   ===================================================================== */
+{
+  const RS = [100, 150, 220, 330, 470, 680, 1000, 2200];
+  const E12 = [10, 12, 15, 18, 22, 27, 33, 39, 47, 56, 68, 82];
+  const ILIM = 20; // mA
+  const svg = $('#led-svg'), tip = $('#led-tip'), box = $('#led-chart');
+  const M = { l: 40, r: 10, t: 20, b: 42, W: 360, H: 236 };
+  let sel = 2;
+  const ohm = (r) => r >= 1000 ? `${fmt(r / 1000, r % 1000 ? 1 : 0)} k` : `${r} `;
+  const nextE12 = (r) => { for (let d = 1; d <= 1e6; d *= 10) for (const e of E12) if (e * d >= r - 1e-9) return e * d; return null; };
+  const niceMax = (v) => { const steps = [10, 20, 25, 40, 50, 60, 80, 100, 120, 150]; return steps.find((s) => s >= v) || Math.ceil(v / 50) * 50; };
+  const vals = () => ({ vs: +$('input[name="vs"]:checked').value, vf: +$('input[name="vf"]:checked').value });
+  const ledColor = () => ({ '2.0': '#e43b2f', '2.1': '#f2b705', '3.1': '#8fc8ff' })[$('input[name="vf"]:checked').value];
+
+  function draw() {
+    const { vs, vf } = vals();
+    const I = RS.map((r) => Math.max(0, (vs - vf) / r * 1000));
+    const ymax = niceMax(Math.max(ILIM * 1.25, ...I));
+    const x0 = M.l, x1 = M.W - M.r, y0 = M.t, y1 = M.H - M.b, band = (x1 - x0) / RS.length, bw = band * 0.62;
+    const Y = (v) => y1 - v / ymax * (y1 - y0);
+    svg.innerHTML = '';
+    const step = ymax <= 25 ? 5 : ymax <= 60 ? 10 : ymax <= 100 ? 20 : 30;
+    for (let v = 0; v <= ymax + 1e-9; v += step) {
+      el('line', { x1: x0, x2: x1, y1: Y(v), y2: Y(v), class: 'ax', 'stroke-opacity': v ? .7 : 1 }, svg);
+      const t = el('text', { x: x0 - 6, y: Y(v) + 4, 'text-anchor': 'end', class: 'axt mono' }, svg); t.textContent = v;
+    }
+    const yl = el('text', { x: 4, y: 12, class: 'axt' }, svg); yl.textContent = 'mA';
+    const xl = el('text', { x: (x0 + x1) / 2, y: M.H - 4, 'text-anchor': 'middle', class: 'axt' }, svg); xl.textContent = 'Resistencia (Ω)';
+    // Barras
+    RS.forEach((r, k) => {
+      const cx = x0 + band * (k + 0.5), over = I[k] > ILIM + 1e-9, h = Math.max(0, y1 - Y(I[k]));
+      const g = el('g', { class: 'b', tabindex: 0, role: 'button', 'aria-label': `${ohm(r)}Ω: ${fmt(I[k], 1)} mA${over ? ', excede el límite' : ''}` }, svg);
+      el('rect', { x: cx - band / 2, y: y0, width: band, height: y1 - y0, fill: 'transparent' }, g);
+      if (h > 0.5) el('path', { d: `M${cx - bw / 2} ${y1} V${y1 - h + 4} Q${cx - bw / 2} ${y1 - h} ${cx - bw / 2 + 4} ${y1 - h} H${cx + bw / 2 - 4} Q${cx + bw / 2} ${y1 - h} ${cx + bw / 2} ${y1 - h + 4} V${y1} Z`, fill: over ? 'var(--crit)' : 'var(--flow)', opacity: k === sel ? 1 : .78 }, g);
+      if (over) { const w = el('text', { x: cx, y: Y(I[k]) - 5, 'text-anchor': 'middle', 'font-size': 12, fill: 'var(--crit)', 'font-weight': 700 }, g); w.textContent = '⚠'; }
+      if (k === sel) { const t = el('text', { x: cx, y: Y(I[k]) - (over ? 19 : 5), 'text-anchor': 'middle', 'font-size': 11.5, fill: 'var(--ink)', class: 'mono', 'font-weight': 500 }, g); t.textContent = fmt(I[k], 1); }
+      const lb = el('text', { x: cx, y: y1 + 15, 'text-anchor': 'middle', class: 'axt mono', fill: k === sel ? 'var(--ink)' : '' }, g); lb.textContent = ohm(r).trim();
+      const pick = () => { sel = k; draw(); };
+      g.addEventListener('click', pick);
+      g.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); } });
+      g.addEventListener('pointerenter', () => showTip(k, cx, Y(I[k]), I[k], r));
+      g.addEventListener('pointerleave', () => { tip.hidden = true; });
+    });
+    // Línea de límite (encima de las barras)
+    el('line', { x1: x0, x2: x1, y1: Y(ILIM), y2: Y(ILIM), class: 'lim' }, svg);
+    const lt = el('text', { x: x1, y: Y(ILIM) - 5, 'text-anchor': 'end', 'font-size': 11, fill: 'var(--crit)' }, svg); lt.textContent = 'límite típico 20 mA';
+    // Lecturas
+    const Isel = I[sel], rsel = RS[sel], over = Isel > ILIM + 1e-9;
+    const dot = $('#led-dot'), c = ledColor(), k = Math.min(1, Isel / ILIM);
+    dot.style.background = Isel > 0 ? `radial-gradient(circle at 40% 38%, #fff ${k * 22}%, ${c} ${30 + k * 30}%, color-mix(in srgb, ${c} ${Math.round(25 + 60 * k)}%, var(--stage)) 100%)` : 'var(--stage)';
+    dot.style.boxShadow = Isel > 0 ? `0 0 ${6 + 26 * k}px ${2 + 8 * k}px color-mix(in srgb, ${c} ${Math.round(70 * k)}%, transparent)` : 'none';
+    const sp = $('#led-sel');
+    if (vs <= vf) sp.innerHTML = `Con ${fmt(vs, 1)} V la fuente no alcanza para encender un LED que necesita ${fmt(vf, 1)} V.`;
+    else sp.innerHTML = `Con <b>${ohm(rsel)}Ω</b> pasan <b>${fmt(Isel, 1)} mA</b>. ${over ? '<span class="warn-t">⚠ Más de 20 mA: el LED se calienta y dura menos.</span>' : 'Dentro del límite.'} <span style="color:var(--ink-3)">(brillo ilustrativo)</span>`;
+    if (vs > vf) {
+      const rmin = (vs - vf) / (ILIM / 1000), rp = nextE12(rmin), ip = (vs - vf) / rp * 1000, p = (ip / 1000) ** 2 * rp * 1000;
+      $('#led-rmin').textContent = `${fmt(rmin, 0)} Ω`; $('#led-rpick').textContent = `${ohm(rp)}Ω`; $('#led-ipick').textContent = `${fmt(ip, 1)} mA`;
+      $('#led-pw').textContent = `Con ${ohm(rp)}Ω la resistencia disipa ${fmt(p, 0)} mW; ${p > 125 ? 'usa una de ½ W para ir con margen.' : 'una de ¼ W (250 mW) sobra.'}`;
+    } else { $('#led-rmin').textContent = '—'; $('#led-rpick').textContent = '—'; $('#led-ipick').textContent = '—'; $('#led-pw').textContent = ''; }
+    // Tabla
+    $('#led-table').innerHTML = `<thead><tr><th>Resistencia</th><th>Corriente</th><th>Estado</th></tr></thead><tbody>${RS.map((r, j) => `<tr><td>${ohm(r)}Ω</td><td>${fmt(I[j], 1)} mA</td><td>${I[j] > ILIM + 1e-9 ? '⚠ excede' : I[j] === 0 ? 'apagado' : 'dentro del límite'}</td></tr>`).join('')}</tbody>`;
+  }
+  function showTip(k, cx, y, i, r) {
+    const rect = svg.getBoundingClientRect(), s = rect.width / M.W, br = box.getBoundingClientRect();
+    tip.textContent = `${ohm(r)}Ω · ${fmt(i, 1)} mA`;
+    tip.style.left = (rect.left - br.left + cx * s) + 'px'; tip.style.top = (rect.top - br.top + y * s) + 'px'; tip.hidden = false;
+  }
+  $$('input[name="vs"], input[name="vf"]').forEach((i) => i.addEventListener('change', draw));
+  draw();
+}
+window.VGE.start();
+})();
+
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const { $, $$, reduced } = window.VGE;
+const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+const colorOf = (name) => new THREE.Color(css(name) || '#888');
+const darkMode = () => matchMedia('(prefers-color-scheme: dark)').matches && document.documentElement.dataset.theme !== 'light' || document.documentElement.dataset.theme === 'dark';
+
+/* Escena común: renderizador bajo demanda, pausa fuera de su pestaña */
+function makeViewer(stage, tabId, { stencil = false } = {}) {
+  const canvas = document.createElement('canvas');
+  stage.prepend(canvas);
+  let renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, stencil });
+  } catch (e) {
+    canvas.remove();
+    const f = document.createElement('p'); f.className = 'fallback';
+    f.textContent = 'Este navegador no pudo iniciar WebGL, así que la escena 3D no se puede mostrar. Las explicaciones y controles de abajo siguen siendo válidos.';
+    stage.appendChild(f);
+    return null;
+  }
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.localClippingEnabled = true;
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
+  const controls = new OrbitControls(camera, canvas);
+  controls.enableDamping = true; controls.enablePan = false; controls.dampingFactor = 0.08;
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x8899aa, 1.6));
+  const key = new THREE.DirectionalLight(0xffffff, 2.2); key.position.set(4, 7, 6); scene.add(key);
+  const rim = new THREE.DirectionalLight(0xffffff, 0.9); rim.position.set(-5, 2, -4); scene.add(rim);
+  const v = { renderer, scene, camera, controls, canvas, running: false, onFrame: null, interacting: false };
+  (window.VGE.viewers ||= {})[tabId] = v;
+  const resize = () => {
+    const w = stage.clientWidth, h = stage.clientHeight; if (!w || !h) return;
+    renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+  };
+  new ResizeObserver(resize).observe(stage); resize();
+  let last = 0, raf = 0, idle = 0;
+  const loop = (t) => {
+    raf = 0;
+    if (window.VGE.active !== tabId || document.hidden) { v.running = false; return; }
+    const dt = Math.min(0.05, last ? (t - last) / 1000 : 0); last = t;
+    const busy = v.onFrame ? v.onFrame(dt) : false;
+    const moved = controls.update();
+    renderer.render(scene, camera);
+    idle = busy || moved || v.interacting ? 0 : idle + 1;
+    // controls.update() emite 'change' y eso llama a wake() dentro de este mismo ciclo:
+    // si wake() ya agendó el siguiente cuadro, no agendar otro (se duplicarían los ciclos).
+    if (idle < 30) { if (!raf) raf = requestAnimationFrame(loop); } else if (!raf) { v.running = false; last = 0; }
+  };
+  v.wake = () => { if (!raf && window.VGE.active === tabId && !document.hidden) { v.running = true; idle = 0; raf = requestAnimationFrame(loop); } };
+  controls.addEventListener('start', () => { v.interacting = true; v.wake(); });
+  controls.addEventListener('end', () => { v.interacting = false; v.wake(); });
+  controls.addEventListener('change', v.wake);
+  document.addEventListener('vge:tab', (e) => { if (e.detail === tabId) { resize(); v.wake(); } });
+  document.addEventListener('visibilitychange', v.wake);
+  return v;
+}
+const ease = (x) => x < 0 ? 0 : x > 1 ? 1 : x * x * (3 - 2 * x);
+
+/* =====================================================================
+   ANATOMÍA · ventilador de escritorio
+   ===================================================================== */
+function initFan() {
+  const stage = $('#fan-stage');
+  const v = makeViewer(stage, 'anatomia');
+  if (!v) return;
+  const { scene, camera, controls } = v;
+  camera.position.set(4.0, 2.9, 4.7).multiplyScalar(Math.max(1, 1.1 / Math.max(0.3, camera.aspect))); controls.target.set(0, 1.5, 0.4); controls.minDistance = 3; controls.maxDistance = 20;
+  let baseDist = camera.position.distanceTo(controls.target);
+
+  const C = {
+    metal: 0xb9c2c9, dark: 0x3b4650, iron: 0x5d6770, copper: 0xb8662e, copper2: 0xdc9a55, alu: 0xcfd6dc,
+    blade: colorOf('--flow').getHex(), body: darkMode() ? 0xdfe5ea : 0xf2f5f7, cap: 0x24292e, ctrl: colorOf('--ctrl').getHex(),
+  };
+  const mat = (color, o = {}) => new THREE.MeshStandardMaterial({ color, roughness: 0.5, metalness: 0.15, ...o });
+  const head = new THREE.Group(); head.position.y = 1.6; scene.add(head);
+  const parts = [];
+  const part = (id, name, func, tec, explode, delay, parent = head, spin = false) => {
+    const g = new THREE.Group(); parent.add(g);
+    const s = spin ? new THREE.Group() : g; if (spin) g.add(s);
+    const anchor = new THREE.Object3D(); g.add(anchor);
+    const p = { id, name, func, tec, g, s, anchor, explode: new THREE.Vector3(...explode), delay, ghost: false, meshes: [] };
+    parts.push(p); return p;
+  };
+  const add = (p, geo, m, pos, rot) => { const mesh = new THREE.Mesh(geo, m); if (pos) mesh.position.set(...pos); if (rot) mesh.rotation.set(...rot); p.s.add(mesh); mesh.userData.part = p; p.meshes.push(mesh); return mesh; };
+  const tube = (pts, r, seg = 12) => new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts.map((q) => new THREE.Vector3(...q))), seg, r, 5, false);
+  const ringAt = (r, z, tubeR = 0.009) => { const t = new THREE.TorusGeometry(r, tubeR, 6, 72); t.translate(0, 0, z); return t; };
+
+  // Base y poste (fijos)
+  const base = part('base', 'Base y control', 'Sostiene el ventilador. El selector elige la velocidad.', 'En muchos ventiladores el selector conecta distintas tomas del bobinado.', [0, 0, 0], 0, scene);
+  add(base, new THREE.CylinderGeometry(1.0, 1.1, 0.14, 56), mat(C.body), [0, 0.07, 0]);
+  add(base, new THREE.BoxGeometry(0.62, 0.12, 0.3), mat(C.body), [0, 0.2, 0.55]);
+  for (let k = 0; k < 4; k++) add(base, new THREE.BoxGeometry(0.1, 0.05, 0.12), mat(k === 1 ? C.ctrl : C.dark), [-0.21 + k * 0.14, 0.28, 0.55]);
+  add(base, new THREE.CylinderGeometry(0.065, 0.08, 1.06, 24), mat(C.metal, { metalness: 0.6, roughness: 0.3 }), [0, 0.67, 0]);
+  add(base, new THREE.SphereGeometry(0.1, 20, 14), mat(C.dark), [0, 1.2, 0]);
+  base.anchor.position.set(0.5, 0.25, 0.55);
+
+  // Carcasa del motor (perfil de revolución, eje z)
+  const housing = part('carcasa', 'Carcasa del motor', 'Encierra el motor, sostiene el eje y deja salir el calor.', 'Los bujes o rodamientos que guían el eje van en sus tapas.', [0, 0, -1.15], 0.4);
+  const prof = [[0.0, -0.62], [0.22, -0.6], [0.36, -0.52], [0.42, -0.38], [0.42, 0.12], [0.38, 0.18], [0.3, 0.2], [0.07, 0.2]].map(([r, h]) => new THREE.Vector2(r, h));
+  const hg = new THREE.LatheGeometry(prof, 56); hg.rotateX(Math.PI / 2);
+  add(housing, hg, mat(C.body, { side: THREE.DoubleSide }));
+  for (let k = 0; k < 10; k++) add(housing, new THREE.BoxGeometry(0.02, 0.012, 0.36), mat(C.dark), [Math.cos(k * 0.2 + 1.1) * 0.425, Math.sin(k * 0.2 + 1.1) * 0.425, -0.12], [0, 0, k * 0.2 + 1.1]);
+  housing.anchor.position.set(0, 0.48, -0.35); housing.ghost = true;
+
+  // Estator con bobinas (fijo: referencia del despiece)
+  const stator = part('estator', 'Estator y bobinas', 'Bobinas fijas de cobre: con corriente crean un campo magnético que gira.', 'Dos devanados (principal y auxiliar) desplazados 90°; el núcleo es de chapas de acero.', [0, 0, 0], 0);
+  const sp = [[0.22, -0.3], [0.37, -0.3], [0.37, 0], [0.22, 0], [0.22, -0.3]].map(([r, h]) => new THREE.Vector2(r, h));
+  const sg = new THREE.LatheGeometry(sp, 48); sg.rotateX(Math.PI / 2);
+  add(stator, sg, mat(C.iron, { metalness: 0.5, roughness: 0.45, side: THREE.DoubleSide }));
+  for (let k = 0; k < 4; k++) for (const z of [0.035, -0.335]) {
+    const t = new THREE.TorusGeometry(0.295, 0.045, 8, 20, Math.PI / 2.6); t.rotateZ(k * Math.PI / 2 + 0.17); t.translate(0, 0, z);
+    add(stator, t, mat(k % 2 ? C.copper2 : C.copper, { metalness: 0.7, roughness: 0.35 }));
+  }
+  stator.anchor.position.set(-0.3, 0.32, -0.15);
+
+  // Rotor de jaula + eje (gira)
+  const rotor = part('rotor', 'Rotor y eje', 'La pieza que gira. El campo de las bobinas la arrastra sin cables ni contacto.', 'Rotor de jaula de ardilla: barras de aluminio unidas por anillos; el campo induce corriente en ellas.', [0, 0, 0.85], 0.32, head, true);
+  const core = new THREE.CylinderGeometry(0.2, 0.2, 0.28, 40); core.rotateX(Math.PI / 2); core.translate(0, 0, -0.15);
+  add(rotor, core, mat(C.iron, { metalness: 0.5 }));
+  for (let k = 0; k < 16; k++) { const a = k * Math.PI / 8; add(rotor, new THREE.BoxGeometry(0.022, 0.022, 0.29), mat(C.alu, { metalness: 0.7, roughness: 0.3 }), [Math.cos(a) * 0.2, Math.sin(a) * 0.2, -0.15], [0, 0, a]); }
+  for (const z of [-0.295, -0.005]) add(rotor, new THREE.TorusGeometry(0.19, 0.024, 8, 40), mat(C.alu, { metalness: 0.7, roughness: 0.3 }), [0, 0, z]);
+  const shaft = new THREE.CylinderGeometry(0.034, 0.034, 1.24, 20); shaft.rotateX(Math.PI / 2); shaft.translate(0, 0, 0.04);
+  add(rotor, shaft, mat(C.metal, { metalness: 0.8, roughness: 0.25 }));
+  rotor.anchor.position.set(0, 0.24, -0.15);
+
+  // Capacitor (bajo la carcasa)
+  const capP = part('capacitor', 'Capacitor', 'Desfasa la corriente de una bobina respecto de la otra; así el campo gira y el motor arranca solo.', 'Capacitor de marcha en serie con el devanado auxiliar: adelanta su corriente.', [0.75, 0, 0], 0.4);
+  const cg = new THREE.CylinderGeometry(0.085, 0.085, 0.32, 28); cg.rotateZ(Math.PI / 2);
+  add(capP, cg, mat(C.cap, { roughness: 0.6 }), [0.27, -0.48, -0.25]);
+  const band = new THREE.CylinderGeometry(0.087, 0.087, 0.05, 28); band.rotateZ(Math.PI / 2);
+  add(capP, band, mat(C.ctrl), [0.33, -0.48, -0.25]);
+  capP.anchor.position.set(0.42, -0.48, -0.25);
+
+  // Rejilla trasera
+  const rear = part('rejilla-t', 'Rejilla trasera', 'Protección trasera; también sostiene a la delantera.', 'Se fija al frente de la carcasa; el borde engancha con la rejilla delantera.', [0, 0, 1.35], 0.24);
+  const wire = mat(C.metal, { metalness: 0.7, roughness: 0.3 });
+  const zr = (r) => 0.22 + 0.18 * ((r - 0.45) / 0.57);
+  for (let k = 0; k < 28; k++) { const a = k * Math.PI * 2 / 28; add(rear, tube([[Math.cos(a) * 0.45, Math.sin(a) * 0.45, zr(0.45)], [Math.cos(a) * 1.02, Math.sin(a) * 1.02, zr(1.02)]], 0.008, 2), wire); }
+  for (const r of [0.45, 0.65, 0.85]) add(rear, ringAt(r, zr(r)), wire);
+  add(rear, ringAt(1.02, 0.4, 0.018), wire);
+  rear.anchor.position.set(0.7, 0.55, 0.32); rear.ghost = true;
+
+  // Aspas + buje (gira)
+  const blades = part('aspas', 'Aspas', 'Empujan el aire hacia adelante: su inclinación convierte el giro en corriente de aire.', 'Cada aspa trabaja como un ala con un ángulo de ataque; el caudal crece con la velocidad.', [0, 0, 1.95], 0.16, head, true);
+  const bs = new THREE.Shape();
+  bs.moveTo(0.14, -0.06); bs.bezierCurveTo(0.35, -0.22, 0.75, -0.3, 0.92, -0.12); bs.quadraticCurveTo(0.99, 0.05, 0.86, 0.18); bs.bezierCurveTo(0.65, 0.3, 0.35, 0.2, 0.14, 0.06); bs.closePath();
+  const bladeMat = mat(C.blade, { transparent: true, opacity: 0.88, side: THREE.DoubleSide, roughness: 0.35 });
+  for (let k = 0; k < 3; k++) { const g = new THREE.ShapeGeometry(bs, 24); g.rotateX(0.42); g.rotateZ(k * Math.PI * 2 / 3); g.translate(0, 0, 0.55); add(blades, g, bladeMat); }
+  const hub = new THREE.CylinderGeometry(0.15, 0.15, 0.14, 36); hub.rotateX(Math.PI / 2); hub.translate(0, 0, 0.55);
+  add(blades, hub, mat(C.blade, { roughness: 0.4 }));
+  blades.anchor.position.set(0, 0.62, 0.55);
+
+  // Tuerca del aspa (gira con el eje)
+  const spinner = part('tuerca', 'Tuerca del aspa', 'Sujeta las aspas al eje para que giren juntos.', 'Se enrosca en la punta del eje; al quitarla salen las aspas.', [0, 0, 2.45], 0.08, head, true);
+  const dome = new THREE.SphereGeometry(0.1, 28, 12, 0, Math.PI * 2, 0, Math.PI / 2); dome.rotateX(Math.PI / 2); dome.translate(0, 0, 0.62);
+  add(spinner, dome, mat(C.body, { roughness: 0.3 }));
+  spinner.anchor.position.set(0, 0.12, 0.68);
+
+  // Rejilla delantera
+  const front = part('rejilla-d', 'Rejilla delantera', 'Protege los dedos sin frenar casi el aire.', 'Alambres radiales y anillos; la separación es pequeña para que no entren dedos.', [0, 0, 3.0], 0, head);
+  const zf = (r) => 0.7 + 0.35 * (1 - (r / 1.02) ** 2);
+  for (let k = 0; k < 28; k++) {
+    const a0 = k * Math.PI * 2 / 28, pts = [];
+    for (let j = 0; j <= 8; j++) { const r = 0.15 + (1.02 - 0.15) * j / 8, a = a0 + 0.35 * r; pts.push([Math.cos(a) * r, Math.sin(a) * r, zf(r)]); }
+    add(front, tube(pts, 0.008, 14), wire);
+  }
+  for (const r of [0.38, 0.62, 0.84]) add(front, ringAt(r, zf(r)), wire);
+  const bandG = new THREE.CylinderGeometry(1.025, 1.025, 0.3, 72, 1, true); bandG.rotateX(Math.PI / 2); bandG.translate(0, 0, 0.55);
+  add(front, bandG, mat(C.body, { side: THREE.DoubleSide }));
+  const badge = new THREE.CylinderGeometry(0.15, 0.15, 0.03, 36); badge.rotateX(Math.PI / 2); badge.translate(0, 0, zf(0.15));
+  add(front, badge, mat(C.ctrl));
+  front.anchor.position.set(-0.75, 0.7, 0.75); front.ghost = true;
+
+  // Materiales propios por pieza (para atenuar/aislar)
+  parts.forEach((p) => p.meshes.forEach((m) => { m.material = m.material.clone(); m.userData.baseOpacity = m.material.opacity; m.userData.baseTransparent = m.material.transparent; }));
+
+  // Flujo de aire (puntos)
+  const N = 90, pos = new Float32Array(N * 3), seeds = [];
+  for (let k = 0; k < N; k++) { const a = Math.random() * Math.PI * 2, r = 0.15 + Math.random() * 0.8; seeds.push({ a, r, z: Math.random() }); }
+  const airGeo = new THREE.BufferGeometry(); airGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  const air = new THREE.Points(airGeo, new THREE.PointsMaterial({ color: colorOf('--flow'), size: 0.045, transparent: true, opacity: 0.55, depthWrite: false }));
+  head.add(air);
+
+  // Estado único
+  const S = { spin: !reduced.matches, speed: 0, angle: 0, explode: 0, target: 0, xray: 0, xrayT: 0, sel: null, isolate: false, step: 0 };
+  const steps = [
+    { name: 'Funciona', say: 'El motor hace girar las aspas y estas empujan el aire hacia ti.', explode: 0, xray: 0, sel: null, isolate: false, spin: true },
+    { name: 'Entramos', say: 'Dentro de la carcasa: bobinas fijas (estator) y una pieza que gira (rotor).', explode: 0, xray: 1, sel: null, isolate: false, spin: true },
+    { name: 'Aislamos', say: 'Las bobinas crean el campo que gira; toca otra pieza para ver su función.', explode: 0.35, xray: 1, sel: 'estator', isolate: true, spin: false },
+    { name: 'Despiece', say: 'Cada pieza separada a lo largo del eje, en el orden en que se desarma.', explode: 1, xray: 0, sel: null, isolate: false, spin: false },
+    { name: 'Volvemos', say: 'Armado otra vez: el giro del rotor llega a las aspas por el eje.', explode: 0, xray: 0, sel: null, isolate: false, spin: true },
+  ];
+  const callout = $('#fan-callout'), leader = $('#fan-leader');
+  const partBtns = {};
+  parts.forEach((p) => {
+    const b = document.createElement('button'); b.className = 'btn sm'; b.textContent = p.name; b.setAttribute('aria-pressed', 'false');
+    b.addEventListener('click', () => { select(S.sel === p.id ? null : p.id); }); $('#fan-parts').appendChild(b); partBtns[p.id] = b;
+  });
+  function select(id) {
+    S.sel = id; Object.entries(partBtns).forEach(([k, b]) => b.setAttribute('aria-pressed', k === id));
+    if (id && S.step !== 2) S.isolate = false;
+    if (!id) S.isolate = false;
+    styleParts(); v.wake();
+  }
+  function styleParts() {
+    parts.forEach((p) => {
+      const dim = (S.isolate && S.sel && p.id !== S.sel);
+      const ghost = p.ghost ? S.xray : 0;
+      const op = dim ? 0.12 : 1 - 0.82 * ghost;
+      p.meshes.forEach((m) => {
+        const mm = m.material, base = m.userData.baseOpacity;
+        mm.opacity = Math.min(base, op); mm.transparent = mm.opacity < 0.999 || m.userData.baseTransparent; mm.depthWrite = mm.opacity > 0.5;
+        mm.emissive?.setHex(S.sel === p.id ? 0x332211 : 0x000000);
+      });
+    });
+  }
+  function setStep(k, fromTour = false) {
+    if (!fromTour) stopTour();
+    S.step = k; const s = steps[k];
+    S.target = s.explode; S.xrayT = s.xray; S.isolate = s.isolate; S.spin = s.spin && !reduced.matches;
+    select(s.sel); S.isolate = s.isolate; styleParts();
+    if (reduced.matches) { S.explode = S.target; S.xray = S.xrayT; }
+    $('#fan-stepname').textContent = `${k + 1} · ${s.name}`; $('#fan-say').textContent = s.say;
+    $$('#fan-steps .btn').forEach((b, j) => b.setAttribute('aria-pressed', j === k));
+    $('#fan-explode').value = Math.round(S.target * 100); $('#fan-explode-out').textContent = `${Math.round(S.target * 100)} %`;
+    syncPlay(); v.wake();
+  }
+  const syncPlay = () => { const b = $('#fan-play'); b.textContent = S.spin ? 'Pausar giro' : 'Girar'; b.setAttribute('aria-pressed', S.spin); };
+  $$('#fan-steps .btn').forEach((b) => b.addEventListener('click', () => setStep(+b.dataset.step)));
+  $('#fan-play').addEventListener('click', () => { S.spin = !S.spin; syncPlay(); v.wake(); });
+  $('#fan-explode').addEventListener('input', (e) => { stopTour(); S.target = +e.target.value / 100; if (reduced.matches) S.explode = S.target; $('#fan-explode-out').textContent = `${e.target.value} %`; v.wake(); });
+  let tour = null;
+  function stopTour() { if (tour) { clearInterval(tour); tour = null; $('#fan-tour').textContent = '▶ Recorrido automático'; } }
+  $('#fan-tour').addEventListener('click', () => {
+    if (tour) return stopTour();
+    $('#fan-tour').textContent = '⏸ Detener recorrido';
+    let k = 0; setStep(0, true);
+    tour = setInterval(() => { if (window.VGE.active !== 'anatomia' || document.hidden) return; k = (k + 1) % steps.length; setStep(k, true); }, 4200);
+  });
+  document.addEventListener('vge:tab', (e) => { if (e.detail !== 'anatomia') stopTour(); });
+
+  controls.addEventListener('end', () => { baseDist = camera.position.distanceTo(controls.target) / (1 + 0.55 * S.explode); });
+  // Selección por toque (sin arrastre)
+  const ray = new THREE.Raycaster(), ndc = new THREE.Vector2(); let down = null;
+  v.canvas.addEventListener('pointerdown', (e) => { down = [e.clientX, e.clientY]; });
+  v.canvas.addEventListener('pointerup', (e) => {
+    if (!down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 6) return;
+    const r = v.canvas.getBoundingClientRect(); ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+    ray.setFromCamera(ndc, camera);
+    const hits = ray.intersectObjects(parts.flatMap((p) => p.meshes), false).filter((h) => h.object.material.opacity > 0.3);
+    stopTour(); select(hits.length ? hits[0].object.userData.part.id : null);
+  });
+
+  const tmp = new THREE.Vector3();
+  function placeCallout() {
+    const p = parts.find((q) => q.id === S.sel);
+    if (!p) { callout.hidden = true; leader.innerHTML = ''; return; }
+    p.anchor.getWorldPosition(tmp); tmp.project(camera);
+    const W = stage.clientWidth, H = stage.clientHeight, x = (tmp.x + 1) / 2 * W, y = (1 - tmp.y) / 2 * H;
+    const lvl = +document.getElementById('main').dataset.level;
+    callout.innerHTML = `<b>${p.name}</b>${p.func}${lvl >= 2 ? `<div class="tec">${p.tec}</div>` : ''}`;
+    callout.hidden = false;
+    const cw = callout.offsetWidth, ch = callout.offsetHeight;
+    let cx = x < W / 2 ? x + 36 : x - 36 - cw, cy = y - ch - 30;
+    if (cy < 44) cy = y + 30;
+    cx = Math.max(8, Math.min(W - cw - 8, cx)); cy = Math.max(44, Math.min(H - ch - 8, cy));
+    callout.style.left = cx + 'px'; callout.style.top = cy + 'px';
+    const ex = Math.max(cx, Math.min(cx + cw, x)), ey = y < cy ? cy : cy + ch;
+    leader.innerHTML = `<line x1="${x}" y1="${y}" x2="${ex}" y2="${ey}" stroke="var(--ink-3)" stroke-width="1.5"/><circle cx="${x}" cy="${y}" r="4" fill="var(--panel)" stroke="var(--ink)" stroke-width="2"/>`;
+  }
+  document.addEventListener('vge:level', () => { placeCallout(); });
+
+  v.onFrame = (dt) => {
+    const k = reduced.matches ? 1 : 1 - Math.exp(-dt * 4);
+    const pe = S.explode, px = S.xray;
+    S.explode += (S.target - S.explode) * k; if (Math.abs(S.target - S.explode) < 1e-3) S.explode = S.target;
+    S.xray += (S.xrayT - S.xray) * k; if (Math.abs(S.xrayT - S.xray) < 1e-3) S.xray = S.xrayT;
+    const wantSpeed = S.spin ? 9 : 0; S.speed += (wantSpeed - S.speed) * (1 - Math.exp(-dt * 2.5)); if (!S.spin && S.speed < 0.02) S.speed = 0;
+    S.angle += S.speed * dt;
+    parts.forEach((p) => {
+      const t = ease((S.explode - p.delay * 0.6) / (1 - p.delay * 0.6));
+      p.g.position.copy(p.explode).multiplyScalar(t);
+      if (p.s !== p.g) p.s.rotation.z = -S.angle;
+    });
+    controls.target.z = 0.4 + 0.9 * S.explode;
+    if (!v.interacting && S.explode !== pe) { const dir = camera.position.clone().sub(controls.target).normalize(); camera.position.copy(controls.target).addScaledVector(dir, baseDist * (1 + 0.55 * S.explode)); }
+    if (S.xray !== px) styleParts();
+    // Aire: solo con el ventilador armado y girando
+    const flow = Math.max(0, 1 - S.explode * 6) * Math.min(1, S.speed / 9);
+    air.visible = flow > 0.02; air.material.opacity = 0.55 * flow;
+    if (air.visible) {
+      seeds.forEach((s, i) => { s.z = (s.z + dt * 0.55 * (S.speed / 9)) % 1; const z = 1.1 + s.z * 2.4, spread = 1 + s.z * 0.25; pos[i * 3] = Math.cos(s.a) * s.r * spread; pos[i * 3 + 1] = Math.sin(s.a) * s.r * spread; pos[i * 3 + 2] = z; });
+      airGeo.attributes.position.needsUpdate = true;
+    }
+    placeCallout();
+    return S.speed > 0 || S.explode !== pe || S.xray !== px || S.explode !== S.target || S.xray !== S.xrayT;
+  };
+  setStep(0);
+}
+
+/* =====================================================================
+   ESCENA 3D · engranajes rectos con perfil de evolvente
+   ===================================================================== */
+function gearOutline(z, m, alpha) {
+  const rp = m * z / 2, rb = rp * Math.cos(alpha), ra = rp + m, rf = rp - 1.25 * m;
+  const inv = (a) => Math.tan(a) - a;
+  const psi = (r) => Math.PI / (2 * z) + inv(alpha) - inv(Math.acos(Math.min(1, rb / r)));
+  const pts = [], P = (r, a) => pts.push(new THREE.Vector2(r * Math.cos(a), r * Math.sin(a)));
+  const r0 = Math.max(rb, rf), N = 10;
+  for (let k = 0; k < z; k++) {
+    const th = k * 2 * Math.PI / z, thn = (k + 1) * 2 * Math.PI / z;
+    if (rf < rb) P(rf, th - psi(rb));
+    for (let i = 0; i <= N; i++) { const r = r0 + (ra - r0) * i / N; P(r, th - psi(r)); }
+    for (let i = 1; i < 4; i++) P(ra, th - psi(ra) + (2 * psi(ra)) * i / 4);
+    for (let i = N; i >= 0; i--) { const r = r0 + (ra - r0) * i / N; P(r, th + psi(r)); }
+    if (rf < rb) P(rf, th + psi(rb));
+    const a0 = th + psi(rb), a1 = thn - psi(rb);
+    for (let i = 1; i < 4; i++) P(rf, a0 + (a1 - a0) * i / 4);
+  }
+  return { pts, rp, rb, ra, rf };
+}
+function circlePath(r, n = 48, cx = 0, cy = 0) { const p = new THREE.Path(); for (let i = 0; i <= n; i++) { const a = -i / n * Math.PI * 2; const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a); i ? p.lineTo(x, y) : p.moveTo(x, y); } return p; }
+function borePath(r, w, rk) {
+  const b = Math.asin(w / 2 / r), p = new THREE.Path(), n = 40;
+  p.moveTo(w / 2, rk); p.lineTo(-w / 2, rk);
+  for (let i = 0; i <= n; i++) { const a = Math.PI / 2 + b + (2 * Math.PI - 2 * b) * i / n; p.lineTo(r * Math.cos(a), r * Math.sin(a)); }
+  p.closePath(); return p;
+}
+function extrude(shape, depth, s) { const g = new THREE.ExtrudeGeometry(shape, { depth, bevelEnabled: false, curveSegments: 24 }); g.translate(0, 0, -depth / 2); g.scale(s, s, s); return g; }
+
+function initGears() {
+  const stage = $('#gear-stage');
+  const v = makeViewer(stage, 'escena-3d', { stencil: true });
+  if (!v) return;
+  const { scene, camera, controls, renderer } = v;
+  const S = 0.1; // 1 unidad = 10 mm
+  const m = 2, al = 20 * Math.PI / 180, z1 = 18, z2 = 27, a = m * (z1 + z2) / 2;
+  const views = { front: [0, 0.3, 10.5], iso: [3.2, 5.8, 8.2], top: [0.01, 11, 0.6], mesh: [-0.45, 0.35, 5.2] };
+  const targets = { front: [0, 0.6, 0], iso: [0, 0.6, 0], top: [0, 0, 0.5], mesh: [-0.45, 0.25, 0] };
+  camera.position.set(...views.iso); controls.target.set(0, 0.6, 0); controls.minDistance = 5; controls.maxDistance = 28;
+
+  const plane = new THREE.Plane(new THREE.Vector3(0, -1, 0), 3.4);
+  const mk = (color) => new THREE.MeshStandardMaterial({ color, metalness: 0.35, roughness: 0.42, clippingPlanes: [plane], side: THREE.FrontSide });
+  const cDrive = colorOf('--ctrl'), cDriven = colorOf('--flow');
+
+  // Rueda motriz (maciza)
+  const o1 = gearOutline(z1, m, al), sh1 = new THREE.Shape(o1.pts); sh1.holes.push(borePath(4, 3, 5.6));
+  const g1 = new THREE.Group(); g1.position.x = -a / 2 * S; scene.add(g1);
+  const solids = [];
+  const addSolid = (grp, geo, color) => { const ms = new THREE.Mesh(geo, mk(color)); ms.renderOrder = 6; grp.add(ms); solids.push([grp, geo]); return ms; };
+  addSolid(g1, extrude(sh1, 12, S), cDrive);
+  // Rueda conducida: llanta + alma con agujeros + cubo
+  const o2 = gearOutline(z2, m, al);
+  const rim = new THREE.Shape(o2.pts); rim.holes.push(circlePath(20.5, 72));
+  const web = new THREE.Shape(); web.absarc(0, 0, 20.5, 0, Math.PI * 2, false); web.holes.push(circlePath(9, 48));
+  for (let k = 0; k < 6; k++) web.holes.push(circlePath(3.2, 24, 14.75 * Math.cos(k * Math.PI / 3 + Math.PI / 6), 14.75 * Math.sin(k * Math.PI / 3 + Math.PI / 6)));
+  const hubS = new THREE.Shape(); hubS.absarc(0, 0, 9, 0, Math.PI * 2, false); hubS.holes.push(borePath(5, 3, 7));
+  const g2 = new THREE.Group(); g2.position.x = a / 2 * S; scene.add(g2);
+  addSolid(g2, extrude(rim, 12, S), cDriven);
+  addSolid(g2, extrude(web, 4, S), cDriven);
+  addSolid(g2, extrude(hubS, 18, S), cDriven);
+  // Marcas para contar vueltas
+  for (const [g, r] of [[g1, 1.05], [g2, 2.25]]) { const d = new THREE.Mesh(new THREE.SphereGeometry(0.11, 16, 10), new THREE.MeshStandardMaterial({ color: 0xffffff, clippingPlanes: [plane] })); d.position.set(0, r, 0.63); g.add(d); }
+
+  // Tapas de corte con plantilla (stencil) y rayado
+  const hatch = document.createElement('canvas'); hatch.width = hatch.height = 64;
+  { const c = hatch.getContext('2d'); c.fillStyle = darkMode() ? '#2a353e' : '#e9eef1'; c.fillRect(0, 0, 64, 64); c.strokeStyle = darkMode() ? '#c9d4dc' : '#33414c'; c.lineWidth = 3; for (let i = -64; i < 128; i += 12) { c.beginPath(); c.moveTo(i, 64); c.lineTo(i + 64, 0); c.stroke(); } }
+  const htex = new THREE.CanvasTexture(hatch); htex.wrapS = htex.wrapT = THREE.RepeatWrapping; htex.repeat.set(9, 9); htex.colorSpace = THREE.SRGBColorSpace;
+  const base = new THREE.MeshBasicMaterial({ depthWrite: false, depthTest: false, colorWrite: false, stencilWrite: true, stencilFunc: THREE.AlwaysStencilFunc });
+  const back = base.clone(); back.side = THREE.BackSide; back.clippingPlanes = [plane];
+  back.stencilFail = back.stencilZFail = back.stencilZPass = THREE.IncrementWrapStencilOp;
+  const frontM = base.clone(); frontM.side = THREE.FrontSide; frontM.clippingPlanes = [plane];
+  frontM.stencilFail = frontM.stencilZFail = frontM.stencilZPass = THREE.DecrementWrapStencilOp;
+  solids.forEach(([grp, geo]) => { const b = new THREE.Mesh(geo, back); b.renderOrder = 1; grp.add(b); const f = new THREE.Mesh(geo, frontM); f.renderOrder = 1; grp.add(f); });
+  const capMat = new THREE.MeshBasicMaterial({ map: htex, stencilWrite: true, stencilRef: 0, stencilFunc: THREE.NotEqualStencilFunc, stencilFail: THREE.ReplaceStencilOp, stencilZFail: THREE.ReplaceStencilOp, stencilZPass: THREE.ReplaceStencilOp, side: THREE.DoubleSide });
+  const cap = new THREE.Mesh(new THREE.PlaneGeometry(12, 12), capMat); cap.rotation.x = -Math.PI / 2; cap.renderOrder = 1.1;
+  cap.onAfterRender = (r) => r.clearStencil();
+  scene.add(cap);
+
+  // Guías: círculos primitivos y línea de acción (en el plano frontal)
+  const guides = new THREE.Group(); scene.add(guides); guides.position.z = 0.64;
+  const lineMat = (c, dashed) => dashed ? new THREE.LineDashedMaterial({ color: c, dashSize: 0.12, gapSize: 0.08, depthTest: false }) : new THREE.LineBasicMaterial({ color: c, depthTest: false });
+  const circ = (r, cx, c) => { const pts = []; for (let i = 0; i <= 120; i++) { const t = i / 120 * Math.PI * 2; pts.push(new THREE.Vector3(cx + r * Math.cos(t), r * Math.sin(t), 0)); } const l = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), lineMat(c, true)); l.computeLineDistances(); l.renderOrder = 9; return l; };
+  const ink = colorOf('--ink');
+  guides.add(circ(o1.rp * S, -a / 2 * S, ink), circ(o2.rp * S, a / 2 * S, ink));
+  const n = new THREE.Vector2(Math.cos(al), -Math.sin(al));
+  const T1 = new THREE.Vector3(-a / 2 * S + o1.rb * S * n.x, o1.rb * S * n.y, 0), T2 = new THREE.Vector3(a / 2 * S - o2.rb * S * n.x, -o2.rb * S * n.y, 0);
+  const loa = new THREE.Line(new THREE.BufferGeometry().setFromPoints([T1, T2]), lineMat(colorOf('--ok'), false)); loa.renderOrder = 9; guides.add(loa);
+  const pp = new THREE.Mesh(new THREE.SphereGeometry(0.07, 14, 10), new THREE.MeshBasicMaterial({ color: colorOf('--ok'), depthTest: false })); pp.position.set(-a / 2 * S + o1.rp * S, 0, 0); pp.renderOrder = 9; guides.add(pp);
+  // Diente destacado (contorno del diente 0 de la motriz)
+  const toothPts = o1.pts.slice(0, 2 * 11 + 3 + 2).map((p) => new THREE.Vector3(p.x * S, p.y * S, 0));
+  const tooth = new THREE.Line(new THREE.BufferGeometry().setFromPoints(toothPts), new THREE.LineBasicMaterial({ color: 0xffffff, depthTest: false }));
+  tooth.renderOrder = 10; const toothG = new THREE.Group(); toothG.add(tooth); g1.add(toothG); toothG.position.z = 0.61;
+  guides.visible = false; toothG.visible = false;
+
+  const St = { spin: !reduced.matches, w: 0, th: 0, cut: 0, cutT: 0, step: 0 };
+  const steps = [
+    { name: 'Engranan', say: 'La rueda pequeña empuja diente a diente a la grande, que gira al revés y más despacio.', cut: 0, spin: true, guides: false, view: 'iso' },
+    { name: 'Cortamos', say: 'Cortada por la mitad: la grande es una llanta con dientes unida al cubo por un alma delgada.', cut: 1, spin: false, guides: false, view: 'iso' },
+    { name: 'Un diente', say: 'Cada diente tiene flancos curvos (evolvente): así empujan con un ángulo constante y el giro sale parejo.', cut: 0, spin: true, guides: true, view: 'mesh', slow: true },
+    { name: 'Volvemos', say: 'Por cada 3 vueltas de la pequeña, la grande da 2: menos velocidad, más fuerza.', cut: 0, spin: true, guides: false, view: 'iso' },
+  ];
+  const syncPlay = () => { const b = $('#gear-play'); b.textContent = St.spin ? 'Pausar giro' : 'Girar'; b.setAttribute('aria-pressed', St.spin); };
+  let camTo = null, tgtTo = null;
+  const fit = () => Math.max(1, 19 / (Math.max(0.3, camera.aspect) * 10.5));
+  function setView(k) {
+    tgtTo = new THREE.Vector3(...targets[k]);
+    camTo = k === 'mesh' ? new THREE.Vector3(...views.mesh).sub(tgtTo).multiplyScalar(Math.max(1, 1.1 / camera.aspect)).add(tgtTo) : new THREE.Vector3(...views[k]).multiplyScalar(fit()).add(new THREE.Vector3(0, targets[k][1], 0));
+    if (reduced.matches) { camera.position.copy(camTo); controls.target.copy(tgtTo); camTo = tgtTo = null; } v.wake();
+  }
+  function setStep(k) {
+    const s = steps[k]; St.step = k; St.cutT = s.cut; St.spin = s.spin && !reduced.matches; St.slow = !!s.slow;
+    guides.visible = toothG.visible = s.guides; setView(s.view);
+    $('#gear-cut').value = s.cut * 100; cutLabel(s.cut);
+    if (reduced.matches) St.cut = St.cutT;
+    $('#gear-stepname').textContent = `${k + 1} · ${s.name}`; $('#gear-say').textContent = s.say;
+    $$('#gear-steps .btn').forEach((b, j) => b.setAttribute('aria-pressed', j === k));
+    syncPlay(); v.wake();
+  }
+  const cutLabel = (x) => { $('#gear-cut-out').textContent = x < 0.01 ? 'sin corte' : x > 0.99 ? 'por el centro' : `${Math.round(x * 100)} %`; };
+  $$('#gear-steps .btn').forEach((b) => b.addEventListener('click', () => setStep(+b.dataset.step)));
+  $$('[data-view]').forEach((b) => b.addEventListener('click', () => setView(b.dataset.view)));
+  $('#gear-play').addEventListener('click', () => { St.spin = !St.spin; syncPlay(); v.wake(); });
+  $('#gear-cut').addEventListener('input', (e) => { St.cutT = +e.target.value / 100; if (reduced.matches) St.cut = St.cutT; cutLabel(St.cutT); v.wake(); });
+  controls.addEventListener('start', () => { camTo = tgtTo = null; });
+
+  const fmt = window.VGE.fmt;
+  v.onFrame = (dt) => {
+    const want = St.spin ? (St.slow ? 0.35 : 0.9) : 0; const pw = St.w, pc = St.cut;
+    St.w += (want - St.w) * (1 - Math.exp(-dt * 3)); if (!St.spin && St.w < 0.005) St.w = 0;
+    St.th += St.w * dt;
+    St.cut += (St.cutT - St.cut) * (reduced.matches ? 1 : 1 - Math.exp(-dt * 5)); if (Math.abs(St.cutT - St.cut) < 1e-3) St.cut = St.cutT;
+    g1.rotation.z = St.th; g2.rotation.z = -St.th * z1 / z2;
+    plane.constant = 3.4 - 3.4 * St.cut; cap.position.y = plane.constant; cap.visible = St.cut > 0.002;
+    if (tgtTo) { controls.target.lerp(tgtTo, 1 - Math.exp(-dt * 5)); if (controls.target.distanceTo(tgtTo) < 0.005) { controls.target.copy(tgtTo); tgtTo = null; } }
+    if (camTo) { camera.position.lerp(camTo, 1 - Math.exp(-dt * 5)); if (camera.position.distanceTo(camTo) < 0.01) camTo = null; }
+    const n1 = St.th / (2 * Math.PI), n2 = n1 * z1 / z2;
+    $('#gear-n1').textContent = `${fmt(n1, 2)} vueltas`; $('#gear-n2').textContent = `${fmt(n2, 2)} vueltas`;
+    return St.w > 0 || St.cut !== pc || pw !== St.w || !!camTo || !!tgtTo;
+  };
+  setStep(0);
+}
+
+/* Arranque perezoso: cada escena se crea la primera vez que se abre su pestaña */
+const inits = { anatomia: initFan, 'escena-3d': initGears }, done = {};
+const boot = (id) => { if (inits[id] && !done[id]) { done[id] = true; try { inits[id](); } catch (e) { console.error(e); } document.dispatchEvent(new CustomEvent('vge:tab', { detail: id })); } };
+document.addEventListener('vge:tab', (e) => boot(e.detail));
+boot(window.VGE.active);
+
+</script>
+</body>
+</html>
