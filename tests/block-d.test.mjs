@@ -87,6 +87,16 @@ test('D: el verificador lee opciones, envuelve fragmentos y solo sirve CDN con v
   assert.equal(localCdnFile(new URL(`https://cdn.jsdelivr.net/npm/three@${version}/../../package.json`)),null);
 });
 
+test('D: el verificador avisa cuando cada clic tarda más que el anterior', () => {
+  const {slowingClicks}=require('../tools/verify-page.cjs');
+  const mk=a=>a.map(ms=>({que:'clic',ms}));
+  // Tiempos medidos en la página de siete modos antes y después de corregir los ciclos duplicados.
+  assert.match(slowingClicks(mk([748,774,794,3993,7145,10145])),/4,0 → 7,1 → 10,1 s/);
+  assert.equal(slowingClicks(mk([395,428,417,421,463,371,381])),null);
+  assert.equal(slowingClicks(mk([900,850,880,870,6000,800])),null,'un pico aislado no es crecimiento');
+  assert.equal(slowingClicks(mk([100,2000,4000])),null,'pocos clics para juzgar');
+});
+
 test('D: cada caso de evaluación tiene el formato que lee claude plugin eval', async () => {
   const base='skill/evals/',cases=(await readdir(new URL('../'+base,import.meta.url))).sort();
   assert.ok(cases.length>=10,'se esperan al menos 10 casos');

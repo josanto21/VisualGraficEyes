@@ -29,6 +29,7 @@ Todo lo demás se bloquea sin error visible: hojas de estilo, imágenes o `fetch
 ## Rendimiento
 
 - Crear cada escena 3D la primera vez que se abre su pestaña. Pausar el ciclo de dibujo cuando la pestaña o la página no se ven y cuando nada se mueve.
+- Mantener un solo `requestAnimationFrame` pendiente. Los controles de cámara (OrbitControls) emiten `change` dentro del propio ciclo: si ese evento reanuda el dibujo, comprobar que no haya ya un cuadro agendado, o los ciclos se duplican en cada cuadro y la página se vuelve cada vez más lenta.
 - Limitar `devicePixelRatio` a 2. Respetar `prefers-reduced-motion`: sin giro automático y con transiciones directas.
 - Dar una alternativa en texto si WebGL no arranca.
 

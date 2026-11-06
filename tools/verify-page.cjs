@@ -130,6 +130,19 @@ async function audit(page, {strictTouch}) {
   }, {strictTouch});
 }
 
+// Devuelve un texto si los clics se vuelven lentos y crecen; null si no.
+function slowingClicks(times, {floor = 1500, factor = 3} = {}) {
+  const ms = times.map(t => t.ms);
+  if (ms.length < 4) return null;
+  const base = [...ms.slice(0, 3)].sort((a, b) => a - b)[1];
+  let run = 1, best = 1, end = 0;
+  for (let i = 1; i < ms.length; i++) { run = ms[i] > ms[i - 1] ? run + 1 : 1; if (run > best) { best = run; end = i; } }
+  const peak = Math.max(...ms);
+  if (peak < floor || peak < base * factor || best < 3) return null;
+  const seq = ms.slice(end - best + 1, end + 1).map(v => (v / 1000).toFixed(1).replace('.', ',')).join(' → ');
+  return `Los clics se vuelven más lentos (${seq} s; al inicio ~${(base / 1000).toFixed(1).replace('.', ',')} s). Suele indicar trabajo que se acumula, como dos requestAnimationFrame pendientes por cuadro.`;
+}
+
 async function verifyPage(target, options = {}) {
   const o = {artifact:false, widths:[390, 1280], themes:['claro', 'oscuro'], tour:true, strictTouch:false, ...options};
   const isUrl = /^https?:\/\//.test(target);
@@ -146,7 +159,7 @@ async function verifyPage(target, options = {}) {
   const browser = await launchBrowser();
   const report = {
     pagina:target, modo:o.artifact ? 'artefacto' : 'página completa', fecha:new Date().toISOString(),
-    navegador:browser.vgeInfo, estado:null, comprobaciones:[], recorrido:[], cdnDesdeNodeModules:[], recursosExternosNoCargados:[],
+    navegador:browser.vgeInfo, estado:null, comprobaciones:[], recorrido:[], tiemposClic:[], cdnDesdeNodeModules:[], recursosExternosNoCargados:[],
     noVerificado:[
       'Rendimiento y fluidez en un teléfono físico',
       'Comprensión de personas reales',
@@ -207,6 +220,7 @@ async function verifyPage(target, options = {}) {
       // Recorrido: una vez por ancho, en el primer tema.
       if (o.tour && theme === o.themes[0]) {
         let clicks = 0;
+        const times = [];
         const tabs = await page.locator('[role="tab"]:visible').all();
         const visits = tabs.length ? tabs : [null];
         for (let i = 0; i < visits.length && clicks < 80; i++) {
@@ -215,8 +229,9 @@ async function verifyPage(target, options = {}) {
           // Un clic que no responde se registra y el recorrido sigue: puede ser el entorno
           // (WebGL por software) o un ciclo de dibujo que satura el hilo principal.
           const press = async (loc, what) => {
-            try { await loc.click({timeout:15000}); clicks++; return true; }
-            catch { blocked.push(what); return false; }
+            const t0 = Date.now();
+            try { await loc.click({timeout:15000}); clicks++; times.push({que:what, ms:Date.now() - t0}); return true; }
+            catch { blocked.push(what); times.push({que:what, ms:Date.now() - t0, bloqueado:true}); return false; }
           };
           if (visits[i]) {
             label = ((await visits[i].innerText().catch(() => '')).trim().split(/\n/)[0]) || label;
@@ -230,9 +245,13 @@ async function verifyPage(target, options = {}) {
           catch { captured = false; blocked.push('captura de pantalla'); }
           console.error(`· ${tag} ${label}`);
           const result = await check(`${label}${steps.length ? ` + ${steps.length} etapas` : ''}`);
-          if (blocked.length) result.problemas.push({nivel:'AVISO', codigo:'interaccion-bloqueada', detalle:`No respondió en 15 s: ${blocked.join(', ')}. Puede deberse al WebGL por software del entorno o a un ciclo de dibujo que satura el hilo principal; revisar en un dispositivo real.`});
+          if (blocked.length) result.problemas.push({nivel:'AVISO', codigo:'interaccion-bloqueada', detalle:`No respondió en 15 s: ${blocked.join(', ')}. Si los clics anteriores ya iban cada vez más lentos, buscar ciclos de dibujo duplicados (dos requestAnimationFrame pendientes); si no, puede ser el WebGL por software del entorno.`});
           report.recorrido.push({...result, captura:captured ? name : null});
         }
+        // Clics que tardan cada vez más delatan trabajo que se acumula (por ejemplo, ciclos de dibujo duplicados).
+        const slow = slowingClicks(times);
+        if (slow) report.recorrido.push({contexto:'tiempos de clic', ancho:width, tema:theme, lienzos:null, problemas:[{nivel:'AVISO', codigo:'clics-cada-vez-mas-lentos', detalle:slow}]});
+        report.tiemposClic.push({ancho:width, tema:theme, clics:times});
       }
       await context.close();
     }
@@ -271,4 +290,4 @@ if (require.main === module) {
   })().catch(e => { console.error(e.message); process.exitCode = 2; });
 }
 
-module.exports = {verifyPage, parseArgs, wrapArtifact, localCdnFile, ARTIFACT_CSP};
+module.exports = {verifyPage, parseArgs, wrapArtifact, localCdnFile, slowingClicks, ARTIFACT_CSP};

@@ -21,7 +21,7 @@
     {
       "command": "npm test",
       "exit": 0,
-      "result": "91/91"
+      "result": "92/92"
     },
     {
       "command": "npm run validate",
@@ -223,7 +223,24 @@
       "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.min.js",
       "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/controls/OrbitControls.js",
       "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.core.min.js"
-    ]
+    ],
+    "hallazgoPrincipal": {
+      "codigo": "interaccion-bloqueada",
+      "causa": "OrbitControls emite 'change' dentro del ciclo de dibujo; wake() agendaba un segundo requestAnimationFrame y los ciclos se duplicaban en cada cuadro.",
+      "medicionAntes_ms": {
+        "etapa 3": 3993,
+        "etapa 4": 7145,
+        "pestaña siguiente": 10145
+      },
+      "medicionDespues_ms": {
+        "etapa 3": 463,
+        "etapa 4": 371,
+        "pestaña siguiente": 381
+      },
+      "correccion": "Agendar el siguiente cuadro solo si wake() no lo agendó ya durante el ciclo.",
+      "nota": "La primera lectura del aviso lo atribuía al WebGL por software; la reproducción con tiempos lo descartó."
+    },
+    "publicado": "Página corregida publicada como ejemplo en el PR #7 (docs/ejemplos/siete-modos/): PASA sin fallas, 1 aviso."
   },
   "notVerified": [
     "Resultados con el navegador fijado 156.0.8078.4",

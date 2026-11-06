@@ -28,11 +28,11 @@ y los límites de los artefactos de claude.ai.
 | --- | --- | --- |
 | Doctor del entorno | `src/core/doctor.mjs`, `tools/vge.mjs` | `npm run core:doctor` clasifica navegador y motores en LISTO, PREPARABLE (con el comando que falta) o BLOQUEADO (con la alternativa) y da un plan por modo. Red comprobada con curl a través del proxy del entorno; `--sin-red` la omite; `--json` da el detalle. La decisión es una función pura con pruebas. |
 | Navegador de respaldo | `tools/browser.cjs` | El navegador fijado sigue teniendo prioridad. Si falta y no se puede descargar, `VGE_BROWSER=<ruta>` permite usar otro Chrome; `browser.vgeInfo` lo marca `reproducible:false`. |
-| Verificador de páginas | `tools/verify-page.cjs` | `npm run verify:page -- página.html [--artefacto]`: 390 y 1280 px, temas claro y oscuro, recorrido por `role="tab"` y `data-step`, capturas e informe JSON. FALLA: errores de consola o de carga, recursos bloqueados por la CSP aproximada de artefactos, desbordamiento horizontal, controles < 24 px, fondo transparente en artefactos. AVISO: controles de 24–44 px (`--tactil-estricto` los vuelve FALLA), texto cortado, decimales mezclados, clics que no responden en 15 s. Sirve desde `node_modules` los scripts de jsDelivr/unpkg cuya versión coincide. |
+| Verificador de páginas | `tools/verify-page.cjs` | `npm run verify:page -- página.html [--artefacto]`: 390 y 1280 px, temas claro y oscuro, recorrido por `role="tab"` y `data-step`, capturas e informe JSON. FALLA: errores de consola o de carga, recursos bloqueados por la CSP aproximada de artefactos, desbordamiento horizontal, controles < 24 px, fondo transparente en artefactos. AVISO: controles de 24–44 px (`--tactil-estricto` los vuelve FALLA), texto cortado, decimales mezclados, clics que no responden en 15 s y clics que tardan cada vez más (registra el tiempo de cada uno). Sirve desde `node_modules` los scripts de jsDelivr/unpkg cuya versión coincide. |
 | Evals | `skill/evals/` (10 casos, 45 criterios) | Formato de `claude plugin eval`: un caso por modo y cuatro de borde (solo texto, consulta simple, Manim ausente, video). Los criterios piden cosas comprobables: fórmulas y valores concretos, no afirmar un video sin render, ficha de procedencia, «Qué debes llevarte». |
 | Reglas de la skill | `skill/SKILL.md`, `references/nucleo-y-herramientas.md` | Paso previo con el doctor; verificación con la herramienta; ficha de procedencia; una sola convención numérica; render de Remotion cuando el video va en una página y `--browser-executable` como respaldo; tabla de tiempo por motor. |
 | Entrega en artefactos | `skill/references/entrega-en-artefactos.md` | Orígenes permitidos, Three.js con import map, video como archivo adjunto, lo que no se puede incrustar y cómo verificar antes de publicar. |
-| Pruebas | `tests/block-d.test.mjs`, `tools/check-block-d.cjs`, `tests/fixtures/verify/` | Diez pruebas unitarias y tres comprobaciones en navegador: una página buena que debe pasar, una mala que debe fallar por seis motivos concretos y el plan del doctor. |
+| Pruebas | `tests/block-d.test.mjs`, `tools/check-block-d.cjs`, `tests/fixtures/verify/` | Once pruebas unitarias y tres comprobaciones en navegador: una página buena que debe pasar, una mala que debe fallar por seis motivos concretos y el plan del doctor. |
 
 ## Ejecución y resultados
 
@@ -44,7 +44,7 @@ esos resultados no son reproducibles** hasta repetirlos tras `npm run browser:in
 
 | Comando | Código | Resultado |
 | --- | --- | --- |
-| `npm test` | 0 | 91/91 |
+| `npm test` | 0 | 92/92 |
 | `npm run validate` | 0 | Dos lecciones válidas con tres capas |
 | `npm run core:validate` | 0 | 6 escenas, 6 motores |
 | `npm run core:doctor` | 0 | Ver tabla siguiente |
@@ -76,12 +76,19 @@ Hallazgos que la revisión manual no había marcado:
 | --- | --- | --- | --- |
 | Controles de 36–40 px (selector de nivel y botones) | 18 de 18 | AVISO | Por debajo de los 44 px que exige `check:390` en este proyecto |
 | Versión «0.180» junto a cantidades con coma («1,5») | 5 | AVISO | La versión iba fuera de `<code>`; motivó la regla de procedencia y `data-version` |
-| Clics sin respuesta en 15 s tras abrir las escenas 3D | 11 | AVISO | Con WebGL por software el ciclo de dibujo continuo satura el hilo principal; en un teléfono real es «NO VERIFICADO» |
+| Clics sin respuesta en 15 s tras abrir las escenas 3D | 11 | AVISO | **Bug real de la página.** Al reproducirlo, cada clic tardaba unos 3 s más que el anterior (4 → 7 → 10 → 14 s). OrbitControls emite `change` dentro del ciclo de dibujo; ese evento llamaba a `wake()`, que agendaba un segundo `requestAnimationFrame`, y los ciclos se duplicaban en cada cuadro. Con la corrección cada clic tarda unos 0,4 s. Se corrigió en el ejemplo publicado y se añadió la regla a `entrega-en-artefactos.md`. |
 | Fuentes de Google sin cargar | — | aviso externo | Bloqueo de red del entorno, no de la página |
 
 Estado: **PASA** con 0 fallas y 34 avisos en 18 vistas (4 iniciales y 14 del
 recorrido). Three.js 0.180.0 se sirvió desde `node_modules` (3 archivos) y la
 CSP aproximada no bloqueó nada.
+
+Ese bug motivó una comprobación más: el verificador mide el tiempo de cada clic
+y avisa (`clics-cada-vez-mas-lentos`) cuando crecen. Con los tiempos medidos
+antes de la corrección, el aviso salta; con los de después, no.
+
+La página corregida se publica como ejemplo práctico en el PR #7
+(`docs/ejemplos/siete-modos/`) y allí pasa el verificador sin fallas.
 
 El verificador también produjo un falso positivo que se corrigió en este
 bloque: el navegador cancela la descarga de un `<video>` al obtener sus
