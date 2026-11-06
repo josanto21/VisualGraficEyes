@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: laboratorio-filtro-rc
+expected_outcome: |
+  Un laboratorio donde R, C y la frecuencia cambian a la vez la curva, la onda y las medidas calculadas con el mismo modelo, con la frecuencia de corte correcta.

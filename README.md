@@ -32,6 +32,14 @@ capas también al visor genérico. Para probar el ejemplo de números abre
 la explicación común sigue visible. El recorrido repite siete estados preparados
 para [3, 1, 2]; no ejecuta ordenamiento sobre entradas nuevas.
 
+El [Bloque D](docs/BLOQUE-D.md), versión **2.0.0-alpha.2.3**, añade herramientas
+para trabajar con la skill: `npm run core:doctor` dice qué motores funcionan en el
+entorno y cuál es la alternativa de cada modo; `npm run verify:page -- página.html
+[--artefacto]` revisa una página a 390 y 1280 px en ambos temas y recorre sus
+pestañas y etapas; `skill/evals/` trae 10 casos de evaluación con 45 criterios.
+Sin acceso a Chrome for Testing, `VGE_BROWSER=<ruta de Chrome>` permite verificar
+con otro navegador; el informe lo marca como no reproducible.
+
 # VGE 2.0 · Fase 2, público general por capas
 
 Explicación del motor de un ventilador: pregunta → analogía de dos personas que empujan una rueda → escena 3D. La capa común permanece visible; los nombres técnicos, ondas y valores son opcionales. Las fórmulas y los límites se abren aparte. No se ha iniciado la Fase 3.

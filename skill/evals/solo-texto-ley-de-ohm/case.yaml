@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: solo-texto-ley-de-ohm
+expected_outcome: |
+  Una explicación breve en texto, sin visualizaciones, porque el usuario lo pidió así.

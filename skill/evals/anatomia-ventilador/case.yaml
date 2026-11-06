@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: anatomia-ventilador
+expected_outcome: |
+  Una escena de modo ANATOMÍA que muestra el ventilador funcionando, lo abre, aísla piezas con su función, lo separa y lo vuelve a armar, con capas común, técnica y avanzada y un cierre breve.

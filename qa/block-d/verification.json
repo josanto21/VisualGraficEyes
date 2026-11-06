@@ -1,0 +1,235 @@
+{
+  "block": "D",
+  "version": "2.0.0-alpha.2.3",
+  "date": "2026-11-05",
+  "baseCommit": "5745c3524d43dc3970b3f32fbc92ae07cbf0d90a",
+  "branch": "bloque-d",
+  "proposedPRBase": "bloque-c",
+  "environment": {
+    "node": "v22.23.4",
+    "os": "Linux x64",
+    "browser": {
+      "source": "VGE_BROWSER",
+      "path": "/usr/bin/google-chrome",
+      "version": "153.0.8010.12",
+      "pinned": "156.0.8078.4 (no descargable: storage.googleapis.com sin DNS)",
+      "reproducible": false,
+      "webgl": "SwiftShader"
+    }
+  },
+  "commands": [
+    {
+      "command": "npm test",
+      "exit": 0,
+      "result": "91/91"
+    },
+    {
+      "command": "npm run validate",
+      "exit": 0,
+      "result": "psc.lesson y bubble-sort.lesson válidas"
+    },
+    {
+      "command": "npm run core:validate",
+      "exit": 0,
+      "result": "6 escenas, 6 motores"
+    },
+    {
+      "command": "VGE_BROWSER=/usr/bin/google-chrome npm run check:390",
+      "exit": 0,
+      "result": "VGE-005, VGE-006, sin-jerga-resaltado, capas-sin-webgl: PASS"
+    },
+    {
+      "command": "VGE_BROWSER=/usr/bin/google-chrome npm run check:block-a",
+      "exit": 0,
+      "result": "3/3"
+    },
+    {
+      "command": "VGE_BROWSER=/usr/bin/google-chrome npm run check:block-d",
+      "exit": 0,
+      "result": [
+        {
+          "id": "D-verificador-pagina-buena",
+          "status": "PASS",
+          "estado": "PASA"
+        },
+        {
+          "id": "D-verificador-pagina-mala",
+          "status": "PASS",
+          "estado": "FALLA",
+          "codigos": [
+            "desbordamiento",
+            "control-pequeno",
+            "decimales-mezclados",
+            "error-consola",
+            "csp",
+            "fondo-transparente"
+          ]
+        },
+        {
+          "id": "D-doctor-plan",
+          "status": "PASS",
+          "verificacion": "LISTO",
+          "modos": {
+            "ANATOMÍA": "LISTO",
+            "LABORATORIO": "PREPARABLE",
+            "ANIMADO-PASOS": "PREPARABLE",
+            "VIDEO-ESCENAS": "PREPARABLE",
+            "ESCENA 3D": "BLOQUEADO",
+            "MAPA": "LISTO",
+            "DATOS": "LISTO"
+          }
+        }
+      ]
+    }
+  ],
+  "doctor": {
+    "verificacion": {
+      "estado": "LISTO",
+      "motivo": "Navegador de VGE_BROWSER; no es la versión fijada",
+      "siguiente": "npm run verify:page -- <página>",
+      "alternativa": null,
+      "reproducible": false,
+      "navegador": "/usr/bin/google-chrome"
+    },
+    "motores": {
+      "threejs": {
+        "estado": "LISTO",
+        "motivo": "three instalado en el proyecto",
+        "siguiente": null,
+        "alternativa": null
+      },
+      "anatomy": {
+        "estado": "LISTO",
+        "motivo": "Kit Anatomy importable",
+        "siguiente": null,
+        "alternativa": null,
+        "presupuesto": "Figura de 40–80 piezas: hasta 1 h; Hero: 2–4 h"
+      },
+      "remotion": {
+        "estado": "PREPARABLE",
+        "motivo": "Faltan dependencias de Remotion",
+        "siguiente": "npm ci --prefix integrations/remotion",
+        "alternativa": null
+      },
+      "manim": {
+        "estado": "PREPARABLE",
+        "motivo": "Python disponible; falta Manim",
+        "siguiente": "python3 -m venv .venv && .venv/bin/pip install -r integrations/manim/requirements.txt",
+        "alternativa": null,
+        "nota": "Manim necesita también Cairo y Pango del sistema; LaTeX solo si las escenas lo usan"
+      },
+      "circuitjs": {
+        "estado": "BLOQUEADO",
+        "motivo": "Sin copia propia y sin acceso a falstad.com",
+        "siguiente": null,
+        "alternativa": "Modelo JS explícito y texto importable marcado «NO VERIFICADO»"
+      },
+      "spline": {
+        "estado": "BLOQUEADO",
+        "motivo": "Falta una exportación .splinecode real",
+        "siguiente": null,
+        "alternativa": "Three.js con geometría paramétrica"
+      },
+      "ffmpeg": {
+        "estado": "LISTO",
+        "motivo": "ffmpeg disponible para revisar videos",
+        "siguiente": null,
+        "alternativa": null
+      }
+    },
+    "modos": {
+      "ANATOMÍA": {
+        "motor": "Three.js (interior y despiece) o kit Anatomy (lámina técnica)",
+        "estado": "LISTO"
+      },
+      "LABORATORIO": {
+        "motor": "CircuitJS/Falstad",
+        "estado": "BLOQUEADO",
+        "alternativa": "Modelo JS explícito con fórmula visible",
+        "motivo": "Sin copia propia y sin acceso a falstad.com"
+      },
+      "ANIMADO-PASOS": {
+        "motor": "Manim (video matemático)",
+        "estado": "PREPARABLE",
+        "siguiente": "python3 -m venv .venv && .venv/bin/pip install -r integrations/manim/requirements.txt",
+        "alternativa": "Pasos interactivos en HTML"
+      },
+      "VIDEO-ESCENAS": {
+        "motor": "Remotion",
+        "estado": "PREPARABLE",
+        "siguiente": "npm ci --prefix integrations/remotion",
+        "alternativa": "Fuente y comandos, sin afirmar video"
+      },
+      "ESCENA 3D": {
+        "motor": "Spline (escena editable)",
+        "estado": "BLOQUEADO",
+        "alternativa": "Three.js",
+        "motivo": "Falta una exportación .splinecode real"
+      },
+      "MAPA": {
+        "motor": "Mermaid o SVG",
+        "estado": "LISTO"
+      },
+      "DATOS": {
+        "motor": "SVG o gráfico nativo",
+        "estado": "LISTO"
+      }
+    },
+    "notas": [
+      "La red se comprobó con curl y el proxy del entorno; un programa que no use ese proxy puede fallar igual.",
+      "Disponible no significa ejecutado: registrar comando, versión y salida de lo que realmente se use."
+    ]
+  },
+  "casoReal": {
+    "pagina": "Siete modos VGE (fragmento de artefacto de claude.ai, 101 KB + MP4)",
+    "comando": "VGE_BROWSER=/usr/bin/google-chrome npm run verify:page -- index.html --artefacto",
+    "estado": "PASA",
+    "resumen": {
+      "fallas": 0,
+      "avisos": 34,
+      "codigos": [
+        "control-tactil",
+        "interaccion-bloqueada",
+        "decimales-mezclados"
+      ]
+    },
+    "vistas": 18,
+    "conteoPorCodigo": {
+      "control-tactil": 18,
+      "interaccion-bloqueada": 11,
+      "decimales-mezclados": 5
+    },
+    "controlesBajo44px": [
+      "button.btn 161×40",
+      "button.btn 169×40",
+      "input#lv-1 93×36",
+      "input#lv-2 75×36",
+      "input#lv-3 88×36"
+    ],
+    "decimales": {
+      "coma": [
+        "0,27",
+        "0,18",
+        "1,5"
+      ],
+      "punto": [
+        "0.180"
+      ]
+    },
+    "recursosExternosNoCargados": [
+      "https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap"
+    ],
+    "cdnDesdeNodeModules": [
+      "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.min.js",
+      "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/controls/OrbitControls.js",
+      "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.core.min.js"
+    ]
+  },
+  "notVerified": [
+    "Resultados con el navegador fijado 156.0.8078.4",
+    "Ejecución de las evals con un modelo",
+    "CSP real de claude.ai (se usa una aproximación)",
+    "Rendimiento en teléfono físico",
+    "Comprensión de personas reales"
+  ]
+}
