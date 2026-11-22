@@ -110,7 +110,11 @@ Para detalles de arquitectura, dependencias y evidencias, consulta [Núcleo y he
 4. Mejorar la documentación para usuarios y futuras contribuciones.
 5. Completar y comprobar las integraciones nativas pendientes (CircuitJS, Manim y Spline) y las pruebas entre motores.
 
-Para proponer una mejora o reportar un error, puede utilizarse la sección **Issues** del repositorio. La guía formal `CONTRIBUTING.md` está prevista para el Laboratorio 6 y debe publicarse antes de anunciarla como disponible.
+## Cómo colaborar
+
+Lee la [guía de contribución](CONTRIBUTING.md): explica cómo proponer ideas, reportar errores, aportar documentación o recursos y enviar un Pull Request.
+
+Mejora abierta para empezar: [Issue #5 · Documentar cómo explorar los siete modos visuales de VGE](https://github.com/josanto21/VisualGraficEyes/issues/5).
 
 ## Uso de inteligencia artificial
 
